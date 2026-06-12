@@ -18,296 +18,262 @@
       justify-content: center;
     }
 
-    .stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
+    /* ── YILDIZLAR ── */
+    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
     .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
+      position: absolute; background: white; border-radius: 50%;
       animation: twinkle 2s infinite alternate;
     }
     @keyframes twinkle {
-      from { opacity: 0.2; }
-      to   { opacity: 1;   }
+      from { opacity: 0.15; } to { opacity: 1; }
     }
 
+    /* ── EKRANLAR ── */
     .screen {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 480px;
-      padding: 24px;
-      text-align: center;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 22px;
+      position: relative; z-index: 1;
+      width: 100%; max-width: 480px;
+      padding: 24px; text-align: center;
+      display: none; flex-direction: column;
+      align-items: center; gap: 22px;
     }
     .screen.active { display: flex; }
 
     /* ── BAŞLANGIÇ ── */
-    .start-emoji  { font-size: 5em; }
-    .start-title  {
-      color: #FFD700;
-      font-size: 2.2em;
-      font-weight: 900;
-      text-shadow: 0 0 18px #FFD700;
+    .start-emoji { font-size: 5em; animation: float 2s infinite ease-in-out alternate; }
+    @keyframes float { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+    .start-title {
+      color: #FFD700; font-size: 2.2em; font-weight: 900;
+      text-shadow: 0 0 20px #FFD700;
     }
-    .start-sub {
-      color: #FFB6C1;
-      font-size: 1.3em;
-      font-weight: 700;
-    }
+    .start-sub { color: #FFB6C1; font-size: 1.3em; font-weight: 700; }
     .btn-start {
       background: linear-gradient(135deg, #FF69B4, #ff3d9a);
-      color: white;
-      border: none;
-      padding: 18px 50px;
-      border-radius: 32px;
-      font-size: 1.6em;
-      font-weight: 900;
-      font-family: inherit;
-      cursor: pointer;
-      box-shadow: 0 6px 22px rgba(255,105,180,0.55);
+      color: white; border: none;
+      padding: 18px 50px; border-radius: 32px;
+      font-size: 1.6em; font-weight: 900; font-family: inherit;
+      cursor: pointer; box-shadow: 0 6px 22px rgba(255,105,180,0.55);
       animation: btn-pulse 1.6s infinite ease-in-out;
     }
     @keyframes btn-pulse {
-      0%, 100% { transform: scale(1); }
-      50%       { transform: scale(1.07); }
+      0%,100% { transform: scale(1); } 50% { transform: scale(1.07); }
     }
 
     /* ── YARIŞ ── */
     .race-title {
-      color: #FFD700;
-      font-size: 1.8em;
-      font-weight: 900;
+      color: #FFD700; font-size: 1.8em; font-weight: 900;
       text-shadow: 0 0 14px #FFD700;
     }
-    .race-track {
-      width: 100%;
-      background: #1a1a3e;
-      border-radius: 18px;
-      padding: 16px 12px;
-    }
-    .lane {
-      display: flex;
-      align-items: center;
-      margin-bottom: 14px;
-    }
+    .race-track { width: 100%; background: #1a1a3e; border-radius: 18px; padding: 16px 12px; }
+    .lane { display: flex; align-items: center; margin-bottom: 14px; }
     .lane:last-child { margin-bottom: 0; }
-    .lane-label {
-      color: #aaa;
-      font-size: 1em;
-      font-weight: 700;
-      width: 24px;
-      flex-shrink: 0;
-    }
+    .lane-label { color: #aaa; font-size: 1em; font-weight: 700; width: 24px; flex-shrink: 0; }
     .lane-track {
-      flex: 1;
-      height: 46px;
-      background: #2a2a5e;
-      border-radius: 23px;
-      position: relative;
-      overflow: hidden;
+      flex: 1; height: 46px; background: #2a2a5e;
+      border-radius: 23px; position: relative; overflow: hidden;
     }
     .finish-line {
-      position: absolute;
-      right: 0; top: 0; bottom: 0;
-      width: 5px;
-      background: repeating-linear-gradient(
-        to bottom,
-        white 0px, white 5px,
-        #0a0a1a 5px, #0a0a1a 10px
-      );
+      position: absolute; right: 0; top: 0; bottom: 0; width: 5px;
+      background: repeating-linear-gradient(to bottom, white 0px, white 5px, #0a0a1a 5px, #0a0a1a 10px);
     }
-    .rabbit {
-      position: absolute;
-      font-size: 1.9em;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-    }
+    .rabbit { position: absolute; font-size: 1.9em; top: 50%; left: 0; transform: translateY(-50%); }
 
     @keyframes hop {
-      0%, 100% { transform: translateY(-50%); }
-      50%       { transform: translateY(-78%); }
+      0%,100% { transform: translateY(-50%); } 50% { transform: translateY(-78%); }
     }
     @keyframes fast-shake {
-      0%, 100% { transform: translateY(-50%) translateX(0); }
-      33%       { transform: translateY(-60%) translateX(-1px); }
-      66%       { transform: translateY(-42%) translateX(1px); }
+      0%,100% { transform: translateY(-50%) translateX(0); }
+      33% { transform: translateY(-60%) translateX(-1px); }
+      66% { transform: translateY(-42%) translateX(1px); }
     }
     @keyframes tired-sway {
-      0%, 100% { transform: translateY(-50%) rotate(-7deg); }
-      50%       { transform: translateY(-43%) rotate(7deg); }
+      0%,100% { transform: translateY(-50%) rotate(-7deg); }
+      50% { transform: translateY(-43%) rotate(7deg); }
     }
-
-    .hop       { animation: hop        0.35s infinite ease-in-out; }
-    .fast-run  { animation: fast-shake 0.13s infinite; }
-    .tired     { animation: tired-sway 0.6s  infinite ease-in-out; }
-
-    .race-msg {
-      color: #FFB6C1;
-      font-size: 1.2em;
-      font-weight: 700;
-      min-height: 30px;
-    }
+    .hop      { animation: hop        0.35s infinite ease-in-out; }
+    .fast-run { animation: fast-shake 0.13s infinite; }
+    .tired    { animation: tired-sway 0.6s  infinite ease-in-out; }
+    .race-msg { color: #FFB6C1; font-size: 1.2em; font-weight: 700; min-height: 30px; }
 
     /* ── QUIZ ── */
     .quiz-q {
-      color: #FFD700;
-      font-size: 1.7em;
-      font-weight: 900;
-      text-shadow: 0 0 14px #FFD700;
-      line-height: 1.45;
+      color: #FFD700; font-size: 1.7em; font-weight: 900;
+      text-shadow: 0 0 14px #FFD700; line-height: 1.45;
     }
     .quiz-btns {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      min-height: 70px;
+      display: flex; gap: 16px; flex-wrap: wrap;
+      justify-content: center; align-items: center; min-height: 70px;
     }
-
     .btn-yes {
       background: linear-gradient(135deg, #FF69B4, #ff3d9a);
-      color: white;
-      border: none;
-      padding: 15px 34px;
-      border-radius: 28px;
-      font-size: 1.3em;
-      font-weight: 900;
-      font-family: inherit;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(255,105,180,0.45);
-      transition: transform 0.15s;
+      color: white; border: none; padding: 15px 34px;
+      border-radius: 28px; font-size: 1.3em; font-weight: 900;
+      font-family: inherit; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255,105,180,0.45); transition: transform 0.15s;
     }
     .btn-yes:active { transform: scale(0.94); }
-
-    /* Q1 Hayır — başta normal akışta */
     .btn-no-inline {
-      background: #555;
-      color: white;
-      border: none;
-      padding: 15px 34px;
-      border-radius: 28px;
-      font-size: 1.3em;
-      font-weight: 900;
-      font-family: inherit;
-      cursor: pointer;
-      transition: transform 0.15s;
+      background: #555; color: white; border: none;
+      padding: 15px 34px; border-radius: 28px;
+      font-size: 1.3em; font-weight: 900; font-family: inherit; cursor: pointer;
     }
-
-    /* Q1 Hayır — kaçan (fixed) */
     .btn-no-fixed {
-      background: #555;
-      color: white;
-      border: none;
-      padding: 15px 34px;
-      border-radius: 28px;
-      font-size: 1.3em;
-      font-weight: 900;
-      font-family: inherit;
-      cursor: pointer;
-      position: fixed;
-      z-index: 50;
-      transition: left 0.15s, top 0.15s;
+      background: #555; color: white; border: none;
+      padding: 15px 34px; border-radius: 28px;
+      font-size: 1.3em; font-weight: 900; font-family: inherit;
+      cursor: pointer; position: fixed; z-index: 50;
     }
-
-    /* Q2 Hayır — büyüyen ama yerinde */
     .btn-no-grow {
-      background: #555;
-      color: white;
-      border: none;
-      padding: 15px 34px;
-      border-radius: 28px;
-      font-size: 1.3em;
-      font-weight: 900;
-      font-family: inherit;
-      cursor: pointer;
-      transition: font-size 0.3s;
+      background: #555; color: white; border: none;
+      padding: 15px 34px; border-radius: 28px;
+      font-size: 1.3em; font-weight: 900; font-family: inherit;
+      cursor: pointer; transition: font-size 0.3s;
     }
-
-    /* Zorla EVET overlay */
     .forced-yes {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: linear-gradient(135deg, #FF69B4, #ff3d9a);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 5.5em;
-      font-weight: 900;
-      color: white;
-      z-index: 200;
-      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5.5em; font-weight: 900; color: white;
+      z-index: 200; cursor: pointer;
       text-shadow: 0 0 30px rgba(255,255,255,0.6);
       animation: forced-pulse 0.9s infinite alternate;
     }
     @keyframes forced-pulse {
-      from { filter: brightness(1); }
-      to   { filter: brightness(1.25); }
+      from { filter: brightness(1); } to { filter: brightness(1.25); }
     }
-
-    /* Büyük emoji buton */
     .btn-emoji {
-      background: none;
-      border: none;
-      font-size: 4.5em;
-      cursor: pointer;
+      background: none; border: none; font-size: 4.5em; cursor: pointer;
       animation: emoji-pulse 1.4s infinite ease-in-out;
     }
     @keyframes emoji-pulse {
-      0%, 100% { transform: scale(1); }
-      50%       { transform: scale(1.2); }
+      0%,100% { transform: scale(1); } 50% { transform: scale(1.2); }
     }
 
-    /* Uçan 🥺 emojileri */
-    .floating-emoji {
-      position: fixed;
-      font-size: 1.8em;
-      pointer-events: none;
-      z-index: 100;
-      animation: float-up 1.4s ease-out forwards;
-    }
-    @keyframes float-up {
-      0%   { transform: translateY(0) scale(1);   opacity: 1; }
-      100% { transform: translateY(-120px) scale(1.4); opacity: 0; }
-    }
+    /* ── PASTA EKRANI ── */
+    .cake-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 
-    /* ── PASTA ── */
     .cake-emoji {
-      font-size: 5.5em;
-      animation: cake-bounce 0.8s infinite alternate ease-in-out;
+      font-size: 5.5em; cursor: pointer;
+      animation: cake-bounce 0.85s infinite alternate ease-in-out;
+      transition: font-size 0.4s, opacity 0.4s;
+      display: inline-block;
     }
     @keyframes cake-bounce {
-      from { transform: translateY(0); }
-      to   { transform: translateY(-18px); }
+      from { transform: translateY(0); } to { transform: translateY(-18px); }
     }
-    .cake-msg {
-      color: #FFD700;
-      font-size: 1.4em;
-      font-weight: 700;
-      text-shadow: 0 0 14px #FFD700;
-      line-height: 1.7;
+    .cake-emoji.eating { animation: cake-shake 0.15s infinite; }
+    @keyframes cake-shake {
+      0%,100% { transform: rotate(-8deg) scale(0.95); }
+      50% { transform: rotate(8deg) scale(0.9); }
+    }
+
+    .cake-msg { color: #FFD700; font-size: 1.4em; font-weight: 700; text-shadow: 0 0 14px #FFD700; line-height: 1.7; }
+    .cake-hint { color: #FFB6C1; font-size: 1em; font-weight: 700; animation: blink 1.4s infinite; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .nom-text {
+      color: #FF69B4; font-size: 2em; font-weight: 900;
+      animation: nom-pop 0.4s ease-out;
+      display: none;
+    }
+    @keyframes nom-pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.3); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ── ZARF ── */
+    .envelope-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; display: none; }
+    .env-hint { color: #FFB6C1; font-size: 1em; font-weight: 700; animation: blink 1.4s infinite; }
+
+    .envelope {
+      width: 240px; height: 160px;
+      position: relative; cursor: pointer;
+    }
+
+    .env-body {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 140px;
+      background: #FFF0F5; border: 2px solid #FFB6C1; border-radius: 6px 6px 14px 14px;
+      overflow: hidden; z-index: 1;
+    }
+
+    /* V şekli zarfın içinde */
+    .env-body::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 70px;
+      background:
+        linear-gradient(to bottom right, #FFD0E0 50%, transparent 50%),
+        linear-gradient(to bottom left,  #FFD0E0 50%, transparent 50%);
+      background-size: 50% 100%;
+      background-position: left top, right top;
+      background-repeat: no-repeat;
+    }
+
+    .env-icon {
+      position: absolute; bottom: 14px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 2em; z-index: 2;
+    }
+
+    /* Kapak üçgeni */
+    .env-flap {
+      position: absolute; top: -2px; left: -2px; right: -2px; z-index: 4;
+      height: 80px;
+      background: #FFB6C1;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+      border-radius: 6px 6px 0 0;
+    }
+    .envelope.open .env-flap {
+      transform: rotateX(180deg);
+    }
+
+    /* Mektup */
+    .env-letter {
+      position: absolute; left: 12px; right: 12px;
+      bottom: -140px; z-index: 3;
+      background: white;
+      border: 1.5px solid #FFD0E0;
+      border-radius: 10px; padding: 14px;
+      transition: bottom 0.7s ease 0.35s;
+      text-align: center;
+    }
+    .envelope.open .env-letter { bottom: 150px; }
+
+    .letter-deco { font-size: 1.4em; margin: 4px 0; }
+    .letter-text {
+      color: #cc3366; font-size: 0.95em; font-weight: 700;
+      line-height: 1.7; margin: 8px 0;
     }
 
     /* ── KONFETİ ── */
     .confetti {
-      position: fixed;
-      pointer-events: none;
-      border-radius: 2px;
-      animation: fall linear forwards;
-      z-index: 999;
+      position: fixed; pointer-events: none; border-radius: 2px;
+      animation: fall linear forwards; z-index: 999;
     }
     @keyframes fall {
       0%   { transform: translateY(-40px) rotate(0deg);   opacity: 1; }
       100% { transform: translateY(110vh)  rotate(720deg); opacity: 0; }
+    }
+
+    /* ── KALP EFEKTİ ── */
+    .heart-particle {
+      position: fixed; pointer-events: none; z-index: 1000;
+      animation: heart-fly 1s ease-out forwards;
+    }
+    @keyframes heart-fly {
+      0%   { transform: translate(0,0) scale(0.5); opacity: 1; }
+      100% { transform: translate(var(--dx),-90px) scale(1.3); opacity: 0; }
+    }
+
+    /* ── UÇAN EMOJİ ── */
+    .floating-emoji {
+      position: fixed; font-size: 1.8em;
+      pointer-events: none; z-index: 100;
+      animation: float-up 1.4s ease-out forwards;
+    }
+    @keyframes float-up {
+      0%   { transform: translateY(0) scale(1);     opacity: 1; }
+      100% { transform: translateY(-120px) scale(1.4); opacity: 0; }
     }
   </style>
 </head>
@@ -353,11 +319,34 @@
 
 <!-- PASTA -->
 <div class="screen" id="cake-screen">
-  <div class="cake-emoji">🎂</div>
-  <div class="cake-msg">
-    🎉 İyiki doğdun prenses! 🎉<br><br>
-    Sen olmasan eksik olurdu...<br>
-    Her şey senin için 💛
+  <div class="cake-wrap" id="cake-wrap">
+    <div class="cake-msg" id="cake-title">🎉 İyiki doğdun prenses! 🎉</div>
+    <div class="cake-emoji" id="cake-emoji" onclick="eatCake()">🎂</div>
+    <div class="nom-text" id="nom-text">nom nom 😋</div>
+    <div class="cake-hint" id="cake-hint">Pastaya dokun 🎂</div>
+  </div>
+
+  <div class="envelope-wrap" id="env-wrap">
+    <div class="env-hint">Zarfa dokun 💌</div>
+    <div class="envelope" id="envelope" onclick="openEnvelope()">
+      <div class="env-flap"></div>
+      <div class="env-body">
+        <div class="env-icon">💌</div>
+        <div class="env-letter">
+          <div class="letter-deco">🌸 🌼 🌸</div>
+          <div class="letter-text">
+            Bu siteyi sana yapmak için<br>
+            çok düşündüm... 🥹<br><br>
+            Her animasyon, her tavşan<br>
+            senin için yapıldı 🐇<br><br>
+            Doğum günün kutlu olsun,<br>
+            <strong>prensesim 💛</strong><br><br>
+            Seni çok seviyorum 🌸
+          </div>
+          <div class="letter-deco">🌼 💛 🌼</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -369,9 +358,8 @@ for (let i = 0; i < 80; i++) {
   s.className = 'star';
   const size = Math.random() * 3 + 1;
   s.style.cssText = `
-    width:${size}px; height:${size}px;
-    left:${Math.random()*100}%;
-    top:${Math.random()*100}%;
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;top:${Math.random()*100}%;
     animation-delay:${Math.random()*3}s;
     animation-duration:${1.5+Math.random()*2}s;
   `;
@@ -393,19 +381,16 @@ const raceMessages = [
   { t: 8000, text: '🎉 Tavşan 2 kazandı!!!' },
 ];
 
-let msgIdx = 0;
-let raceStart = null;
+let msgIdx = 0, raceStart = null;
 const RACE_MS = 10000;
 
 function setPos(rabbit, pct) {
   const track = rabbit.parentElement;
   const max = track.offsetWidth - rabbit.offsetWidth - 6;
-  rabbit.style.left = Math.max(0, Math.min((pct / 100) * max, max)) + 'px';
+  rabbit.style.left = Math.max(0, Math.min((pct/100)*max, max)) + 'px';
 }
 
-function clearAnim(el) {
-  el.classList.remove('hop', 'fast-run', 'tired');
-}
+function clearAnim(el) { el.classList.remove('hop','fast-run','tired'); }
 
 function raceLoop(ts) {
   if (!raceStart) raceStart = ts;
@@ -420,20 +405,15 @@ function raceLoop(ts) {
     msgIdx++;
   }
 
-  // Tavşan 1: önde, sonra yorulur
-  let p1 = t < 0.6
-    ? t * 1.4 * 100
-    : 84 + (t - 0.6) * 0.4 * 100;
+  let p1 = t < 0.6 ? t*1.4*100 : 84 + (t-0.6)*0.4*100;
   p1 = Math.min(p1, 100);
 
-  // Tavşan 2: geride, hamle yapar, t=0.8'de kazanır
   let p2;
-  if      (t < 0.5) p2 = t * 1.1 * 100;
-  else if (t < 0.8) p2 = 55 + (t - 0.5) * 1.5 * 100;
+  if      (t < 0.5) p2 = t*1.1*100;
+  else if (t < 0.8) p2 = 55 + (t-0.5)*1.5*100;
   else               p2 = 100;
 
-  setPos(r1, p1);
-  setPos(r2, p2);
+  setPos(r1, p1); setPos(r2, p2);
 
   clearAnim(r1);
   if      (t < 0.3) r1.classList.add('fast-run');
@@ -453,37 +433,26 @@ function raceLoop(ts) {
 
 function startRace() {
   showScreen('race-screen');
-  msgIdx = 0;
-  raceStart = null;
+  msgIdx = 0; raceStart = null;
   requestAnimationFrame(raceLoop);
 }
 
 // ── QUIZ ──
-let phase = 1;
-let hayirCount = 0;
-let evetCount  = 0;
-let hayirIsFixed = false;
+let phase = 1, hayirCount = 0, evetCount = 0, hayirIsFixed = false;
 
 function startQuiz() {
-  phase = 1;
-  hayirCount = 0;
-  evetCount  = 0;
-  hayirIsFixed = false;
+  phase = 1; hayirCount = 0; evetCount = 0; hayirIsFixed = false;
   renderQuiz();
 }
 
 function renderQuiz() {
   const qEl = document.getElementById('quiz-q');
   const bEl = document.getElementById('quiz-btns');
-
-  // Sabit Hayır butonunu temizle
   const oldFixed = document.getElementById('hayir-fixed');
   if (oldFixed) oldFixed.remove();
-
   bEl.innerHTML = '';
 
   if (phase === 1) {
-    // ── SORU 1 ──
     qEl.textContent = 'Beni seviyormusunnnnn 💛';
 
     const evet = document.createElement('button');
@@ -493,57 +462,40 @@ function renderQuiz() {
     evet.onclick = () => { phase = 2; evetCount = 0; renderQuiz(); };
 
     const hayir = document.createElement('button');
+    hayir.className = 'btn-no-inline';
     hayir.textContent = 'Hayır';
+    hayir.onclick = () => {
+      hayirCount++;
+      evet.style.fontSize = (1.3 + hayirCount * 0.3) + 'em';
+      if (hayirCount >= 5) { hayir.remove(); forcedYes(); return; }
 
-    if (!hayirIsFixed) {
-      // Başta normal akışta
-      hayir.className = 'btn-no-inline';
-      hayir.onclick = () => {
+      hayir.remove();
+      hayirIsFixed = true;
+      const fixed = document.createElement('button');
+      fixed.id = 'hayir-fixed';
+      fixed.className = 'btn-no-fixed';
+      fixed.textContent = 'Hayır';
+      randomPos(fixed);
+      document.body.appendChild(fixed);
+      fixed.onclick = () => {
         hayirCount++;
         evet.style.fontSize = (1.3 + hayirCount * 0.3) + 'em';
-
-        if (hayirCount >= 5) {
-          hayir.remove();
-          forcedYes();
-          return;
-        }
-
-        // İlk tıklamada sabit konuma al
-        hayirIsFixed = true;
-        hayir.remove();
-
-        const fixed = document.createElement('button');
-        fixed.id = 'hayir-fixed';
-        fixed.className = 'btn-no-fixed';
-        fixed.textContent = 'Hayır';
-        randomPos(fixed);
-        document.body.appendChild(fixed);
-
-        fixed.onclick = () => {
-          hayirCount++;
-          evet.style.fontSize = (1.3 + hayirCount * 0.3) + 'em';
-          if (hayirCount >= 5) {
-            fixed.remove();
-            forcedYes();
-          } else {
-            randomPos(fixed);
-          }
-        };
+        if (hayirCount >= 5) { fixed.remove(); forcedYes(); }
+        else randomPos(fixed);
       };
-    }
+    };
 
     bEl.appendChild(evet);
     bEl.appendChild(hayir);
 
   } else if (phase === 2) {
-    // ── SORU 2 ──
     qEl.textContent = 'Beni özlüyor musun? 🥺';
 
     const hayir = document.createElement('button');
     hayir.className = 'btn-no-grow';
     hayir.textContent = 'Hayır';
     hayir.style.fontSize = '1.3em';
-    hayir.onclick = () => spawnEmojis(hayir, '🥺', 5);
+    hayir.onclick = () => spawnEmojis(hayir, '🥺', 6);
 
     const evet = document.createElement('button');
     evet.className = 'btn-yes';
@@ -558,63 +510,84 @@ function renderQuiz() {
     bEl.appendChild(hayir);
 
   } else if (phase === 3) {
-    // ── SORU 3 ──
     qEl.textContent = 'Ben herzaman yanındayım, sen de aklımdasın hıh 🌸';
-
     const heart = document.createElement('button');
     heart.className = 'btn-emoji';
     heart.textContent = '❤️';
     heart.onclick = () => { phase = 4; renderQuiz(); };
-
     bEl.appendChild(heart);
 
   } else if (phase === 4) {
-    // ── SORU 4 ──
     qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil mi? 💛';
-
     const smile = document.createElement('button');
     smile.className = 'btn-emoji';
     smile.textContent = '🙃';
     smile.onclick = () => { showScreen('cake-screen'); confetti(); };
-
     bEl.appendChild(smile);
   }
 }
 
 function randomPos(btn) {
-  btn.style.left = (8  + Math.random() * 62) + 'vw';
-  btn.style.top  = (12 + Math.random() * 62) + 'vh';
+  btn.style.left = (8  + Math.random()*62) + 'vw';
+  btn.style.top  = (12 + Math.random()*62) + 'vh';
 }
 
 function forcedYes() {
   const ov = document.createElement('div');
   ov.className = 'forced-yes';
   ov.textContent = 'EVET 💛';
-  ov.onclick = () => {
-    ov.remove();
-    phase = 2;
-    evetCount = 0;
-    renderQuiz();
-  };
+  ov.onclick = () => { ov.remove(); phase = 2; evetCount = 0; renderQuiz(); };
   document.body.appendChild(ov);
 }
 
-function spawnEmojis(btn, emoji, count) {
-  const rect = btn.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top;
+// ── PASTA YE ──
+let cakeClicked = false;
+function eatCake() {
+  if (cakeClicked) return;
+  cakeClicked = true;
 
-  for (let i = 0; i < count; i++) {
-    setTimeout(() => {
-      const el = document.createElement('div');
-      el.className = 'floating-emoji';
-      el.textContent = emoji;
-      el.style.left = (cx - 14 + (Math.random() - 0.5) * 50) + 'px';
-      el.style.top  = cy + 'px';
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 1500);
-    }, i * 120);
-  }
+  const cake = document.getElementById('cake-emoji');
+  const nom  = document.getElementById('nom-text');
+  const hint = document.getElementById('cake-hint');
+  const title = document.getElementById('cake-title');
+
+  hint.style.display = 'none';
+  cake.classList.add('eating');
+  cake.style.animation = 'none';
+  nom.style.display = 'block';
+
+  // Adım adım küçül
+  let bites = 0;
+  const sizes = ['5em','4em','3em','2em'];
+  const interval = setInterval(() => {
+    bites++;
+    if (bites < sizes.length) {
+      cake.style.fontSize = sizes[bites];
+    } else {
+      clearInterval(interval);
+      cake.textContent = '🍽️';
+      cake.classList.remove('eating');
+      cake.style.fontSize = '4em';
+      cake.style.cursor = 'default';
+      nom.style.display = 'none';
+      title.textContent = 'Hepsi bitti 😋';
+
+      // Zarf belir
+      setTimeout(() => {
+        document.getElementById('cake-wrap').style.display = 'none';
+        const envWrap = document.getElementById('env-wrap');
+        envWrap.style.display = 'flex';
+      }, 1000);
+    }
+  }, 500);
+}
+
+// ── ZARF AÇ ──
+let envelopeOpened = false;
+function openEnvelope() {
+  if (envelopeOpened) return;
+  envelopeOpened = true;
+  document.getElementById('envelope').classList.add('open');
 }
 
 // ── KONFETİ ──
@@ -626,18 +599,8 @@ function confetti() {
       c.className = 'confetti';
       const size = 6 + Math.random() * 10;
       c.style.cssText = `
-        left:${Math.random()*100}vw; top:-20px;
-        width:${size}px; height:${size}px;
+        left:${Math.random()*100}vw;top:-20px;
+        width:${size}px;height:${size}px;
         background:${renkler[Math.floor(Math.random()*renkler.length)]};
         border-radius:${Math.random()>.5?'50%':'3px'};
-        animation-duration:${2.5+Math.random()*3}s;
-        animation-delay:${Math.random()*1.5}s;
-      `;
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 6000);
-    }, i * 25);
-  }
-}
-</script>
-</body>
-</html>
+       
