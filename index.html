@@ -1,368 +1,533 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Papatya 🌼</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background: linear-gradient(135deg, #1a0a2e, #16213e, #0f3460);
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  color: white;
-}
-.screen {
-  position: fixed; inset: 0;
-  display: none; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 20px; text-align: center;
-}
-.screen.active { display: flex; }
-.star {
-  position: fixed; background: white;
-  border-radius: 50%;
-  animation: twinkle 2s infinite alternate;
-  pointer-events: none;
-}
-@keyframes twinkle {
-  from { opacity: 0.2; } to { opacity: 1; }
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐇 Sürpriz!</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* BAŞLANGIÇ */
-#s1 h1 {
-  font-size: 36px; color: #ffd700;
-  text-shadow: 0 0 20px #ffd700;
-  margin-bottom: 15px;
-  animation: pulse 1.5s infinite;
-}
-@keyframes pulse {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
-}
-#s1 p { font-size: 16px; color: #ccc; margin-bottom: 40px; }
-#startBtn {
-  padding: 15px 50px; font-size: 20px;
-  background: #ffd700; color: #1a0a2e;
-  border: none; border-radius: 50px;
-  cursor: pointer; font-weight: bold;
-  animation: bounce 1s infinite;
-}
-@keyframes bounce {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
+    body {
+      background: #0a0a1a;
+      min-height: 100vh;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-/* YARIŞ */
-#raceTitle {
-  font-size: 22px; color: #ffd700;
-  margin-bottom: 25px; min-height: 32px;
-}
-.track-wrap { width: 92vw; max-width: 580px; margin: 8px 0; }
-.track-label { font-size: 13px; color: #aaa; margin-bottom: 5px; text-align: left; padding-left: 5px; }
-.track {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 20px; padding: 10px 15px;
-  position: relative; height: 65px;
-  display: flex; align-items: center;
-}
-.flag { position: absolute; right: 12px; font-size: 22px; }
-.rabbit { font-size: 34px; position: absolute; left: 10px; transition: left 0.05s linear; }
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-/* ANKET */
-#questionText {
-  font-size: 22px; color: #ffd700;
-  line-height: 1.6; margin-bottom: 45px;
-  max-width: 340px;
-}
-#yesBtn {
-  padding: 14px 32px; font-size: 18px;
-  background: #27ae60; color: white;
-  border: none; border-radius: 50px;
-  cursor: pointer; font-weight: bold;
-  position: fixed;
-  transition: font-size 0.3s, padding 0.3s;
-  z-index: 20;
-}
-#noBtn {
-  padding: 14px 32px; font-size: 18px;
-  background: #e74c3c; color: white;
-  border: none; border-radius: 50px;
-  cursor: pointer; font-weight: bold;
-  position: fixed;
-  transition: left 0.4s ease, top 0.4s ease;
-  z-index: 20;
-}
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
 
-/* PASTA */
-#s4 { gap: 15px; }
-#s4 .cake {
-  font-size: 100px;
-  animation: cakeIn 1s ease-out;
-}
-@keyframes cakeIn {
-  from { transform: scale(0) rotate(-20deg); opacity: 0; }
-  to { transform: scale(1) rotate(0); opacity: 1; }
-}
-#s4 h1 {
-  font-size: 28px; color: #ffd700;
-  text-shadow: 0 0 20px #ffd700;
-  animation: fadeUp 1s 0.5s both;
-}
-#s4 p {
-  font-size: 16px; color: #ddd;
-  line-height: 1.8; max-width: 320px;
-  animation: fadeUp 1s 1s both;
-}
-.hearts { font-size: 34px; letter-spacing: 8px; animation: fadeUp 1s 1.5s both; }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    @keyframes twinkle {
+      from { opacity: 0.2; }
+      to   { opacity: 1;   }
+    }
 
-/* KONFETİ */
-.confetti {
-  position: fixed; width: 10px; height: 10px;
-  border-radius: 2px; pointer-events: none;
-  animation: fall linear forwards; z-index: 999;
-}
-@keyframes fall {
-  from { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
-</style>
+    .screen {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      text-align: center;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .screen.active { display: flex; }
+
+    /* ── YARIŞ ── */
+    .race-title {
+      color: #FFD700;
+      font-size: 1.4em;
+      text-shadow: 0 0 10px #FFD700;
+    }
+
+    .race-track {
+      width: 100%;
+      background: #1a1a3e;
+      border-radius: 15px;
+      padding: 15px 10px;
+    }
+
+    .lane {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .lane:last-child { margin-bottom: 0; }
+
+    .lane-label {
+      color: #aaa;
+      width: 22px;
+      font-size: 0.85em;
+      flex-shrink: 0;
+    }
+
+    .lane-track {
+      flex: 1;
+      height: 44px;
+      background: #2a2a5e;
+      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .finish-line {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: repeating-linear-gradient(
+        to bottom,
+        white 0px, white 5px,
+        #0a0a1a 5px, #0a0a1a 10px
+      );
+    }
+
+    .rabbit {
+      position: absolute;
+      font-size: 1.8em;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+
+    @keyframes hop {
+      0%, 100% { transform: translateY(-50%); }
+      50%       { transform: translateY(-75%); }
+    }
+
+    @keyframes fast-shake {
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      33%       { transform: translateY(-58%) translateX(-1px); }
+      66%       { transform: translateY(-42%) translateX(1px); }
+    }
+
+    @keyframes tired-sway {
+      0%, 100% { transform: translateY(-50%) rotate(-6deg); }
+      50%       { transform: translateY(-44%) rotate(6deg); }
+    }
+
+    .hop       { animation: hop 0.35s infinite ease-in-out; }
+    .fast-run  { animation: fast-shake 0.12s infinite; }
+    .tired     { animation: tired-sway 0.55s infinite ease-in-out; }
+
+    .race-msg {
+      color: #FFB6C1;
+      font-size: 1.05em;
+      min-height: 28px;
+    }
+
+    /* ── QUIZ ── */
+    .quiz-q {
+      color: #FFD700;
+      font-size: 1.45em;
+      text-shadow: 0 0 10px #FFD700;
+      line-height: 1.5;
+    }
+
+    .quiz-btns {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 70px;
+      align-items: center;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #FF69B4, #ff4da6);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 25px;
+      font-size: 1.2em;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+      transition: transform 0.15s;
+    }
+
+    .btn-yes:active { transform: scale(0.95); }
+
+    .btn-no {
+      background: #555;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 25px;
+      font-size: 1.2em;
+      cursor: pointer;
+      font-family: inherit;
+      position: fixed;
+      z-index: 50;
+      transition: font-size 0.2s;
+    }
+
+    .btn-hayir-grow {
+      background: #555;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 25px;
+      font-size: 1.2em;
+      cursor: default;
+      font-family: inherit;
+      transition: font-size 0.3s;
+    }
+
+    .forced-yes {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #FF69B4, #ff4da6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5em;
+      color: white;
+      font-weight: bold;
+      z-index: 200;
+      cursor: pointer;
+      text-shadow: 0 0 30px rgba(255,255,255,0.6);
+      animation: pulse-bg 1s infinite alternate;
+    }
+
+    @keyframes pulse-bg {
+      from { filter: brightness(1); }
+      to   { filter: brightness(1.2); }
+    }
+
+    .btn-emoji {
+      background: none;
+      border: none;
+      font-size: 4em;
+      cursor: pointer;
+      animation: emoji-pulse 1.4s infinite ease-in-out;
+      display: inline-block;
+    }
+
+    @keyframes emoji-pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.2); }
+    }
+
+    /* ── PASTA ── */
+    .cake-emoji {
+      font-size: 5em;
+      animation: cake-bounce 0.8s infinite alternate ease-in-out;
+    }
+
+    @keyframes cake-bounce {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-18px); }
+    }
+
+    .cake-msg {
+      color: #FFD700;
+      font-size: 1.3em;
+      text-shadow: 0 0 12px #FFD700;
+      line-height: 1.7;
+    }
+
+    /* ── KONFETİ ── */
+    .confetti {
+      position: fixed;
+      border-radius: 2px;
+      animation: fall linear forwards;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0%   { transform: translateY(-40px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh)  rotate(720deg); opacity: 0; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- EKRAN 1: BAŞLANGIÇ -->
-<div class="screen active" id="s1">
-  <h1>🐇 Büyük Yarış 🐇</h1>
-  <p>Hazır mısın? Sürpriz seni bekliyor!</p>
-  <button id="startBtn" onclick="startRace()">Başlat! 🏁</button>
-</div>
+<div class="stars" id="stars"></div>
 
-<!-- EKRAN 2: YARIŞ -->
-<div class="screen" id="s2">
-  <p id="raceTitle">Yarış başlıyor... 🏁</p>
-  <div class="track-wrap">
-    <div class="track-label">🐇 Tavşan 1</div>
-    <div class="track" id="track1">
-      <div class="rabbit" id="r1">🐇</div>
-      <div class="flag">🏁</div>
+<!-- YARIŞ -->
+<div class="screen active" id="race-screen">
+  <div class="race-title">🏁 Yarış Başlıyor! 🏁</div>
+  <div class="race-track">
+    <div class="lane">
+      <div class="lane-label">1</div>
+      <div class="lane-track" id="track1">
+        <div class="finish-line"></div>
+        <div class="rabbit" id="r1">🐰</div>
+      </div>
+    </div>
+    <div class="lane">
+      <div class="lane-label">2</div>
+      <div class="lane-track" id="track2">
+        <div class="finish-line"></div>
+        <div class="rabbit" id="r2">🐇</div>
+      </div>
     </div>
   </div>
-  <div class="track-wrap">
-    <div class="track-label">🐇 Tavşan 2</div>
-    <div class="track" id="track2">
-      <div class="rabbit" id="r2">🐇</div>
-      <div class="flag">🏁</div>
-    </div>
+  <div class="race-msg" id="race-msg"></div>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="quiz-screen">
+  <div class="quiz-q" id="quiz-q"></div>
+  <div class="quiz-btns" id="quiz-btns"></div>
+</div>
+
+<!-- PASTA -->
+<div class="screen" id="cake-screen">
+  <div class="cake-emoji">🎂</div>
+  <div class="cake-msg">
+    🎉 İyiki doğdun prenses! 🎉<br><br>
+    Sen olmasan eksik olurdu...<br>
+    Her şey senin için 💛
   </div>
-</div>
-
-<!-- EKRAN 3: ANKET -->
-<div class="screen" id="s3">
-  <p id="questionText">Peki... seni seven biri<br>olduğunu biliyor musun? 💛</p>
-  <button id="yesBtn" onclick="handleYes()">Evet 💛</button>
-  <button id="noBtn" onclick="handleNo()">Hayır</button>
-</div>
-
-<!-- EKRAN 4: PASTA -->
-<div class="screen" id="s4">
-  <div class="cake">🎂</div>
-  <h1>İyi ki doğdun! 🎉</h1>
-  <p>Sen olmasan eksik olurdu.<br>Bu gün, seninle daha güzel.<br>Çok şey söylemek isterdim ama<br>en güzeli şu: İyi ki varsın. 🤍</p>
-  <div class="hearts">🤍🌼🤍</div>
 </div>
 
 <script>
-// YILDIZLAR
-for(let i = 0; i < 80; i++){
+// ── YILDIZLAR ──
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
   const s = document.createElement('div');
   s.className = 'star';
-  s.style.cssText = `left:${Math.random()*100}vw;top:${Math.random()*100}vh;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-delay:${Math.random()*2}s`;
-  document.body.appendChild(s);
+  const size = Math.random() * 3 + 1;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%;
+    top:${Math.random()*100}%;
+    animation-delay:${Math.random()*3}s;
+    animation-duration:${1.5+Math.random()*2}s;
+  `;
+  starsEl.appendChild(s);
 }
 
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+// ── EKRAN GEÇİŞİ ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-// ─── YARIŞ ───
-function startRace(){
-  showScreen('s2');
-  const r1 = document.getElementById('r1');
-  const r2 = document.getElementById('r2');
-  const title = document.getElementById('raceTitle');
-  const trackW = document.getElementById('track1').offsetWidth - 80;
+// ── YARIŞ ──
+const r1 = document.getElementById('r1');
+const r2 = document.getElementById('r2');
+const msgEl = document.getElementById('race-msg');
 
-  const msgs = [
-    'Yarış başladı! 🏁',
-    'Koşuyorlar! 💨',
-    'Tavşan 1 önde! 😤',
-    'Tavşan 2 geride kalıyor... 😮',
-    'Dur bir dakika... Tavşan 2 hızlanıyor!! 😱',
-    '🏆 İnanılmaz! Kazanan belli oldu!'
-  ];
-  let mi = 0;
-  title.textContent = msgs[0];
-  const mt = setInterval(()=>{ if(++mi < msgs.length-1) title.textContent = msgs[mi]; }, 1800);
+const raceMessages = [
+  { t: 0,    text: '🏁 Yarış başladı!' },
+  { t: 1800, text: '🐰 Tavşan 1 önde gidiyor!' },
+  { t: 4000, text: '😤 Tavşan 2 yaklaşıyor...' },
+  { t: 6000, text: '😱 Tavşan 2 geçiyor!!!' },
+  { t: 8200, text: '🎉 Tavşan 2 kazandı!!!' },
+];
 
-  let elapsed = 0;
-  const DURATION = 10000;
+let msgIdx = 0;
+let raceStart = null;
+const RACE_MS = 10000;
 
-  const tick = setInterval(()=>{
-    elapsed += 50;
-    const t = elapsed / DURATION;
-
-    // Tavşan 1: hızlı başlar, ortada önde, sonda yavaşlar
-    let p1;
-    if(t < 0.5)       p1 = t * 2.0 * 100;
-    else if(t < 0.75) p1 = 100 + (t-0.5) * 0.9 * 100;
-    else               p1 = 122.5 + (t-0.75) * 0.4 * 100;
-    p1 = Math.min(p1, 100);
-
-    // Tavşan 2: yavaş başlar, geride kalır, sonda hamle yapar ve kazanır
-    let p2;
-    if(t < 0.45)      p2 = t * 1.5 * 100;
-    else if(t < 0.7)  p2 = 67.5 + (t-0.45) * 1.6 * 100;
-    else               p2 = 107.5 + (t-0.7) * 3.2 * 100;
-    p2 = Math.min(p2, 100);
-
-    r1.style.left = (10 + (p1/100) * trackW) + 'px';
-    r2.style.left = (10 + (p2/100) * trackW) + 'px';
-
-    if(elapsed >= DURATION){
-      clearInterval(tick);
-      clearInterval(mt);
-      title.textContent = '🏆 Kazanan belli oldu!';
-      setTimeout(()=>{ showScreen('s3'); initButtons(); }, 2200);
-    }
-  }, 50);
+function setPos(rabbit, pct) {
+  const track = rabbit.parentElement;
+  const max = track.offsetWidth - rabbit.offsetWidth - 6;
+  rabbit.style.left = Math.max(0, Math.min((pct / 100) * max, max)) + 'px';
 }
 
-// ─── ANKET ───
-let noCount = 0;
+function clearAnim(el) {
+  el.classList.remove('hop', 'fast-run', 'tired');
+}
+
+function raceLoop(ts) {
+  if (!raceStart) raceStart = ts;
+  const elapsed = ts - raceStart;
+  const t = Math.min(elapsed / RACE_MS, 1);
+
+  // Mesajlar
+  while (msgIdx < raceMessages.length && elapsed >= raceMessages[msgIdx].t) {
+    msgEl.textContent = raceMessages[msgIdx].text;
+    msgIdx++;
+  }
+
+  // Tavşan 1: ilk %60'ta önde, sonra yorulur
+  let p1 = t < 0.6
+    ? t * 1.4 * 100
+    : 84 + (t - 0.6) * 0.4 * 100;
+  p1 = Math.min(p1, 100);
+
+  // Tavşan 2: yavaş başlar, t=0.5'ten hamle yapar, t=0.8'de kazanır
+  let p2;
+  if      (t < 0.5) p2 = t * 1.1 * 100;
+  else if (t < 0.8) p2 = 55 + (t - 0.5) * 1.5 * 100;
+  else               p2 = 100;
+
+  setPos(r1, p1);
+  setPos(r2, p2);
+
+  // Tavşan 1 animasyonu
+  clearAnim(r1);
+  if      (t < 0.3) r1.classList.add('fast-run');
+  else if (t < 0.6) r1.classList.add('hop');
+  else               r1.classList.add('tired');
+
+  // Tavşan 2 animasyonu
+  clearAnim(r2);
+  if      (t < 0.5) r2.classList.add('hop');
+  else if (t < 0.8) r2.classList.add('fast-run');
+
+  if (t < 1) {
+    requestAnimationFrame(raceLoop);
+  } else {
+    setTimeout(() => {
+      showScreen('quiz-screen');
+      startQuiz();
+    }, 2500);
+  }
+}
+
+requestAnimationFrame(raceLoop);
+
+// ── QUIZ ──
 let phase = 1;
-let phaseYesCount = 0;
+let hayirCount = 0;
+let evetCount  = 0;
 
-function initButtons(){
-  const W = window.innerWidth;
-  const H = window.innerHeight;
-  const yesBtn = document.getElementById('yesBtn');
-  const noBtn  = document.getElementById('noBtn');
-  // Evet sola, Hayır sağa — ortada yan yana
-  yesBtn.style.left  = (W/2 - 120) + 'px';
-  yesBtn.style.top   = (H/2 + 40)  + 'px';
-  noBtn.style.left   = (W/2 + 20)  + 'px';
-  noBtn.style.top    = (H/2 + 40)  + 'px';
-  noBtn.style.display = 'block';
+function startQuiz() {
+  phase = 1;
+  hayirCount = 0;
+  evetCount  = 0;
+  renderQuiz();
 }
 
-function escapeNo(){
-  const btn = document.getElementById('noBtn');
-  const W = window.innerWidth - 120;
-  const H = window.innerHeight - 80;
-  // Tamamen rastgele bir yere kaç
-  btn.style.left = (Math.random() * W) + 'px';
-  btn.style.top  = (Math.random() * H * 0.7 + H * 0.05) + 'px';
-}
+function renderQuiz() {
+  const qEl   = document.getElementById('quiz-q');
+  const bEl   = document.getElementById('quiz-btns');
+  bEl.innerHTML = '';
 
-function growYes(){
-  const btn = document.getElementById('yesBtn');
-  const cur = parseFloat(btn.style.fontSize) || 18;
-  const nw  = Math.min(cur + 4, 42);
-  btn.style.fontSize = nw + 'px';
-  const p = 14 + (nw - 18) * 0.8;
-  btn.style.padding  = p + 'px ' + (p*1.8) + 'px';
-}
+  if (phase === 1) {
+    // ── SORU 1 ──
+    qEl.textContent = 'Beni seviyormusunnnnn 💛';
 
-function handleNo(){
-  if(phase === 1){
-    noCount++;
-    escapeNo();
-    growYes();
-    if(noCount >= 4){
-      setTimeout(()=>{
-        phase = 2;
-        phaseYesCount = 0;
-        document.getElementById('questionText').innerHTML = 'Eminmisinnnn...? 🤨';
-      }, 500);
-    }
-  } else if(phase === 2){
-    // Geri dön
-    phase = 1;
-    noCount = 3;
-    document.getElementById('questionText').innerHTML = 'Peki... seni seven biri<br>olduğunu biliyor musun? 💛';
-    initButtons();
-  } else if(phase === 3){
-    escapeNo();
-    growYes();
-  }
-}
+    const evet = document.createElement('button');
+    evet.className = 'btn-yes';
+    evet.textContent = 'Evet';
+    evet.style.fontSize = (1.2 + hayirCount * 0.3) + 'em';
+    evet.onclick = () => { phase = 2; evetCount = 0; renderQuiz(); };
 
-function handleYes(){
-  if(phase === 1){
-    showCake();
-  } else if(phase === 2){
-    // Hayır 3 kez kaçsın sonra phase 3
-    let c = 0;
-    const iv = setInterval(()=>{
-      c++;
-      escapeNo();
-      growYes();
-      if(c >= 3){
-        clearInterval(iv);
-        setTimeout(()=>{
-          phase = 3;
-          phaseYesCount = 0;
-          document.getElementById('questionText').innerHTML = '"Kesin diyorsunnn yani..." 🤔';
-        }, 800);
+    const hayir = document.createElement('button');
+    hayir.className = 'btn-no';
+    hayir.textContent = 'Hayır';
+    randomPos(hayir);
+    hayir.onclick = () => {
+      hayirCount++;
+      evet.style.fontSize = (1.2 + hayirCount * 0.3) + 'em';
+      if (hayirCount >= 5) {
+        forcedYes();
+      } else {
+        randomPos(hayir);
       }
-    }, 600);
-  } else if(phase === 3){
-    phaseYesCount++;
-    growYes();
-    escapeNo();
-    if(phaseYesCount >= 3){
-      setTimeout(()=>{
-        phase = 4;
-        document.getElementById('questionText').innerHTML = 'Beni sevmeye mecbursun! 😤💛';
-        const yes = document.getElementById('yesBtn');
-        const W = window.innerWidth;
-        const H = window.innerHeight;
-        yes.style.fontSize = '32px';
-        yes.style.padding  = '20px 60px';
-        yes.style.left = (W/2 - 100) + 'px';
-        yes.style.top  = (H/2 + 30) + 'px';
-        document.getElementById('noBtn').style.display = 'none';
-      }, 600);
-    }
-  } else if(phase === 4){
-    showCake();
+    };
+
+    bEl.appendChild(evet);
+    bEl.appendChild(hayir);
+
+  } else if (phase === 2) {
+    // ── SORU 2 ──
+    qEl.textContent = 'Beni özlüyor musun? 🥺';
+
+    const hayir = document.createElement('button');
+    hayir.className = 'btn-hayir-grow';
+    hayir.textContent = 'Hayır';
+
+    const evet = document.createElement('button');
+    evet.className = 'btn-yes';
+    evet.textContent = 'Evet';
+    evet.onclick = () => {
+      evetCount++;
+      hayir.style.fontSize = (1.2 + evetCount * 0.5) + 'em';
+      if (evetCount >= 3) { phase = 3; renderQuiz(); }
+    };
+
+    bEl.appendChild(evet);
+    bEl.appendChild(hayir);
+
+  } else if (phase === 3) {
+    // ── SORU 3 ──
+    qEl.textContent = 'Ben herzaman yanındayım, sen de aklımdasın hıh 🌸';
+
+    const heart = document.createElement('button');
+    heart.className = 'btn-emoji';
+    heart.textContent = '❤️';
+    heart.onclick = () => { phase = 4; renderQuiz(); };
+
+    bEl.appendChild(heart);
+
+  } else if (phase === 4) {
+    // ── SORU 4 ──
+    qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil mi? 💛';
+
+    const smile = document.createElement('button');
+    smile.className = 'btn-emoji';
+    smile.textContent = '🙃';
+    smile.onclick = () => { showScreen('cake-screen'); confetti(); };
+
+    bEl.appendChild(smile);
   }
 }
 
-function showCake(){
-  confetti();
-  showScreen('s4');
+function randomPos(btn) {
+  btn.style.left = (8 + Math.random() * 65) + 'vw';
+  btn.style.top  = (10 + Math.random() * 65) + 'vh';
 }
 
-function confetti(){
-  const colors = ['#ffd700','#ff6b6b','#4ecdc4','#a8e6cf','#ff8b94','#fff'];
-  for(let i=0; i<100; i++){
-    setTimeout(()=>{
+function forcedYes() {
+  const ov = document.createElement('div');
+  ov.className = 'forced-yes';
+  ov.textContent = 'EVET 💛';
+  ov.onclick = () => {
+    document.body.removeChild(ov);
+    phase = 2;
+    evetCount = 0;
+    renderQuiz();
+  };
+  document.body.appendChild(ov);
+}
+
+// ── KONFETİ ──
+function confetti() {
+  const renkler = ['#FF69B4','#FFD700','#FF6347','#98FB98','#87CEEB','#DDA0DD','#FFA500'];
+  for (let i = 0; i < 120; i++) {
+    setTimeout(() => {
       const c = document.createElement('div');
       c.className = 'confetti';
-      c.style.left = Math.random()*100+'vw';
-      c.style.background = colors[Math.floor(Math.random()*colors.length)];
-      c.style.animationDuration = (Math.random()*2+2)+'s';
+      const size = 6 + Math.random() * 10;
+      c.style.cssText = `
+        left:${Math.random()*100}vw;
+        top:-20px;
+        width:${size}px; height:${size}px;
+        background:${renkler[Math.floor(Math.random()*renkler.length)]};
+        border-radius:${Math.random()>.5?'50%':'3px'};
+        animation-duration:${2.5+Math.random()*3}s;
+        animation-delay:${Math.random()*1.5}s;
+      `;
       document.body.appendChild(c);
-      setTimeout(()=>c.remove(), 4000);
-    }, i*30);
+      setTimeout(() => c.remove(), 6000);
+    }, i * 25);
   }
 }
 </script>
