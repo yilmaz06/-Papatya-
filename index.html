@@ -2,10 +2,10 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Papatya 🌼</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-
 body {
   background: linear-gradient(135deg, #1a0a2e, #16213e, #0f3460);
   min-height: 100vh;
@@ -13,342 +13,356 @@ body {
   overflow: hidden;
   color: white;
 }
-
-/* EKRANLAR */
-.screen { 
+.screen {
   position: fixed; inset: 0;
-  display: flex; flex-direction: column;
+  display: none; flex-direction: column;
   align-items: center; justify-content: center;
-  display: none;
+  padding: 20px; text-align: center;
 }
 .screen.active { display: flex; }
-
-/* YILDIZLAR */
-.stars {
-  position: fixed; inset: 0; z-index: 0;
-  background: transparent;
-}
 .star {
-  position: absolute;
-  background: white;
+  position: fixed; background: white;
   border-radius: 50%;
   animation: twinkle 2s infinite alternate;
+  pointer-events: none;
 }
 @keyframes twinkle {
-  from { opacity: 0.2; }
-  to { opacity: 1; }
+  from { opacity: 0.2; } to { opacity: 1; }
 }
 
-/* BAŞLANGIÇ EKRANI */
-#screen1 { z-index: 10; }
-#screen1 h1 {
-  font-size: 42px;
-  text-align: center;
-  color: #ffd700;
+/* BAŞLANGIÇ */
+#s1 h1 {
+  font-size: 36px; color: #ffd700;
   text-shadow: 0 0 20px #ffd700;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   animation: pulse 1.5s infinite;
 }
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
 }
-#screen1 p {
-  font-size: 18px;
-  text-align: center;
-  color: #ccc;
-  margin-bottom: 40px;
-}
+#s1 p { font-size: 16px; color: #ccc; margin-bottom: 40px; }
 #startBtn {
-  padding: 15px 50px;
-  font-size: 20px;
-  background: #ffd700;
-  color: #1a0a2e;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: bold;
+  padding: 15px 50px; font-size: 20px;
+  background: #ffd700; color: #1a0a2e;
+  border: none; border-radius: 50px;
+  cursor: pointer; font-weight: bold;
   animation: bounce 1s infinite;
 }
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
+  0%,100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
 }
 
-/* YARIŞ EKRANI */
-#screen2 { z-index: 10; flex-direction: column; }
+/* YARIŞ */
 #raceTitle {
-  font-size: 24px;
-  color: #ffd700;
-  margin-bottom: 30px;
-  text-align: center;
+  font-size: 22px; color: #ffd700;
+  margin-bottom: 25px; min-height: 32px;
 }
-
+.track-wrap { width: 92vw; max-width: 580px; margin: 8px 0; }
+.track-label { font-size: 13px; color: #aaa; margin-bottom: 5px; text-align: left; padding-left: 5px; }
 .track {
-  width: 90vw;
-  max-width: 600px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 20px;
-  padding: 20px;
-  margin: 10px 0;
-  position: relative;
-  height: 80px;
-  display: flex;
-  align-items: center;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px; padding: 10px 15px;
+  position: relative; height: 65px;
+  display: flex; align-items: center;
 }
-.track-label {
-  font-size: 14px;
-  color: #aaa;
-  position: absolute;
-  top: 5px;
-  left: 15px;
-}
-.finish-line {
-  position: absolute;
-  right: 20px;
-  top: 0; bottom: 0;
-  width: 3px;
-  background: repeating-linear-gradient(
-    to bottom, white 0px, white 8px, transparent 8px, transparent 16px
-  );
-}
-.rabbit {
-  font-size: 40px;
-  position: absolute;
-  left: 20px;
-  transition: none;
-}
-#rabbit1 { animation: race1 4s ease-in forwards; }
-#rabbit2 { animation: race2 4s ease-out forwards; }
+.flag { position: absolute; right: 12px; font-size: 22px; }
+.rabbit { font-size: 34px; position: absolute; left: 10px; transition: left 0.05s linear; }
 
-@keyframes race1 {
-  0%   { left: 20px; }
-  50%  { left: 40%; }
-  80%  { left: 65%; }
-  100% { left: calc(90vw - 100px); }
-}
-@keyframes race2 {
-  0%   { left: 20px; }
-  50%  { left: 45%; }
-  75%  { left: 70%; }
-  90%  { left: 72%; }
-  100% { left: calc(90vw - 120px); }
-}
-
-/* ANKET EKRANI */
-#screen3 { z-index: 10; flex-direction: column; gap: 30px; padding: 40px; }
-#screen3 h2 {
-  font-size: 26px;
-  text-align: center;
-  color: #ffd700;
-  line-height: 1.4;
-}
-.btn-group { 
-  display: flex; 
-  gap: 20px; 
-  flex-wrap: wrap;
-  justify-content: center;
+/* ANKET */
+#questionText {
+  font-size: 22px; color: #ffd700;
+  line-height: 1.6; margin-bottom: 45px;
+  max-width: 340px;
 }
 #yesBtn {
-  padding: 15px 40px;
-  font-size: 20px;
-  background: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: bold;
+  padding: 14px 32px; font-size: 18px;
+  background: #27ae60; color: white;
+  border: none; border-radius: 50px;
+  cursor: pointer; font-weight: bold;
+  position: fixed;
+  transition: font-size 0.3s, padding 0.3s;
+  z-index: 20;
 }
 #noBtn {
-  padding: 15px 40px;
-  font-size: 20px;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: bold;
-  position: absolute;
-  transition: all 0.3s;
+  padding: 14px 32px; font-size: 18px;
+  background: #e74c3c; color: white;
+  border: none; border-radius: 50px;
+  cursor: pointer; font-weight: bold;
+  position: fixed;
+  transition: left 0.4s ease, top 0.4s ease;
+  z-index: 20;
 }
 
-/* PASTA EKRANI */
-#screen4 { z-index: 10; flex-direction: column; gap: 20px; text-align: center; padding: 40px; }
-#screen4 .cake { 
-  font-size: 120px;
+/* PASTA */
+#s4 { gap: 15px; }
+#s4 .cake {
+  font-size: 100px;
   animation: cakeIn 1s ease-out;
 }
 @keyframes cakeIn {
   from { transform: scale(0) rotate(-20deg); opacity: 0; }
-  to { transform: scale(1) rotate(0deg); opacity: 1; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
 }
-#screen4 h1 {
-  font-size: 32px;
-  color: #ffd700;
+#s4 h1 {
+  font-size: 28px; color: #ffd700;
   text-shadow: 0 0 20px #ffd700;
-  animation: fadeIn 1s ease-out 0.5s both;
+  animation: fadeUp 1s 0.5s both;
 }
-#screen4 p {
-  font-size: 18px;
-  color: #ccc;
-  line-height: 1.6;
-  animation: fadeIn 1s ease-out 1s both;
+#s4 p {
+  font-size: 16px; color: #ddd;
+  line-height: 1.8; max-width: 320px;
+  animation: fadeUp 1s 1s both;
 }
-.hearts {
-  font-size: 40px;
-  animation: fadeIn 1s ease-out 1.5s both;
-  letter-spacing: 10px;
-}
-@keyframes fadeIn {
+.hearts { font-size: 34px; letter-spacing: 8px; animation: fadeUp 1s 1.5s both; }
+@keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* KONFETI */
+/* KONFETİ */
 .confetti {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  animation: confettiFall linear forwards;
-  z-index: 999;
+  position: fixed; width: 10px; height: 10px;
+  border-radius: 2px; pointer-events: none;
+  animation: fall linear forwards; z-index: 999;
 }
-@keyframes confettiFall {
+@keyframes fall {
   from { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
 </style>
 </head>
 <body>
 
-<div class="stars" id="stars"></div>
-
 <!-- EKRAN 1: BAŞLANGIÇ -->
-<div class="screen active" id="screen1">
+<div class="screen active" id="s1">
   <h1>🐇 Büyük Yarış 🐇</h1>
   <p>Hazır mısın? Sürpriz seni bekliyor!</p>
-  <button id="startBtn" onclick="startRace()">Başlat!</button>
+  <button id="startBtn" onclick="startRace()">Başlat! 🏁</button>
 </div>
 
 <!-- EKRAN 2: YARIŞ -->
-<div class="screen" id="screen2">
+<div class="screen" id="s2">
   <p id="raceTitle">Yarış başlıyor... 🏁</p>
-  
-  <div class="track">
-    <span class="track-label">🐇 Tavşan 1</span>
-    <div class="rabbit" id="rabbit1">🐇</div>
-    <div class="finish-line"></div>
+  <div class="track-wrap">
+    <div class="track-label">🐇 Tavşan 1</div>
+    <div class="track" id="track1">
+      <div class="rabbit" id="r1">🐇</div>
+      <div class="flag">🏁</div>
+    </div>
   </div>
-
-  <div class="track">
-    <span class="track-label">🐇 Tavşan 2</span>
-    <div class="rabbit" id="rabbit2">🐇</div>
-    <div class="finish-line"></div>
+  <div class="track-wrap">
+    <div class="track-label">🐇 Tavşan 2</div>
+    <div class="track" id="track2">
+      <div class="rabbit" id="r2">🐇</div>
+      <div class="flag">🏁</div>
+    </div>
   </div>
 </div>
 
 <!-- EKRAN 3: ANKET -->
-<div class="screen" id="screen3">
-  <h2>Peki... seni seven biri<br>olduğunu biliyor musun? 💛</h2>
-  <div class="btn-group" style="position:relative; width:300px; height:80px;">
-    <button id="yesBtn" onclick="showCake()">Evet 💛</button>
-    <button id="noBtn" onclick="runAway()">Hayır</button>
-  </div>
+<div class="screen" id="s3">
+  <p id="questionText">Peki... seni seven biri<br>olduğunu biliyor musun? 💛</p>
+  <button id="yesBtn" onclick="handleYes()">Evet 💛</button>
+  <button id="noBtn" onclick="handleNo()">Hayır</button>
 </div>
 
 <!-- EKRAN 4: PASTA -->
-<div class="screen" id="screen4">
+<div class="screen" id="s4">
   <div class="cake">🎂</div>
   <h1>İyi ki doğdun! 🎉</h1>
-  <p>Buraya özel mesajın<br>gelecek... 🤍</p>
+  <p>Sen olmasan eksik olurdu.<br>Bu gün, seninle daha güzel.<br>Çok şey söylemek isterdim ama<br>en güzeli şu: İyi ki varsın. 🤍</p>
   <div class="hearts">🤍🌼🤍</div>
 </div>
 
 <script>
 // YILDIZLAR
-const starsContainer = document.getElementById('stars');
-for(let i = 0; i < 80; i++) {
-  const star = document.createElement('div');
-  star.className = 'star';
-  star.style.left = Math.random() * 100 + 'vw';
-  star.style.top = Math.random() * 100 + 'vh';
-  const size = Math.random() * 3 + 1;
-  star.style.width = size + 'px';
-  star.style.height = size + 'px';
-  star.style.animationDelay = Math.random() * 2 + 's';
-  starsContainer.appendChild(star);
+for(let i = 0; i < 80; i++){
+  const s = document.createElement('div');
+  s.className = 'star';
+  s.style.cssText = `left:${Math.random()*100}vw;top:${Math.random()*100}vh;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-delay:${Math.random()*2}s`;
+  document.body.appendChild(s);
 }
 
-// EKRAN DEĞİŞTİR
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-// YARIŞI BAŞLAT
-function startRace() {
-  showScreen('screen2');
-  
-  // Yarış başlık yazıları
-  const titles = ['Yarış başlıyor... 🏁', 'Hızlı koşuyorlar! 💨', 'Neredeyse bitti... 😮'];
-  let i = 0;
-  const titleEl = document.getElementById('raceTitle');
-  const titleTimer = setInterval(() => {
-    i++;
-    if(i < titles.length) titleEl.textContent = titles[i];
-  }, 1500);
+// ─── YARIŞ ───
+function startRace(){
+  showScreen('s2');
+  const r1 = document.getElementById('r1');
+  const r2 = document.getElementById('r2');
+  const title = document.getElementById('raceTitle');
+  const trackW = document.getElementById('track1').offsetWidth - 80;
 
-  // 4 saniye sonra anket
-  setTimeout(() => {
-    clearInterval(titleTimer);
-    titleEl.textContent = '🏆 Kazanan belli oldu!';
-    setTimeout(() => showScreen('screen3'), 1500);
-  }, 4000);
+  const msgs = [
+    'Yarış başladı! 🏁',
+    'Koşuyorlar! 💨',
+    'Tavşan 1 önde! 😤',
+    'Tavşan 2 geride kalıyor... 😮',
+    'Dur bir dakika... Tavşan 2 hızlanıyor!! 😱',
+    '🏆 İnanılmaz! Kazanan belli oldu!'
+  ];
+  let mi = 0;
+  title.textContent = msgs[0];
+  const mt = setInterval(()=>{ if(++mi < msgs.length-1) title.textContent = msgs[mi]; }, 1800);
+
+  let elapsed = 0;
+  const DURATION = 10000;
+
+  const tick = setInterval(()=>{
+    elapsed += 50;
+    const t = elapsed / DURATION;
+
+    // Tavşan 1: hızlı başlar, ortada önde, sonda yavaşlar
+    let p1;
+    if(t < 0.5)       p1 = t * 2.0 * 100;
+    else if(t < 0.75) p1 = 100 + (t-0.5) * 0.9 * 100;
+    else               p1 = 122.5 + (t-0.75) * 0.4 * 100;
+    p1 = Math.min(p1, 100);
+
+    // Tavşan 2: yavaş başlar, geride kalır, sonda hamle yapar ve kazanır
+    let p2;
+    if(t < 0.45)      p2 = t * 1.5 * 100;
+    else if(t < 0.7)  p2 = 67.5 + (t-0.45) * 1.6 * 100;
+    else               p2 = 107.5 + (t-0.7) * 3.2 * 100;
+    p2 = Math.min(p2, 100);
+
+    r1.style.left = (10 + (p1/100) * trackW) + 'px';
+    r2.style.left = (10 + (p2/100) * trackW) + 'px';
+
+    if(elapsed >= DURATION){
+      clearInterval(tick);
+      clearInterval(mt);
+      title.textContent = '🏆 Kazanan belli oldu!';
+      setTimeout(()=>{ showScreen('s3'); initButtons(); }, 2200);
+    }
+  }, 50);
 }
 
-// KAÇAN HAYIR BUTONU
+// ─── ANKET ───
 let noCount = 0;
-function runAway() {
-  noCount++;
+let phase = 1;
+let phaseYesCount = 0;
+
+function initButtons(){
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn  = document.getElementById('noBtn');
+  // Evet sola, Hayır sağa — ortada yan yana
+  yesBtn.style.left  = (W/2 - 120) + 'px';
+  yesBtn.style.top   = (H/2 + 40)  + 'px';
+  noBtn.style.left   = (W/2 + 20)  + 'px';
+  noBtn.style.top    = (H/2 + 40)  + 'px';
+  noBtn.style.display = 'block';
+}
+
+function escapeNo(){
   const btn = document.getElementById('noBtn');
-  const container = btn.parentElement;
-  const maxX = 200;
-  const maxY = 60;
-  
-  if(noCount <= 3) {
-    // Rastgele kaç
-    const x = Math.random() * maxX - 100;
-    const y = Math.random() * maxY - 30;
-    btn.style.transform = `translate(${x}px, ${y}px)`;
-    // Her basışta büyüsün
-    const size = 14 + noCount * 4;
-    btn.style.fontSize = size + 'px';
-  } else {
-    // Çok bastı, gitsin artık
-    btn.style.opacity = '0';
-    btn.style.pointerEvents = 'none';
+  const W = window.innerWidth - 120;
+  const H = window.innerHeight - 80;
+  // Tamamen rastgele bir yere kaç
+  btn.style.left = (Math.random() * W) + 'px';
+  btn.style.top  = (Math.random() * H * 0.7 + H * 0.05) + 'px';
+}
+
+function growYes(){
+  const btn = document.getElementById('yesBtn');
+  const cur = parseFloat(btn.style.fontSize) || 18;
+  const nw  = Math.min(cur + 4, 42);
+  btn.style.fontSize = nw + 'px';
+  const p = 14 + (nw - 18) * 0.8;
+  btn.style.padding  = p + 'px ' + (p*1.8) + 'px';
+}
+
+function handleNo(){
+  if(phase === 1){
+    noCount++;
+    escapeNo();
+    growYes();
+    if(noCount >= 4){
+      setTimeout(()=>{
+        phase = 2;
+        phaseYesCount = 0;
+        document.getElementById('questionText').innerHTML = 'Eminmisinnnn...? 🤨';
+      }, 500);
+    }
+  } else if(phase === 2){
+    // Geri dön
+    phase = 1;
+    noCount = 3;
+    document.getElementById('questionText').innerHTML = 'Peki... seni seven biri<br>olduğunu biliyor musun? 💛';
+    initButtons();
+  } else if(phase === 3){
+    escapeNo();
+    growYes();
   }
 }
 
-// PASTAYA GEÇ + KONFETİ
-function showCake() {
-  showScreen('screen4');
-  createConfetti();
+function handleYes(){
+  if(phase === 1){
+    showCake();
+  } else if(phase === 2){
+    // Hayır 3 kez kaçsın sonra phase 3
+    let c = 0;
+    const iv = setInterval(()=>{
+      c++;
+      escapeNo();
+      growYes();
+      if(c >= 3){
+        clearInterval(iv);
+        setTimeout(()=>{
+          phase = 3;
+          phaseYesCount = 0;
+          document.getElementById('questionText').innerHTML = '"Kesin diyorsunnn yani..." 🤔';
+        }, 800);
+      }
+    }, 600);
+  } else if(phase === 3){
+    phaseYesCount++;
+    growYes();
+    escapeNo();
+    if(phaseYesCount >= 3){
+      setTimeout(()=>{
+        phase = 4;
+        document.getElementById('questionText').innerHTML = 'Beni sevmeye mecbursun! 😤💛';
+        const yes = document.getElementById('yesBtn');
+        const W = window.innerWidth;
+        const H = window.innerHeight;
+        yes.style.fontSize = '32px';
+        yes.style.padding  = '20px 60px';
+        yes.style.left = (W/2 - 100) + 'px';
+        yes.style.top  = (H/2 + 30) + 'px';
+        document.getElementById('noBtn').style.display = 'none';
+      }, 600);
+    }
+  } else if(phase === 4){
+    showCake();
+  }
 }
 
-function createConfetti() {
-  const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#a8e6cf', '#ff8b94', '#fff'];
-  for(let i = 0; i < 80; i++) {
-    setTimeout(() => {
+function showCake(){
+  confetti();
+  showScreen('s4');
+}
+
+function confetti(){
+  const colors = ['#ffd700','#ff6b6b','#4ecdc4','#a8e6cf','#ff8b94','#fff'];
+  for(let i=0; i<100; i++){
+    setTimeout(()=>{
       const c = document.createElement('div');
       c.className = 'confetti';
-      c.style.left = Math.random() * 100 + 'vw';
-      c.style.background = colors[Math.floor(Math.random() * colors.length)];
-      c.style.animationDuration = (Math.random() * 2 + 2) + 's';
-      c.style.animationDelay = Math.random() * 1 + 's';
+      c.style.left = Math.random()*100+'vw';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (Math.random()*2+2)+'s';
       document.body.appendChild(c);
-      setTimeout(() => c.remove(), 4000);
-    }, i * 30);
+      setTimeout(()=>c.remove(), 4000);
+    }, i*30);
   }
 }
 </script>
