@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🐇 Sürpriz!</title>
+  <title>Sürpriz!</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -18,17 +18,13 @@
       justify-content: center;
     }
 
-    /* ── YILDIZLAR ── */
     .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
     .star {
       position: absolute; background: white; border-radius: 50%;
       animation: twinkle 2s infinite alternate;
     }
-    @keyframes twinkle {
-      from { opacity: 0.15; } to { opacity: 1; }
-    }
+    @keyframes twinkle { from{opacity:0.15} to{opacity:1} }
 
-    /* ── EKRANLAR ── */
     .screen {
       position: relative; z-index: 1;
       width: 100%; max-width: 480px;
@@ -38,242 +34,205 @@
     }
     .screen.active { display: flex; }
 
-    /* ── BAŞLANGIÇ ── */
-    .start-emoji { font-size: 5em; animation: float 2s infinite ease-in-out alternate; }
-    @keyframes float { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+    /* BAŞLANGIÇ */
+    .start-emoji {
+      font-size: 5em;
+      animation: float-ud 2s infinite ease-in-out alternate;
+    }
+    @keyframes float-ud { from{transform:translateY(0)} to{transform:translateY(-14px)} }
+
     .start-title {
       color: #FFD700; font-size: 2.2em; font-weight: 900;
       text-shadow: 0 0 20px #FFD700;
     }
     .start-sub { color: #FFB6C1; font-size: 1.3em; font-weight: 700; }
+
     .btn-start {
-      background: linear-gradient(135deg, #FF69B4, #ff3d9a);
+      background: linear-gradient(135deg,#FF69B4,#ff3d9a);
       color: white; border: none;
       padding: 18px 50px; border-radius: 32px;
       font-size: 1.6em; font-weight: 900; font-family: inherit;
-      cursor: pointer; box-shadow: 0 6px 22px rgba(255,105,180,0.55);
+      cursor: pointer;
+      box-shadow: 0 6px 22px rgba(255,105,180,0.55);
       animation: btn-pulse 1.6s infinite ease-in-out;
     }
-    @keyframes btn-pulse {
-      0%,100% { transform: scale(1); } 50% { transform: scale(1.07); }
-    }
+    @keyframes btn-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
 
-    /* ── YARIŞ ── */
+    /* YARIŞ */
     .race-title {
       color: #FFD700; font-size: 1.8em; font-weight: 900;
       text-shadow: 0 0 14px #FFD700;
     }
-    .race-track { width: 100%; background: #1a1a3e; border-radius: 18px; padding: 16px 12px; }
-    .lane { display: flex; align-items: center; margin-bottom: 14px; }
-    .lane:last-child { margin-bottom: 0; }
-    .lane-label { color: #aaa; font-size: 1em; font-weight: 700; width: 24px; flex-shrink: 0; }
+    .race-track { width:100%; background:#1a1a3e; border-radius:18px; padding:16px 12px; }
+    .lane { display:flex; align-items:center; margin-bottom:14px; }
+    .lane:last-child { margin-bottom:0; }
+    .lane-label { color:#aaa; font-size:1em; font-weight:700; width:24px; flex-shrink:0; }
     .lane-track {
-      flex: 1; height: 46px; background: #2a2a5e;
-      border-radius: 23px; position: relative; overflow: hidden;
+      flex:1; height:46px; background:#2a2a5e;
+      border-radius:23px; position:relative; overflow:hidden;
     }
     .finish-line {
-      position: absolute; right: 0; top: 0; bottom: 0; width: 5px;
-      background: repeating-linear-gradient(to bottom, white 0px, white 5px, #0a0a1a 5px, #0a0a1a 10px);
+      position:absolute; right:0; top:0; bottom:0; width:5px;
+      background: repeating-linear-gradient(to bottom,white 0,white 5px,#0a0a1a 5px,#0a0a1a 10px);
     }
-    .rabbit { position: absolute; font-size: 1.9em; top: 50%; left: 0; transform: translateY(-50%); }
+    .rabbit { position:absolute; font-size:1.9em; top:50%; left:0; transform:translateY(-50%); }
 
-    @keyframes hop {
-      0%,100% { transform: translateY(-50%); } 50% { transform: translateY(-78%); }
-    }
+    @keyframes hop { 0%,100%{transform:translateY(-50%)} 50%{transform:translateY(-78%)} }
     @keyframes fast-shake {
-      0%,100% { transform: translateY(-50%) translateX(0); }
-      33% { transform: translateY(-60%) translateX(-1px); }
-      66% { transform: translateY(-42%) translateX(1px); }
+      0%,100%{transform:translateY(-50%) translateX(0)}
+      33%{transform:translateY(-60%) translateX(-1px)}
+      66%{transform:translateY(-42%) translateX(1px)}
     }
     @keyframes tired-sway {
-      0%,100% { transform: translateY(-50%) rotate(-7deg); }
-      50% { transform: translateY(-43%) rotate(7deg); }
+      0%,100%{transform:translateY(-50%) rotate(-7deg)}
+      50%{transform:translateY(-43%) rotate(7deg)}
     }
     .hop      { animation: hop        0.35s infinite ease-in-out; }
     .fast-run { animation: fast-shake 0.13s infinite; }
     .tired    { animation: tired-sway 0.6s  infinite ease-in-out; }
-    .race-msg { color: #FFB6C1; font-size: 1.2em; font-weight: 700; min-height: 30px; }
 
-    /* ── QUIZ ── */
+    .race-msg { color:#FFB6C1; font-size:1.2em; font-weight:700; min-height:30px; }
+
+    /* QUIZ */
     .quiz-q {
-      color: #FFD700; font-size: 1.7em; font-weight: 900;
-      text-shadow: 0 0 14px #FFD700; line-height: 1.45;
+      color:#FFD700; font-size:1.7em; font-weight:900;
+      text-shadow:0 0 14px #FFD700; line-height:1.45;
     }
     .quiz-btns {
-      display: flex; gap: 16px; flex-wrap: wrap;
-      justify-content: center; align-items: center; min-height: 70px;
+      display:flex; gap:16px; flex-wrap:wrap;
+      justify-content:center; align-items:center; min-height:70px;
     }
     .btn-yes {
-      background: linear-gradient(135deg, #FF69B4, #ff3d9a);
-      color: white; border: none; padding: 15px 34px;
-      border-radius: 28px; font-size: 1.3em; font-weight: 900;
-      font-family: inherit; cursor: pointer;
-      box-shadow: 0 4px 16px rgba(255,105,180,0.45); transition: transform 0.15s;
+      background:linear-gradient(135deg,#FF69B4,#ff3d9a);
+      color:white; border:none; padding:15px 34px;
+      border-radius:28px; font-size:1.3em; font-weight:900;
+      font-family:inherit; cursor:pointer;
+      box-shadow:0 4px 16px rgba(255,105,180,0.45);
     }
-    .btn-yes:active { transform: scale(0.94); }
     .btn-no-inline {
-      background: #555; color: white; border: none;
-      padding: 15px 34px; border-radius: 28px;
-      font-size: 1.3em; font-weight: 900; font-family: inherit; cursor: pointer;
+      background:#555; color:white; border:none;
+      padding:15px 34px; border-radius:28px;
+      font-size:1.3em; font-weight:900; font-family:inherit; cursor:pointer;
     }
     .btn-no-fixed {
-      background: #555; color: white; border: none;
-      padding: 15px 34px; border-radius: 28px;
-      font-size: 1.3em; font-weight: 900; font-family: inherit;
-      cursor: pointer; position: fixed; z-index: 50;
+      background:#555; color:white; border:none;
+      padding:15px 34px; border-radius:28px;
+      font-size:1.3em; font-weight:900; font-family:inherit;
+      cursor:pointer; position:fixed; z-index:50;
     }
     .btn-no-grow {
-      background: #555; color: white; border: none;
-      padding: 15px 34px; border-radius: 28px;
-      font-size: 1.3em; font-weight: 900; font-family: inherit;
-      cursor: pointer; transition: font-size 0.3s;
+      background:#555; color:white; border:none;
+      padding:15px 34px; border-radius:28px;
+      font-size:1.3em; font-weight:900; font-family:inherit;
+      cursor:pointer; transition:font-size 0.3s;
     }
     .forced-yes {
-      position: fixed; inset: 0;
-      background: linear-gradient(135deg, #FF69B4, #ff3d9a);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 5.5em; font-weight: 900; color: white;
-      z-index: 200; cursor: pointer;
-      text-shadow: 0 0 30px rgba(255,255,255,0.6);
-      animation: forced-pulse 0.9s infinite alternate;
+      position:fixed; inset:0;
+      background:linear-gradient(135deg,#FF69B4,#ff3d9a);
+      display:flex; align-items:center; justify-content:center;
+      font-size:5.5em; font-weight:900; color:white;
+      z-index:200; cursor:pointer;
+      text-shadow:0 0 30px rgba(255,255,255,0.6);
+      animation:forced-pulse 0.9s infinite alternate;
     }
-    @keyframes forced-pulse {
-      from { filter: brightness(1); } to { filter: brightness(1.25); }
-    }
+    @keyframes forced-pulse { from{filter:brightness(1)} to{filter:brightness(1.25)} }
+
     .btn-emoji {
-      background: none; border: none; font-size: 4.5em; cursor: pointer;
-      animation: emoji-pulse 1.4s infinite ease-in-out;
+      background:none; border:none; font-size:4.5em; cursor:pointer;
+      animation:emoji-pulse 1.4s infinite ease-in-out; display:inline-block;
     }
-    @keyframes emoji-pulse {
-      0%,100% { transform: scale(1); } 50% { transform: scale(1.2); }
-    }
+    @keyframes emoji-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
 
-    /* ── PASTA EKRANI ── */
-    .cake-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-
+    /* PASTA */
     .cake-emoji {
-      font-size: 5.5em; cursor: pointer;
-      animation: cake-bounce 0.85s infinite alternate ease-in-out;
-      transition: font-size 0.4s, opacity 0.4s;
-      display: inline-block;
+      font-size:5.5em; cursor:pointer; display:inline-block;
+      animation:cake-bounce 0.85s infinite alternate ease-in-out;
+      transition:font-size 0.4s;
     }
-    @keyframes cake-bounce {
-      from { transform: translateY(0); } to { transform: translateY(-18px); }
-    }
-    .cake-emoji.eating { animation: cake-shake 0.15s infinite; }
+    @keyframes cake-bounce { from{transform:translateY(0)} to{transform:translateY(-18px)} }
     @keyframes cake-shake {
-      0%,100% { transform: rotate(-8deg) scale(0.95); }
-      50% { transform: rotate(8deg) scale(0.9); }
+      0%,100%{transform:rotate(-8deg) scale(0.95)}
+      50%{transform:rotate(8deg) scale(0.9)}
     }
+    .cake-msg { color:#FFD700; font-size:1.4em; font-weight:700; text-shadow:0 0 14px #FFD700; line-height:1.7; }
+    .cake-hint { color:#FFB6C1; font-size:1em; font-weight:700; animation:blink 1.4s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .nom-text { color:#FF69B4; font-size:2em; font-weight:900; display:none; }
 
-    .cake-msg { color: #FFD700; font-size: 1.4em; font-weight: 700; text-shadow: 0 0 14px #FFD700; line-height: 1.7; }
-    .cake-hint { color: #FFB6C1; font-size: 1em; font-weight: 700; animation: blink 1.4s infinite; }
-    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-    .nom-text {
-      color: #FF69B4; font-size: 2em; font-weight: 900;
-      animation: nom-pop 0.4s ease-out;
-      display: none;
-    }
-    @keyframes nom-pop {
-      0% { transform: scale(0.5); opacity: 0; }
-      60% { transform: scale(1.3); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* ── ZARF ── */
-    .envelope-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; display: none; }
-    .env-hint { color: #FFB6C1; font-size: 1em; font-weight: 700; animation: blink 1.4s infinite; }
-
+    /* ZARF */
     .envelope {
-      width: 240px; height: 160px;
-      position: relative; cursor: pointer;
+      width:240px; height:160px;
+      position:relative; cursor:pointer;
     }
-
     .env-body {
-      position: absolute; bottom: 0; left: 0; right: 0; height: 140px;
-      background: #FFF0F5; border: 2px solid #FFB6C1; border-radius: 6px 6px 14px 14px;
-      overflow: hidden; z-index: 1;
+      position:absolute; bottom:0; left:0; right:0; height:140px;
+      background:#FFF0F5; border:2px solid #FFB6C1;
+      border-radius:6px 6px 14px 14px;
     }
-
-    /* V şekli zarfın içinde */
     .env-body::after {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 70px;
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:70px;
       background:
-        linear-gradient(to bottom right, #FFD0E0 50%, transparent 50%),
-        linear-gradient(to bottom left,  #FFD0E0 50%, transparent 50%);
-      background-size: 50% 100%;
-      background-position: left top, right top;
-      background-repeat: no-repeat;
+        linear-gradient(to bottom right,#FFD0E0 50%,transparent 50%),
+        linear-gradient(to bottom left,#FFD0E0 50%,transparent 50%);
+      background-size:50% 100%;
+      background-position:left top, right top;
+      background-repeat:no-repeat;
     }
-
     .env-icon {
-      position: absolute; bottom: 14px; left: 50%;
-      transform: translateX(-50%);
-      font-size: 2em; z-index: 2;
+      position:absolute; bottom:12px; left:50%;
+      transform:translateX(-50%); font-size:2.2em; z-index:2;
     }
-
-    /* Kapak üçgeni */
     .env-flap {
-      position: absolute; top: -2px; left: -2px; right: -2px; z-index: 4;
-      height: 80px;
-      background: #FFB6C1;
-      clip-path: polygon(0 0, 100% 0, 50% 100%);
-      transform-origin: top center;
-      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
-      border-radius: 6px 6px 0 0;
+      position:absolute; top:-2px; left:-2px; right:-2px; z-index:4;
+      height:80px; background:#FFB6C1;
+      clip-path:polygon(0 0,100% 0,50% 100%);
+      border-radius:6px 6px 0 0;
+      transform-origin:top center;
+      transition:transform 0.6s ease;
     }
-    .envelope.open .env-flap {
-      transform: rotateX(180deg);
-    }
+    .envelope.open .env-flap { transform:rotateX(180deg); }
 
-    /* Mektup */
-    .env-letter {
-      position: absolute; left: 12px; right: 12px;
-      bottom: -140px; z-index: 3;
-      background: white;
-      border: 1.5px solid #FFD0E0;
-      border-radius: 10px; padding: 14px;
-      transition: bottom 0.7s ease 0.35s;
-      text-align: center;
+    .letter {
+      display:none;
+      background:white; border:1.5px solid #FFD0E0;
+      border-radius:14px; padding:18px;
+      text-align:center;
+      animation:letter-in 0.6s ease-out;
     }
-    .envelope.open .env-letter { bottom: 150px; }
+    @keyframes letter-in { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .letter-deco { font-size:1.4em; margin:6px 0; }
+    .letter-text { color:#cc3366; font-size:1em; font-weight:700; line-height:1.8; margin:10px 0; }
 
-    .letter-deco { font-size: 1.4em; margin: 4px 0; }
-    .letter-text {
-      color: #cc3366; font-size: 0.95em; font-weight: 700;
-      line-height: 1.7; margin: 8px 0;
-    }
-
-    /* ── KONFETİ ── */
+    /* KONFETİ */
     .confetti {
-      position: fixed; pointer-events: none; border-radius: 2px;
-      animation: fall linear forwards; z-index: 999;
+      position:fixed; pointer-events:none;
+      animation:fall linear forwards; z-index:999;
     }
     @keyframes fall {
-      0%   { transform: translateY(-40px) rotate(0deg);   opacity: 1; }
-      100% { transform: translateY(110vh)  rotate(720deg); opacity: 0; }
+      0%{transform:translateY(-40px) rotate(0deg);opacity:1}
+      100%{transform:translateY(110vh) rotate(720deg);opacity:0}
     }
 
-    /* ── KALP EFEKTİ ── */
+    /* KALP */
     .heart-particle {
-      position: fixed; pointer-events: none; z-index: 1000;
-      animation: heart-fly 1s ease-out forwards;
+      position:fixed; pointer-events:none; z-index:1000;
+      animation:heart-fly 1s ease-out forwards;
     }
     @keyframes heart-fly {
-      0%   { transform: translate(0,0) scale(0.5); opacity: 1; }
-      100% { transform: translate(var(--dx),-90px) scale(1.3); opacity: 0; }
+      0%{transform:translate(0,0) scale(0.5);opacity:1}
+      100%{transform:translate(var(--dx),-90px) scale(1.3);opacity:0}
     }
 
-    /* ── UÇAN EMOJİ ── */
+    /* UÇAN */
     .floating-emoji {
-      position: fixed; font-size: 1.8em;
-      pointer-events: none; z-index: 100;
-      animation: float-up 1.4s ease-out forwards;
+      position:fixed; font-size:1.8em;
+      pointer-events:none; z-index:100;
+      animation:float-up 1.4s ease-out forwards;
     }
     @keyframes float-up {
-      0%   { transform: translateY(0) scale(1);     opacity: 1; }
-      100% { transform: translateY(-120px) scale(1.4); opacity: 0; }
+      0%{transform:translateY(0) scale(1);opacity:1}
+      100%{transform:translateY(-120px) scale(1.4);opacity:0}
     }
   </style>
 </head>
@@ -286,7 +245,7 @@
   <div class="start-emoji">🐇🐰</div>
   <div class="start-title">Bir Sürprizin Var!</div>
   <div class="start-sub">Hazır mısın? 🌸</div>
-  <button class="btn-start" onclick="startRace()">Yarışı Başlat 🏁</button>
+  <button class="btn-start" id="start-btn">Yarışı Başlat 🏁</button>
 </div>
 
 <!-- YARIŞ -->
@@ -319,171 +278,189 @@
 
 <!-- PASTA -->
 <div class="screen" id="cake-screen">
-  <div class="cake-wrap" id="cake-wrap">
-    <div class="cake-msg" id="cake-title">🎉 İyiki doğdun prenses! 🎉</div>
-    <div class="cake-emoji" id="cake-emoji" onclick="eatCake()">🎂</div>
-    <div class="nom-text" id="nom-text">nom nom 😋</div>
-    <div class="cake-hint" id="cake-hint">Pastaya dokun 🎂</div>
+  <div class="cake-msg" id="cake-title">🎉 İyiki doğdun prenses! 🎉</div>
+  <div class="cake-emoji" id="cake-emoji">🎂</div>
+  <div class="nom-text" id="nom-text">nom nom 😋</div>
+  <div class="cake-hint" id="cake-hint">Pastaya dokun 🎂</div>
+
+  <div class="envelope" id="envelope" style="display:none">
+    <div class="env-flap"></div>
+    <div class="env-body">
+      <div class="env-icon">💌</div>
+    </div>
   </div>
 
-  <div class="envelope-wrap" id="env-wrap">
-    <div class="env-hint">Zarfa dokun 💌</div>
-    <div class="envelope" id="envelope" onclick="openEnvelope()">
-      <div class="env-flap"></div>
-      <div class="env-body">
-        <div class="env-icon">💌</div>
-        <div class="env-letter">
-          <div class="letter-deco">🌸 🌼 🌸</div>
-          <div class="letter-text">
-            Bu siteyi sana yapmak için<br>
-            çok düşündüm... 🥹<br><br>
-            Her animasyon, her tavşan<br>
-            senin için yapıldı 🐇<br><br>
-            Doğum günün kutlu olsun,<br>
-            <strong>prensesim 💛</strong><br><br>
-            Seni çok seviyorum 🌸
-          </div>
-          <div class="letter-deco">🌼 💛 🌼</div>
-        </div>
-      </div>
+  <div class="letter" id="letter">
+    <div class="letter-deco">🌸 🌼 🌸</div>
+    <div class="letter-text">
+      Bu siteyi sana yapmak için<br>
+      çok düşündüm... 🥹<br><br>
+      Her animasyon, her tavşan<br>
+      senin için yapıldı 🐇<br><br>
+      Doğum günün kutlu olsun,<br>
+      <strong>prensesim 💛</strong><br><br>
+      Seni çok seviyorum 🌸
     </div>
+    <div class="letter-deco">🌼 💛 🌼</div>
   </div>
 </div>
 
 <script>
-// ── YILDIZLAR ──
-const starsEl = document.getElementById('stars');
-for (let i = 0; i < 80; i++) {
-  const s = document.createElement('div');
+// YILDIZLAR
+var starsEl = document.getElementById('stars');
+for (var i = 0; i < 80; i++) {
+  var s = document.createElement('div');
   s.className = 'star';
-  const size = Math.random() * 3 + 1;
-  s.style.cssText = `
-    width:${size}px;height:${size}px;
-    left:${Math.random()*100}%;top:${Math.random()*100}%;
-    animation-delay:${Math.random()*3}s;
-    animation-duration:${1.5+Math.random()*2}s;
-  `;
+  var size = Math.random() * 3 + 1;
+  s.style.width = size + 'px';
+  s.style.height = size + 'px';
+  s.style.left = Math.random()*100 + '%';
+  s.style.top = Math.random()*100 + '%';
+  s.style.animationDelay = Math.random()*3 + 's';
+  s.style.animationDuration = (1.5+Math.random()*2) + 's';
   starsEl.appendChild(s);
 }
 
-// ── EKRAN ──
+// EKRAN
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(function(s) {
+    s.classList.remove('active');
+  });
   document.getElementById(id).classList.add('active');
 }
 
-// ── YARIŞ ──
-const raceMessages = [
+// BAŞLANGIÇ BUTONU
+document.getElementById('start-btn').addEventListener('click', function() {
+  startRace();
+});
+
+// YARIŞ
+var raceMessages = [
   { t: 0,    text: '🏁 Yarış başladı!' },
   { t: 1800, text: '🐰 Tavşan 1 önde gidiyor!' },
   { t: 4000, text: '😤 Tavşan 2 yaklaşıyor...' },
   { t: 6200, text: '😱 Tavşan 2 geçiyor!!!' },
-  { t: 8000, text: '🎉 Tavşan 2 kazandı!!!' },
+  { t: 8000, text: '🎉 Tavşan 2 kazandı!!!' }
 ];
-
-let msgIdx = 0, raceStart = null;
-const RACE_MS = 10000;
+var msgIdx = 0;
+var raceStart = null;
+var RACE_MS = 10000;
 
 function setPos(rabbit, pct) {
-  const track = rabbit.parentElement;
-  const max = track.offsetWidth - rabbit.offsetWidth - 6;
+  var track = rabbit.parentElement;
+  var max = track.offsetWidth - rabbit.offsetWidth - 6;
   rabbit.style.left = Math.max(0, Math.min((pct/100)*max, max)) + 'px';
 }
 
-function clearAnim(el) { el.classList.remove('hop','fast-run','tired'); }
+function clearAnim(el) {
+  el.classList.remove('hop','fast-run','tired');
+}
 
 function raceLoop(ts) {
   if (!raceStart) raceStart = ts;
-  const elapsed = ts - raceStart;
-  const t = Math.min(elapsed / RACE_MS, 1);
-  const r1 = document.getElementById('r1');
-  const r2 = document.getElementById('r2');
-  const msgEl = document.getElementById('race-msg');
+  var elapsed = ts - raceStart;
+  var t = Math.min(elapsed / RACE_MS, 1);
+  var r1 = document.getElementById('r1');
+  var r2 = document.getElementById('r2');
+  var msgEl = document.getElementById('race-msg');
 
   while (msgIdx < raceMessages.length && elapsed >= raceMessages[msgIdx].t) {
     msgEl.textContent = raceMessages[msgIdx].text;
     msgIdx++;
   }
 
-  let p1 = t < 0.6 ? t*1.4*100 : 84 + (t-0.6)*0.4*100;
-  p1 = Math.min(p1, 100);
+  var p1 = t < 0.6 ? t*1.4*100 : 84 + (t-0.6)*0.4*100;
+  if (p1 > 100) p1 = 100;
 
-  let p2;
-  if      (t < 0.5) p2 = t*1.1*100;
-  else if (t < 0.8) p2 = 55 + (t-0.5)*1.5*100;
-  else               p2 = 100;
+  var p2;
+  if      (t < 0.5) { p2 = t*1.1*100; }
+  else if (t < 0.8) { p2 = 55 + (t-0.5)*1.5*100; }
+  else               { p2 = 100; }
 
-  setPos(r1, p1); setPos(r2, p2);
+  setPos(r1, p1);
+  setPos(r2, p2);
 
   clearAnim(r1);
-  if      (t < 0.3) r1.classList.add('fast-run');
-  else if (t < 0.6) r1.classList.add('hop');
-  else               r1.classList.add('tired');
+  if      (t < 0.3) { r1.classList.add('fast-run'); }
+  else if (t < 0.6) { r1.classList.add('hop'); }
+  else               { r1.classList.add('tired'); }
 
   clearAnim(r2);
-  if      (t < 0.5) r2.classList.add('hop');
-  else if (t < 0.8) r2.classList.add('fast-run');
+  if      (t < 0.5) { r2.classList.add('hop'); }
+  else if (t < 0.8) { r2.classList.add('fast-run'); }
 
   if (t < 1) {
     requestAnimationFrame(raceLoop);
   } else {
-    setTimeout(() => { showScreen('quiz-screen'); startQuiz(); }, 2500);
+    setTimeout(function() {
+      showScreen('quiz-screen');
+      startQuiz();
+    }, 2500);
   }
 }
 
 function startRace() {
   showScreen('race-screen');
-  msgIdx = 0; raceStart = null;
+  msgIdx = 0;
+  raceStart = null;
   requestAnimationFrame(raceLoop);
 }
 
-// ── QUIZ ──
-let phase = 1, hayirCount = 0, evetCount = 0, hayirIsFixed = false;
+// QUIZ
+var phase = 1;
+var hayirCount = 0;
+var evetCount = 0;
 
 function startQuiz() {
-  phase = 1; hayirCount = 0; evetCount = 0; hayirIsFixed = false;
+  phase = 1;
+  hayirCount = 0;
+  evetCount = 0;
   renderQuiz();
 }
 
 function renderQuiz() {
-  const qEl = document.getElementById('quiz-q');
-  const bEl = document.getElementById('quiz-btns');
-  const oldFixed = document.getElementById('hayir-fixed');
-  if (oldFixed) oldFixed.remove();
+  var qEl = document.getElementById('quiz-q');
+  var bEl = document.getElementById('quiz-btns');
+  var oldFixed = document.getElementById('hayir-fixed');
+  if (oldFixed) { oldFixed.remove(); }
   bEl.innerHTML = '';
 
   if (phase === 1) {
     qEl.textContent = 'Beni seviyormusunnnnn 💛';
 
-    const evet = document.createElement('button');
+    var evet = document.createElement('button');
     evet.className = 'btn-yes';
     evet.textContent = 'Evet';
     evet.style.fontSize = (1.3 + hayirCount * 0.3) + 'em';
-    evet.onclick = () => { phase = 2; evetCount = 0; renderQuiz(); };
+    evet.addEventListener('click', function() {
+      phase = 2; evetCount = 0; renderQuiz();
+    });
 
-    const hayir = document.createElement('button');
+    var hayir = document.createElement('button');
     hayir.className = 'btn-no-inline';
     hayir.textContent = 'Hayır';
-    hayir.onclick = () => {
+    hayir.addEventListener('click', function() {
       hayirCount++;
       evet.style.fontSize = (1.3 + hayirCount * 0.3) + 'em';
-      if (hayirCount >= 5) { hayir.remove(); forcedYes(); return; }
-
+      if (hayirCount >= 5) {
+        hayir.remove();
+        forcedYes();
+        return;
+      }
       hayir.remove();
-      hayirIsFixed = true;
-      const fixed = document.createElement('button');
+      var fixed = document.createElement('button');
       fixed.id = 'hayir-fixed';
       fixed.className = 'btn-no-fixed';
       fixed.textContent = 'Hayır';
       randomPos(fixed);
       document.body.appendChild(fixed);
-      fixed.onclick = () => {
+      fixed.addEventListener('click', function() {
         hayirCount++;
         evet.style.fontSize = (1.3 + hayirCount * 0.3) + 'em';
         if (hayirCount >= 5) { fixed.remove(); forcedYes(); }
-        else randomPos(fixed);
-      };
-    };
+        else { randomPos(fixed); }
+      });
+    });
 
     bEl.appendChild(evet);
     bEl.appendChild(hayir);
@@ -491,116 +468,160 @@ function renderQuiz() {
   } else if (phase === 2) {
     qEl.textContent = 'Beni özlüyor musun? 🥺';
 
-    const hayir = document.createElement('button');
-    hayir.className = 'btn-no-grow';
-    hayir.textContent = 'Hayır';
-    hayir.style.fontSize = '1.3em';
-    hayir.onclick = () => spawnEmojis(hayir, '🥺', 6);
+    var hayir2 = document.createElement('button');
+    hayir2.className = 'btn-no-grow';
+    hayir2.textContent = 'Hayır';
+    hayir2.style.fontSize = '1.3em';
+    (function(h) {
+      h.addEventListener('click', function() {
+        spawnEmojis(h, '🥺', 6);
+      });
+    })(hayir2);
 
-    const evet = document.createElement('button');
-    evet.className = 'btn-yes';
-    evet.textContent = 'Evet';
-    evet.onclick = () => {
-      evetCount++;
-      hayir.style.fontSize = (1.3 + evetCount * 0.45) + 'em';
-      if (evetCount >= 5) { phase = 3; renderQuiz(); }
-    };
+    var evet2 = document.createElement('button');
+    evet2.className = 'btn-yes';
+    evet2.textContent = 'Evet';
+    (function(h) {
+      evet2.addEventListener('click', function() {
+        evetCount++;
+        h.style.fontSize = (1.3 + evetCount * 0.45) + 'em';
+        if (evetCount >= 5) { phase = 3; renderQuiz(); }
+      });
+    })(hayir2);
 
-    bEl.appendChild(evet);
-    bEl.appendChild(hayir);
+    bEl.appendChild(evet2);
+    bEl.appendChild(hayir2);
 
   } else if (phase === 3) {
     qEl.textContent = 'Ben herzaman yanındayım, sen de aklımdasın hıh 🌸';
-    const heart = document.createElement('button');
+    var heart = document.createElement('button');
     heart.className = 'btn-emoji';
     heart.textContent = '❤️';
-    heart.onclick = () => { phase = 4; renderQuiz(); };
+    heart.addEventListener('click', function() { phase = 4; renderQuiz(); });
     bEl.appendChild(heart);
 
   } else if (phase === 4) {
     qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil mi? 💛';
-    const smile = document.createElement('button');
+    var smile = document.createElement('button');
     smile.className = 'btn-emoji';
     smile.textContent = '🙃';
-    smile.onclick = () => { showScreen('cake-screen'); confetti(); };
+    smile.addEventListener('click', function() {
+      showScreen('cake-screen');
+      confetti();
+    });
     bEl.appendChild(smile);
   }
 }
 
 function randomPos(btn) {
-  btn.style.left = (8  + Math.random()*62) + 'vw';
+  btn.style.left = (8 + Math.random()*62) + 'vw';
   btn.style.top  = (12 + Math.random()*62) + 'vh';
 }
 
 function forcedYes() {
-  const ov = document.createElement('div');
+  var ov = document.createElement('div');
   ov.className = 'forced-yes';
   ov.textContent = 'EVET 💛';
-  ov.onclick = () => { ov.remove(); phase = 2; evetCount = 0; renderQuiz(); };
+  ov.addEventListener('click', function() {
+    ov.remove();
+    phase = 2; evetCount = 0; renderQuiz();
+  });
   document.body.appendChild(ov);
 }
 
-// ── PASTA YE ──
-let cakeClicked = false;
-function eatCake() {
+// PASTA
+var cakeClicked = false;
+document.getElementById('cake-emoji').addEventListener('click', function() {
   if (cakeClicked) return;
   cakeClicked = true;
 
-  const cake = document.getElementById('cake-emoji');
-  const nom  = document.getElementById('nom-text');
-  const hint = document.getElementById('cake-hint');
-  const title = document.getElementById('cake-title');
+  var cake = document.getElementById('cake-emoji');
+  var nom  = document.getElementById('nom-text');
+  var hint = document.getElementById('cake-hint');
+  var title = document.getElementById('cake-title');
 
   hint.style.display = 'none';
-  cake.classList.add('eating');
-  cake.style.animation = 'none';
+  cake.style.animation = 'cake-shake 0.15s infinite';
   nom.style.display = 'block';
 
-  // Adım adım küçül
-  let bites = 0;
-  const sizes = ['5em','4em','3em','2em'];
-  const interval = setInterval(() => {
+  var sizes = ['4.5em','3.5em','2.5em','1.5em'];
+  var bites = 0;
+  var interval = setInterval(function() {
     bites++;
     if (bites < sizes.length) {
       cake.style.fontSize = sizes[bites];
     } else {
       clearInterval(interval);
       cake.textContent = '🍽️';
-      cake.classList.remove('eating');
+      cake.style.animation = 'none';
       cake.style.fontSize = '4em';
-      cake.style.cursor = 'default';
       nom.style.display = 'none';
       title.textContent = 'Hepsi bitti 😋';
-
-      // Zarf belir
-      setTimeout(() => {
-        document.getElementById('cake-wrap').style.display = 'none';
-        const envWrap = document.getElementById('env-wrap');
-        envWrap.style.display = 'flex';
+      setTimeout(function() {
+        nom.style.display = 'none';
+        hint.style.display = 'none';
+        var envelope = document.getElementById('envelope');
+        envelope.style.display = 'block';
+        title.textContent = 'Zarfa dokun 💌';
       }, 1000);
     }
   }, 500);
-}
+});
 
-// ── ZARF AÇ ──
-let envelopeOpened = false;
-function openEnvelope() {
-  if (envelopeOpened) return;
-  envelopeOpened = true;
-  document.getElementById('envelope').classList.add('open');
-}
+// ZARF
+var envOpened = false;
+document.getElementById('envelope').addEventListener('click', function() {
+  if (envOpened) return;
+  envOpened = true;
+  this.classList.add('open');
+  var letter = document.getElementById('letter');
+  setTimeout(function() {
+    letter.style.display = 'block';
+  }, 700);
+});
 
-// ── KONFETİ ──
+// KONFETİ
 function confetti() {
-  const renkler = ['#FF69B4','#FFD700','#FF6347','#98FB98','#87CEEB','#DDA0DD','#FFA500'];
-  for (let i = 0; i < 120; i++) {
-    setTimeout(() => {
-      const c = document.createElement('div');
-      c.className = 'confetti';
-      const size = 6 + Math.random() * 10;
-      c.style.cssText = `
-        left:${Math.random()*100}vw;top:-20px;
-        width:${size}px;height:${size}px;
-        background:${renkler[Math.floor(Math.random()*renkler.length)]};
-        border-radius:${Math.random()>.5?'50%':'3px'};
-       
+  var renkler = ['#FF69B4','#FFD700','#FF6347','#98FB98','#87CEEB','#DDA0DD','#FFA500'];
+  for (var i = 0; i < 120; i++) {
+    (function(idx) {
+      setTimeout(function() {
+        var c = document.createElement('div');
+        c.className = 'confetti';
+        var size = 6 + Math.random()*10;
+        c.style.left = Math.random()*100 + 'vw';
+        c.style.top = '-20px';
+        c.style.width = size + 'px';
+        c.style.height = size + 'px';
+        c.style.background = renkler[Math.floor(Math.random()*renkler.length)];
+        c.style.borderRadius = Math.random()>.5 ? '50%' : '3px';
+        c.style.animationDuration = (2.5+Math.random()*3) + 's';
+        c.style.animationDelay = Math.random()*1.5 + 's';
+        document.body.appendChild(c);
+        setTimeout(function() { c.remove(); }, 6000);
+      }, idx*25);
+    })(i);
+  }
+}
+
+// KALP EFEKTİ
+var kalpler = ['❤️','🩷','💛','💖','💗','💕','🤍'];
+function spawnHearts(x, y) {
+  var sayi = 7 + Math.floor(Math.random()*5);
+  for (var i = 0; i < sayi; i++) {
+    (function(idx) {
+      setTimeout(function() {
+        var el = document.createElement('div');
+        el.className = 'heart-particle';
+        el.textContent = kalpler[Math.floor(Math.random()*kalpler.length)];
+        var dx = (Math.random()-0.5)*90;
+        el.style.setProperty('--dx', dx+'px');
+        el.style.left = (x-12)+'px';
+        el.style.top  = (y-12)+'px';
+        el.style.fontSize = (1.1+Math.random()*1)+'em';
+        document.body.appendChild(el);
+        setTimeout(function() { el.remove(); }, 1100);
+      }, idx*50);
+    })(i);
+  }
+}
