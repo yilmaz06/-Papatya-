@@ -52,6 +52,43 @@
 
     .screen.active { display: flex; }
 
+    /* ── BAŞLANGIÇ ── */
+    .start-emoji {
+      font-size: 4.5em;
+      animation: float-ud 2s infinite ease-in-out alternate;
+    }
+    @keyframes float-ud {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-14px); }
+    }
+    .start-title {
+      color: #FFD700;
+      font-size: 2em;
+      font-weight: bold;
+      text-shadow: 0 0 18px #FFD700;
+    }
+    .start-sub {
+      color: #FFB6C1;
+      font-size: 1.2em;
+    }
+    .btn-start {
+      background: linear-gradient(135deg, #FF69B4, #ff3d9a);
+      color: white;
+      border: none;
+      padding: 18px 48px;
+      border-radius: 32px;
+      font-size: 1.5em;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 6px 20px rgba(255,105,180,0.5);
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .btn-start:active {
+      transform: scale(0.95);
+      filter: brightness(0.9);
+    }
+
     /* ── YARIŞ ── */
     .race-title {
       color: #FFD700;
@@ -162,7 +199,8 @@
       cursor: pointer;
       font-family: inherit;
       box-shadow: 0 4px 15px rgba(255,105,180,0.4);
-      transition: transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .btn-yes:active { transform: scale(0.95); }
@@ -178,7 +216,8 @@
       font-family: inherit;
       position: fixed;
       z-index: 50;
-      transition: font-size 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .btn-hayir-grow {
@@ -207,6 +246,8 @@
       cursor: pointer;
       text-shadow: 0 0 30px rgba(255,255,255,0.6);
       animation: pulse-bg 1s infinite alternate;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     @keyframes pulse-bg {
@@ -221,6 +262,8 @@
       cursor: pointer;
       animation: emoji-pulse 1.4s infinite ease-in-out;
       display: inline-block;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     @keyframes emoji-pulse {
@@ -265,8 +308,16 @@
 
 <div class="stars" id="stars"></div>
 
+<!-- BAŞLANGIÇ -->
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🐇🐰</div>
+  <div class="start-title">Bir Sürprizin Var!</div>
+  <div class="start-sub">Hazır mısın? 🌸</div>
+  <button class="btn-start" onclick="startRace()">Yarışı Başlat 🏁</button>
+</div>
+
 <!-- YARIŞ -->
-<div class="screen active" id="race-screen">
+<div class="screen" id="race-screen">
   <div class="race-title">🏁 Yarış Başlıyor! 🏁</div>
   <div class="race-track">
     <div class="lane">
@@ -327,10 +378,6 @@ function showScreen(id) {
 }
 
 // ── YARIŞ ──
-const r1 = document.getElementById('r1');
-const r2 = document.getElementById('r2');
-const msgEl = document.getElementById('race-msg');
-
 const raceMessages = [
   { t: 0,    text: '🏁 Yarış başladı!' },
   { t: 1800, text: '🐰 Tavşan 1 önde gidiyor!' },
@@ -357,20 +404,18 @@ function raceLoop(ts) {
   if (!raceStart) raceStart = ts;
   const elapsed = ts - raceStart;
   const t = Math.min(elapsed / RACE_MS, 1);
+  const r1 = document.getElementById('r1');
+  const r2 = document.getElementById('r2');
+  const msgEl = document.getElementById('race-msg');
 
-  // Mesajlar
   while (msgIdx < raceMessages.length && elapsed >= raceMessages[msgIdx].t) {
     msgEl.textContent = raceMessages[msgIdx].text;
     msgIdx++;
   }
 
-  // Tavşan 1: ilk %60'ta önde, sonra yorulur
-  let p1 = t < 0.6
-    ? t * 1.4 * 100
-    : 84 + (t - 0.6) * 0.4 * 100;
+  let p1 = t < 0.6 ? t * 1.4 * 100 : 84 + (t - 0.6) * 0.4 * 100;
   p1 = Math.min(p1, 100);
 
-  // Tavşan 2: yavaş başlar, t=0.5'ten hamle yapar, t=0.8'de kazanır
   let p2;
   if      (t < 0.5) p2 = t * 1.1 * 100;
   else if (t < 0.8) p2 = 55 + (t - 0.5) * 1.5 * 100;
@@ -379,13 +424,11 @@ function raceLoop(ts) {
   setPos(r1, p1);
   setPos(r2, p2);
 
-  // Tavşan 1 animasyonu
   clearAnim(r1);
   if      (t < 0.3) r1.classList.add('fast-run');
   else if (t < 0.6) r1.classList.add('hop');
   else               r1.classList.add('tired');
 
-  // Tavşan 2 animasyonu
   clearAnim(r2);
   if      (t < 0.5) r2.classList.add('hop');
   else if (t < 0.8) r2.classList.add('fast-run');
@@ -400,7 +443,12 @@ function raceLoop(ts) {
   }
 }
 
-requestAnimationFrame(raceLoop);
+function startRace() {
+  msgIdx = 0;
+  raceStart = null;
+  showScreen('race-screen');
+  requestAnimationFrame(raceLoop);
+}
 
 // ── QUIZ ──
 let phase = 1;
@@ -415,13 +463,12 @@ function startQuiz() {
 }
 
 function renderQuiz() {
-  const qEl   = document.getElementById('quiz-q');
-  const bEl   = document.getElementById('quiz-btns');
+  const qEl = document.getElementById('quiz-q');
+  const bEl = document.getElementById('quiz-btns');
   bEl.innerHTML = '';
 
   if (phase === 1) {
-    // ── SORU 1 ──
-    qEl.textContent = 'Beni seviyormusunnnnn 💛';
+    qEl.textContent = 'Beni seviyormusunnnnn ❤️';
 
     const evet = document.createElement('button');
     evet.className = 'btn-yes';
@@ -447,8 +494,7 @@ function renderQuiz() {
     bEl.appendChild(hayir);
 
   } else if (phase === 2) {
-    // ── SORU 2 ──
-    qEl.textContent = 'Beni özlüyor musun? 🥺';
+    qEl.textContent = 'Peki beni özlermisinnn? 🥺';
 
     const hayir = document.createElement('button');
     hayir.className = 'btn-hayir-grow';
@@ -467,7 +513,6 @@ function renderQuiz() {
     bEl.appendChild(hayir);
 
   } else if (phase === 3) {
-    // ── SORU 3 ──
     qEl.textContent = 'Ben herzaman yanındayım, sen de aklımdasın hıh 🌸';
 
     const heart = document.createElement('button');
@@ -478,8 +523,7 @@ function renderQuiz() {
     bEl.appendChild(heart);
 
   } else if (phase === 4) {
-    // ── SORU 4 ──
-    qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil mi? 💛';
+    qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil mi? ❤️';
 
     const smile = document.createElement('button');
     smile.className = 'btn-emoji';
@@ -498,7 +542,7 @@ function randomPos(btn) {
 function forcedYes() {
   const ov = document.createElement('div');
   ov.className = 'forced-yes';
-  ov.textContent = 'EVET 💛';
+  ov.textContent = 'EVET ❤️';
   ov.onclick = () => {
     document.body.removeChild(ov);
     phase = 2;
