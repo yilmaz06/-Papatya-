@@ -205,7 +205,7 @@
 
     .btn-yes:active { transform: scale(0.95); }
 
-    .btn-no {
+    .btn-hayir-grow {
       background: #555;
       color: white;
       border: none;
@@ -214,22 +214,9 @@
       font-size: 1.2em;
       cursor: pointer;
       font-family: inherit;
-      position: fixed;
-      z-index: 50;
+      transition: font-size 0.3s;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
-    }
-
-    .btn-hayir-grow {
-      background: #555;
-      color: white;
-      border: none;
-      padding: 14px 32px;
-      border-radius: 25px;
-      font-size: 1.2em;
-      cursor: default;
-      font-family: inherit;
-      transition: font-size 0.3s;
     }
 
     .forced-yes {
@@ -269,6 +256,20 @@
     @keyframes emoji-pulse {
       0%, 100% { transform: scale(1); }
       50%       { transform: scale(1.2); }
+    }
+
+    /* ── ÜZGÜN EMOJİ UÇMA ── */
+    .float-emoji {
+      position: fixed;
+      font-size: 1.8em;
+      pointer-events: none;
+      z-index: 300;
+      animation: ucup 1.3s ease-out forwards;
+    }
+
+    @keyframes ucup {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-130px) scale(1.4); opacity: 0; }
     }
 
     /* ── PASTA ── */
@@ -468,7 +469,7 @@ function renderQuiz() {
   bEl.innerHTML = '';
 
   if (phase === 1) {
-    qEl.textContent = 'Beni seviyormusunnnnn ❤️';
+    qEl.textContent = 'Beni seviyormusunnnnn 💛';
 
     const evet = document.createElement('button');
     evet.className = 'btn-yes';
@@ -476,25 +477,33 @@ function renderQuiz() {
     evet.style.fontSize = (1.2 + hayirCount * 0.3) + 'em';
     evet.onclick = () => { phase = 2; evetCount = 0; renderQuiz(); };
 
+    // Hayır başta inline, ilk tıkta kaçar
     const hayir = document.createElement('button');
-    hayir.className = 'btn-no';
     hayir.textContent = 'Hayır';
-    randomPos(hayir);
+    hayir.style.cssText = 'background:#555;color:white;border:none;padding:14px 32px;border-radius:25px;font-size:1.2em;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;';
+    let kacti = false;
+
     hayir.onclick = () => {
       hayirCount++;
       evet.style.fontSize = (1.2 + hayirCount * 0.3) + 'em';
       if (hayirCount >= 5) {
         forcedYes();
-      } else {
-        randomPos(hayir);
+        return;
       }
+      if (!kacti) {
+        kacti = true;
+        hayir.style.position = 'fixed';
+        hayir.style.zIndex = '50';
+        document.body.appendChild(hayir);
+      }
+      randomPos(hayir);
     };
 
     bEl.appendChild(evet);
     bEl.appendChild(hayir);
 
   } else if (phase === 2) {
-    qEl.textContent = 'Peki beni özlermisinnn? 🥺';
+    qEl.textContent = 'Beni özlüyor musun? 🥺';
 
     const hayir = document.createElement('button');
     hayir.className = 'btn-hayir-grow';
@@ -507,6 +516,21 @@ function renderQuiz() {
       evetCount++;
       hayir.style.fontSize = (1.2 + evetCount * 0.5) + 'em';
       if (evetCount >= 3) { phase = 3; renderQuiz(); }
+    };
+
+    // Hayıra basınca üzgün emojiler uçar
+    hayir.onclick = () => {
+      const rect = hayir.getBoundingClientRect();
+      for (let i = 0; i < 6; i++) {
+        const el = document.createElement('div');
+        el.className = 'float-emoji';
+        el.textContent = '🥺';
+        el.style.left = (rect.left + rect.width / 2 - 15 + (Math.random() - 0.5) * 80) + 'px';
+        el.style.top  = (rect.top - 10) + 'px';
+        el.style.animationDelay = (i * 0.07) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1600);
+      }
     };
 
     bEl.appendChild(evet);
@@ -523,7 +547,7 @@ function renderQuiz() {
     bEl.appendChild(heart);
 
   } else if (phase === 4) {
-    qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil mi? ❤️';
+    qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil mi? 💛';
 
     const smile = document.createElement('button');
     smile.className = 'btn-emoji';
