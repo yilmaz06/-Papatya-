@@ -3,176 +3,261 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sürpriz!</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <title>🐇 Sürpriz!</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       background: #0a0a1a;
       min-height: 100vh;
-      font-family: 'Nunito', cursive, sans-serif;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 2s infinite alternate; }
-    @keyframes twinkle { from{opacity:0.15} to{opacity:1} }
+
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.2; }
+      to   { opacity: 1;   }
+    }
 
     .screen {
-      position: relative; z-index: 1;
-      width: 100%; max-width: 480px;
-      padding: 24px; text-align: center;
-      display: none; flex-direction: column;
-      align-items: center; gap: 22px;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      text-align: center;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
     }
+
     .screen.active { display: flex; }
 
-    /* BAŞLANGIÇ */
-    .start-emoji { font-size: 5em; animation: float-ud 2s infinite ease-in-out alternate; }
-    @keyframes float-ud { from{transform:translateY(0)} to{transform:translateY(-14px)} }
-    .start-title { color:#FFD700; font-size:2.2em; font-weight:900; text-shadow:0 0 20px #FFD700; }
-    .start-sub { color:#FFB6C1; font-size:1.3em; font-weight:700; }
-    .btn-start {
-      background: linear-gradient(135deg,#FF69B4,#ff3d9a);
-      color: white; border: none;
-      padding: 18px 50px; border-radius: 32px;
-      font-size: 1.6em; font-weight: 900; font-family: inherit;
-      cursor: pointer; box-shadow: 0 6px 22px rgba(255,105,180,0.55);
-      -webkit-tap-highlight-color: transparent;
+    /* ── YARIŞ ── */
+    .race-title {
+      color: #FFD700;
+      font-size: 1.4em;
+      text-shadow: 0 0 10px #FFD700;
     }
 
-    /* YARIŞ */
-    .race-title { color:#FFD700; font-size:1.8em; font-weight:900; text-shadow:0 0 14px #FFD700; }
-    .race-track { width:100%; background:#1a1a3e; border-radius:18px; padding:16px 12px; }
-    .lane { display:flex; align-items:center; margin-bottom:14px; }
-    .lane:last-child { margin-bottom:0; }
-    .lane-label { color:#aaa; font-size:1em; font-weight:700; width:24px; flex-shrink:0; }
-    .lane-track { flex:1; height:46px; background:#2a2a5e; border-radius:23px; position:relative; overflow:hidden; }
+    .race-track {
+      width: 100%;
+      background: #1a1a3e;
+      border-radius: 15px;
+      padding: 15px 10px;
+    }
+
+    .lane {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .lane:last-child { margin-bottom: 0; }
+
+    .lane-label {
+      color: #aaa;
+      width: 22px;
+      font-size: 0.85em;
+      flex-shrink: 0;
+    }
+
+    .lane-track {
+      flex: 1;
+      height: 44px;
+      background: #2a2a5e;
+      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
     .finish-line {
-      position:absolute; right:0; top:0; bottom:0; width:5px;
-      background:repeating-linear-gradient(to bottom,white 0,white 5px,#0a0a1a 5px,#0a0a1a 10px);
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: repeating-linear-gradient(
+        to bottom,
+        white 0px, white 5px,
+        #0a0a1a 5px, #0a0a1a 10px
+      );
     }
-    .rabbit { position:absolute; font-size:1.9em; top:50%; left:0; transform:translateY(-50%); }
-    @keyframes hop { 0%,100%{transform:translateY(-50%)} 50%{transform:translateY(-78%)} }
+
+    .rabbit {
+      position: absolute;
+      font-size: 1.8em;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+
+    @keyframes hop {
+      0%, 100% { transform: translateY(-50%); }
+      50%       { transform: translateY(-75%); }
+    }
+
     @keyframes fast-shake {
-      0%,100%{transform:translateY(-50%) translateX(0)}
-      33%{transform:translateY(-60%) translateX(-1px)}
-      66%{transform:translateY(-42%) translateX(1px)}
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      33%       { transform: translateY(-58%) translateX(-1px); }
+      66%       { transform: translateY(-42%) translateX(1px); }
     }
+
     @keyframes tired-sway {
-      0%,100%{transform:translateY(-50%) rotate(-7deg)}
-      50%{transform:translateY(-43%) rotate(7deg)}
+      0%, 100% { transform: translateY(-50%) rotate(-6deg); }
+      50%       { transform: translateY(-44%) rotate(6deg); }
     }
-    .hop      { animation:hop        0.35s infinite ease-in-out; }
-    .fast-run { animation:fast-shake 0.13s infinite; }
-    .tired    { animation:tired-sway 0.6s  infinite ease-in-out; }
-    .race-msg { color:#FFB6C1; font-size:1.2em; font-weight:700; min-height:30px; }
 
-    /* QUIZ */
-    .quiz-q { color:#FFD700; font-size:1.7em; font-weight:900; text-shadow:0 0 14px #FFD700; line-height:1.45; }
-    .quiz-btns { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; align-items:center; min-height:70px; }
+    .hop       { animation: hop 0.35s infinite ease-in-out; }
+    .fast-run  { animation: fast-shake 0.12s infinite; }
+    .tired     { animation: tired-sway 0.55s infinite ease-in-out; }
+
+    .race-msg {
+      color: #FFB6C1;
+      font-size: 1.05em;
+      min-height: 28px;
+    }
+
+    /* ── QUIZ ── */
+    .quiz-q {
+      color: #FFD700;
+      font-size: 1.45em;
+      text-shadow: 0 0 10px #FFD700;
+      line-height: 1.5;
+    }
+
+    .quiz-btns {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 70px;
+      align-items: center;
+    }
+
     .btn-yes {
-      background:linear-gradient(135deg,#FF69B4,#ff3d9a);
-      color:white; border:none; padding:15px 34px; border-radius:28px;
-      font-size:1.3em; font-weight:900; font-family:inherit; cursor:pointer;
-      box-shadow:0 4px 16px rgba(255,105,180,0.45);
-      -webkit-tap-highlight-color:transparent;
+      background: linear-gradient(135deg, #FF69B4, #ff4da6);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 25px;
+      font-size: 1.2em;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+      transition: transform 0.15s;
     }
-    .btn-no-inline {
-      background:#555; color:white; border:none; padding:15px 34px;
-      border-radius:28px; font-size:1.3em; font-weight:900;
-      font-family:inherit; cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
+
+    .btn-yes:active { transform: scale(0.95); }
+
+    .btn-no {
+      background: #555;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 25px;
+      font-size: 1.2em;
+      cursor: pointer;
+      font-family: inherit;
+      position: fixed;
+      z-index: 50;
+      transition: font-size 0.2s;
     }
-    .btn-no-fixed {
-      background:#555; color:white; border:none; padding:15px 34px;
-      border-radius:28px; font-size:1.3em; font-weight:900;
-      font-family:inherit; cursor:pointer; position:fixed; z-index:50;
-      -webkit-tap-highlight-color:transparent;
+
+    .btn-hayir-grow {
+      background: #555;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 25px;
+      font-size: 1.2em;
+      cursor: default;
+      font-family: inherit;
+      transition: font-size 0.3s;
     }
-    .btn-no-grow {
-      background:#555; color:white; border:none; padding:15px 34px;
-      border-radius:28px; font-size:1.3em; font-weight:900;
-      font-family:inherit; cursor:pointer; transition:font-size 0.3s;
-      -webkit-tap-highlight-color:transparent;
-    }
+
     .forced-yes {
-      position:fixed; inset:0;
-      background:linear-gradient(135deg,#FF69B4,#ff3d9a);
-      display:flex; align-items:center; justify-content:center;
-      font-size:5.5em; font-weight:900; color:white; z-index:200; cursor:pointer;
-      text-shadow:0 0 30px rgba(255,255,255,0.6);
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #FF69B4, #ff4da6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5em;
+      color: white;
+      font-weight: bold;
+      z-index: 200;
+      cursor: pointer;
+      text-shadow: 0 0 30px rgba(255,255,255,0.6);
+      animation: pulse-bg 1s infinite alternate;
     }
+
+    @keyframes pulse-bg {
+      from { filter: brightness(1); }
+      to   { filter: brightness(1.2); }
+    }
+
     .btn-emoji {
-      background:none; border:none; font-size:4.5em; cursor:pointer;
-      display:inline-block; animation:emoji-pulse 1.4s infinite ease-in-out;
-      -webkit-tap-highlight-color:transparent;
+      background: none;
+      border: none;
+      font-size: 4em;
+      cursor: pointer;
+      animation: emoji-pulse 1.4s infinite ease-in-out;
+      display: inline-block;
     }
-    @keyframes emoji-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
 
-    /* PASTA */
+    @keyframes emoji-pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.2); }
+    }
+
+    /* ── PASTA ── */
     .cake-emoji {
-      font-size:5.5em; cursor:pointer; display:inline-block;
-      animation:cake-bounce 0.85s infinite alternate ease-in-out;
-      -webkit-tap-highlight-color:transparent;
+      font-size: 5em;
+      animation: cake-bounce 0.8s infinite alternate ease-in-out;
     }
-    @keyframes cake-bounce { from{transform:translateY(0)} to{transform:translateY(-18px)} }
-    @keyframes cake-shake {
-      0%,100%{transform:rotate(-8deg) scale(0.95)}
-      50%{transform:rotate(8deg) scale(0.9)}
-    }
-    .cake-msg { color:#FFD700; font-size:1.4em; font-weight:700; text-shadow:0 0 14px #FFD700; line-height:1.7; }
-    .cake-hint { color:#FFB6C1; font-size:1em; font-weight:700; animation:blink 1.4s infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    .nom-text { color:#FF69B4; font-size:2em; font-weight:900; display:none; }
 
-    /* ZARF */
-    .envelope { width:240px; height:160px; position:relative; cursor:pointer; display:none; -webkit-tap-highlight-color:transparent; }
-    .env-body {
-      position:absolute; bottom:0; left:0; right:0; height:140px;
-      background:#FFF0F5; border:2px solid #FFB6C1; border-radius:6px 6px 14px 14px;
+    @keyframes cake-bounce {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-18px); }
     }
-    .env-body::after {
-      content:''; position:absolute; top:0; left:0; right:0; height:70px;
-      background: linear-gradient(to bottom right,#FFD0E0 50%,transparent 50%),
-                  linear-gradient(to bottom left,#FFD0E0 50%,transparent 50%);
-      background-size:50% 100%; background-position:left top,right top; background-repeat:no-repeat;
-    }
-    .env-icon { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); font-size:2.2em; z-index:2; }
-    .env-flap {
-      position:absolute; top:-2px; left:-2px; right:-2px; z-index:4;
-      height:80px; background:#FFB6C1;
-      clip-path:polygon(0 0,100% 0,50% 100%);
-      border-radius:6px 6px 0 0;
-      transform-origin:top center; transition:transform 0.6s ease;
-    }
-    .envelope.open .env-flap { transform:rotateX(180deg); }
-    .letter {
-      display:none; background:white; border:1.5px solid #FFD0E0;
-      border-radius:14px; padding:18px; text-align:center;
-      animation:letter-in 0.6s ease-out;
-    }
-    @keyframes letter-in { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .letter-deco { font-size:1.4em; margin:6px 0; }
-    .letter-text { color:#cc3366; font-size:1em; font-weight:700; line-height:1.8; margin:10px 0; }
 
-    /* KONFETİ */
-    .confetti { position:fixed; pointer-events:none; animation:fall linear forwards; z-index:999; }
+    .cake-msg {
+      color: #FFD700;
+      font-size: 1.3em;
+      text-shadow: 0 0 12px #FFD700;
+      line-height: 1.7;
+    }
+
+    /* ── KONFETİ ── */
+    .confetti {
+      position: fixed;
+      border-radius: 2px;
+      animation: fall linear forwards;
+      z-index: 999;
+      pointer-events: none;
+    }
+
     @keyframes fall {
-      0%{transform:translateY(-40px) rotate(0deg);opacity:1}
-      100%{transform:translateY(110vh) rotate(720deg);opacity:0}
-    }
-
-    /* UÇAN EMOJİ */
-    .floating-emoji {
-      position:fixed; font-size:1.8em; pointer-events:none; z-index:100;
-      animation:float-up 1.4s ease-out forwards;
-    }
-    @keyframes float-up {
-      0%{transform:translateY(0) scale(1);opacity:1}
-      100%{transform:translateY(-120px) scale(1.4);opacity:0}
+      0%   { transform: translateY(-40px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh)  rotate(720deg); opacity: 0; }
     }
   </style>
 </head>
@@ -180,28 +265,20 @@
 
 <div class="stars" id="stars"></div>
 
-<!-- BAŞLANGIÇ -->
-<div class="screen active" id="start-screen">
-  <div class="start-emoji">🐇🐰</div>
-  <div class="start-title">Bir Sürprizin Var!</div>
-  <div class="start-sub">Hazır mısın? 🌸</div>
-  <button class="btn-start" onclick="startRace()">Yarışı Başlat 🏁</button>
-</div>
-
 <!-- YARIŞ -->
-<div class="screen" id="race-screen">
-  <div class="race-title">🏁 Yarış Başladı! 🏁</div>
+<div class="screen active" id="race-screen">
+  <div class="race-title">🏁 Yarış Başlıyor! 🏁</div>
   <div class="race-track">
     <div class="lane">
       <div class="lane-label">1</div>
-      <div class="lane-track">
+      <div class="lane-track" id="track1">
         <div class="finish-line"></div>
         <div class="rabbit" id="r1">🐰</div>
       </div>
     </div>
     <div class="lane">
       <div class="lane-label">2</div>
-      <div class="lane-track">
+      <div class="lane-track" id="track2">
         <div class="finish-line"></div>
         <div class="rabbit" id="r2">🐇</div>
       </div>
@@ -218,12 +295,241 @@
 
 <!-- PASTA -->
 <div class="screen" id="cake-screen">
-  <div class="cake-msg" id="cake-title">🎉 İyiki doğdun prenses! 🎉</div>
-  <div class="cake-emoji" id="cake-emoji" onclick="eatCake()">🎂</div>
-  <div class="nom-text" id="nom-text">nom nom 😋</div>
-  <div class="cake-hint" id="cake-hint">Pastaya dokun 🎂</div>
-  <div class="envelope" id="envelope" onclick="openEnvelope()">
-    <div class="env-flap"></div>
-    <div class="env-body"><div class="env-icon">💌</div></div>
+  <div class="cake-emoji">🎂</div>
+  <div class="cake-msg">
+    🎉 İyiki doğdun prenses! 🎉<br><br>
+    Sen olmasan eksik olurdu...<br>
+    Her şey senin için 💛
   </div>
-  <div class="letter" id="letter
+</div>
+
+<script>
+// ── YILDIZLAR ──
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 3 + 1;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%;
+    top:${Math.random()*100}%;
+    animation-delay:${Math.random()*3}s;
+    animation-duration:${1.5+Math.random()*2}s;
+  `;
+  starsEl.appendChild(s);
+}
+
+// ── EKRAN GEÇİŞİ ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── YARIŞ ──
+const r1 = document.getElementById('r1');
+const r2 = document.getElementById('r2');
+const msgEl = document.getElementById('race-msg');
+
+const raceMessages = [
+  { t: 0,    text: '🏁 Yarış başladı!' },
+  { t: 1800, text: '🐰 Tavşan 1 önde gidiyor!' },
+  { t: 4000, text: '😤 Tavşan 2 yaklaşıyor...' },
+  { t: 6000, text: '😱 Tavşan 2 geçiyor!!!' },
+  { t: 8200, text: '🎉 Tavşan 2 kazandı!!!' },
+];
+
+let msgIdx = 0;
+let raceStart = null;
+const RACE_MS = 10000;
+
+function setPos(rabbit, pct) {
+  const track = rabbit.parentElement;
+  const max = track.offsetWidth - rabbit.offsetWidth - 6;
+  rabbit.style.left = Math.max(0, Math.min((pct / 100) * max, max)) + 'px';
+}
+
+function clearAnim(el) {
+  el.classList.remove('hop', 'fast-run', 'tired');
+}
+
+function raceLoop(ts) {
+  if (!raceStart) raceStart = ts;
+  const elapsed = ts - raceStart;
+  const t = Math.min(elapsed / RACE_MS, 1);
+
+  // Mesajlar
+  while (msgIdx < raceMessages.length && elapsed >= raceMessages[msgIdx].t) {
+    msgEl.textContent = raceMessages[msgIdx].text;
+    msgIdx++;
+  }
+
+  // Tavşan 1: ilk %60'ta önde, sonra yorulur
+  let p1 = t < 0.6
+    ? t * 1.4 * 100
+    : 84 + (t - 0.6) * 0.4 * 100;
+  p1 = Math.min(p1, 100);
+
+  // Tavşan 2: yavaş başlar, t=0.5'ten hamle yapar, t=0.8'de kazanır
+  let p2;
+  if      (t < 0.5) p2 = t * 1.1 * 100;
+  else if (t < 0.8) p2 = 55 + (t - 0.5) * 1.5 * 100;
+  else               p2 = 100;
+
+  setPos(r1, p1);
+  setPos(r2, p2);
+
+  // Tavşan 1 animasyonu
+  clearAnim(r1);
+  if      (t < 0.3) r1.classList.add('fast-run');
+  else if (t < 0.6) r1.classList.add('hop');
+  else               r1.classList.add('tired');
+
+  // Tavşan 2 animasyonu
+  clearAnim(r2);
+  if      (t < 0.5) r2.classList.add('hop');
+  else if (t < 0.8) r2.classList.add('fast-run');
+
+  if (t < 1) {
+    requestAnimationFrame(raceLoop);
+  } else {
+    setTimeout(() => {
+      showScreen('quiz-screen');
+      startQuiz();
+    }, 2500);
+  }
+}
+
+requestAnimationFrame(raceLoop);
+
+// ── QUIZ ──
+let phase = 1;
+let hayirCount = 0;
+let evetCount  = 0;
+
+function startQuiz() {
+  phase = 1;
+  hayirCount = 0;
+  evetCount  = 0;
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const qEl   = document.getElementById('quiz-q');
+  const bEl   = document.getElementById('quiz-btns');
+  bEl.innerHTML = '';
+
+  if (phase === 1) {
+    // ── SORU 1 ──
+    qEl.textContent = 'Beni seviyormusunnnnn 💛';
+
+    const evet = document.createElement('button');
+    evet.className = 'btn-yes';
+    evet.textContent = 'Evet';
+    evet.style.fontSize = (1.2 + hayirCount * 0.3) + 'em';
+    evet.onclick = () => { phase = 2; evetCount = 0; renderQuiz(); };
+
+    const hayir = document.createElement('button');
+    hayir.className = 'btn-no';
+    hayir.textContent = 'Hayır';
+    randomPos(hayir);
+    hayir.onclick = () => {
+      hayirCount++;
+      evet.style.fontSize = (1.2 + hayirCount * 0.3) + 'em';
+      if (hayirCount >= 5) {
+        forcedYes();
+      } else {
+        randomPos(hayir);
+      }
+    };
+
+    bEl.appendChild(evet);
+    bEl.appendChild(hayir);
+
+  } else if (phase === 2) {
+    // ── SORU 2 ──
+    qEl.textContent = 'Beni özlüyor musun? 🥺';
+
+    const hayir = document.createElement('button');
+    hayir.className = 'btn-hayir-grow';
+    hayir.textContent = 'Hayır';
+
+    const evet = document.createElement('button');
+    evet.className = 'btn-yes';
+    evet.textContent = 'Evet';
+    evet.onclick = () => {
+      evetCount++;
+      hayir.style.fontSize = (1.2 + evetCount * 0.5) + 'em';
+      if (evetCount >= 3) { phase = 3; renderQuiz(); }
+    };
+
+    bEl.appendChild(evet);
+    bEl.appendChild(hayir);
+
+  } else if (phase === 3) {
+    // ── SORU 3 ──
+    qEl.textContent = 'Ben herzaman yanındayım, sen de aklımdasın hıh 🌸';
+
+    const heart = document.createElement('button');
+    heart.className = 'btn-emoji';
+    heart.textContent = '❤️';
+    heart.onclick = () => { phase = 4; renderQuiz(); };
+
+    bEl.appendChild(heart);
+
+  } else if (phase === 4) {
+    // ── SORU 4 ──
+    qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil mi? 💛';
+
+    const smile = document.createElement('button');
+    smile.className = 'btn-emoji';
+    smile.textContent = '🙃';
+    smile.onclick = () => { showScreen('cake-screen'); confetti(); };
+
+    bEl.appendChild(smile);
+  }
+}
+
+function randomPos(btn) {
+  btn.style.left = (8 + Math.random() * 65) + 'vw';
+  btn.style.top  = (10 + Math.random() * 65) + 'vh';
+}
+
+function forcedYes() {
+  const ov = document.createElement('div');
+  ov.className = 'forced-yes';
+  ov.textContent = 'EVET 💛';
+  ov.onclick = () => {
+    document.body.removeChild(ov);
+    phase = 2;
+    evetCount = 0;
+    renderQuiz();
+  };
+  document.body.appendChild(ov);
+}
+
+// ── KONFETİ ──
+function confetti() {
+  const renkler = ['#FF69B4','#FFD700','#FF6347','#98FB98','#87CEEB','#DDA0DD','#FFA500'];
+  for (let i = 0; i < 120; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      const size = 6 + Math.random() * 10;
+      c.style.cssText = `
+        left:${Math.random()*100}vw;
+        top:-20px;
+        width:${size}px; height:${size}px;
+        background:${renkler[Math.floor(Math.random()*renkler.length)]};
+        border-radius:${Math.random()>.5?'50%':'3px'};
+        animation-duration:${2.5+Math.random()*3}s;
+        animation-delay:${Math.random()*1.5}s;
+      `;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 6000);
+    }, i * 25);
+  }
+}
+</script>
+</body>
+</html>
