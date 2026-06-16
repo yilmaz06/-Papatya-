@@ -116,7 +116,6 @@
 
     /* PASTA EKRANI */
     .cake-msg { color: #FFD700; font-size: 1.3em; text-shadow: 0 0 12px #FFD700; line-height: 1.7; }
-
     .cake-wrap {
       display: flex; flex-direction: column; align-items: center; gap: 10px;
       cursor: pointer;
@@ -153,7 +152,6 @@
       to   { transform: translateY(0); opacity: 1; }
     }
     .zarf-hint { color: white; font-size: 1em; animation: yanip 1.2s infinite alternate; }
-
     .zarf {
       width: 200px; height: 140px;
       position: relative; cursor: pointer;
@@ -172,9 +170,7 @@
       transition: transform 0.5s ease;
       z-index: 2;
     }
-    .zarf.acik .zarf-kapak {
-      transform: rotateX(180deg);
-    }
+    .zarf.acik .zarf-kapak { transform: rotateX(180deg); }
     .zarf-ici {
       position: absolute; bottom: 12px; left: 50%;
       transform: translateX(-50%);
@@ -205,14 +201,72 @@
       100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
     }
 
+    /* GİRİŞ EKRANI */
+    .intro-stage {
+      width: 100%; background: #1a1a3e;
+      border-radius: 15px; height: 110px;
+      position: relative; overflow: hidden;
+    }
+    .intro-ground {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 14px;
+      background: #2e5c1e; border-radius: 0 0 15px 15px;
+    }
+    .intro-rabbit {
+      position: absolute; bottom: 14px; font-size: 2.2em;
+      transition: left 0.45s ease;
+    }
+    #ir-right { transform: scaleX(-1); right: 4%; }
+    .intro-bubble {
+      position: absolute; background: white; color: #cc3366;
+      border-radius: 12px; padding: 6px 12px; font-size: 0.85em;
+      font-weight: bold; white-space: nowrap; bottom: 75px; display: none;
+      animation: bubble-pop 0.3s ease-out;
+    }
+    @keyframes bubble-pop {
+      from { transform: scale(0.6); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .intro-bubble::after {
+      content: ''; position: absolute; bottom: -8px; left: 16px;
+      border: 5px solid transparent; border-top-color: white;
+    }
+    #bubble-right { right: 4%; }
+    #bubble-right::after { left: auto; right: 16px; }
+    @keyframes intro-hop {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+    .intro-walking { animation: intro-hop 0.3s infinite ease-in-out; }
+    .btn-intro {
+      background: linear-gradient(135deg, #FF69B4, #ff3d9a);
+      color: white; border: none; padding: 16px 46px; border-radius: 30px;
+      font-size: 1.4em; cursor: pointer; font-family: inherit;
+      box-shadow: 0 6px 20px rgba(255,105,180,0.5);
+      -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    }
+    .btn-intro:active { transform: scale(0.95); }
+
   </style>
 </head>
 <body>
 
 <div class="stars" id="stars"></div>
 
+<!-- GİRİŞ -->
+<div class="screen active" id="intro-screen">
+  <div class="start-title">Sana bir şeyim var... 🌸</div>
+  <div class="intro-stage">
+    <div class="intro-ground"></div>
+    <div class="intro-rabbit intro-walking" id="ir-left" style="left:3%">🐰</div>
+    <div class="intro-rabbit" id="ir-right">🐇</div>
+    <div class="intro-bubble" id="bubble-left">Yarışalım mı? 🏁</div>
+    <div class="intro-bubble" id="bubble-right">Olurrrrr! 🎉</div>
+  </div>
+  <button class="btn-intro" id="intro-btn" onclick="introStep()">Yürü 🐇</button>
+</div>
+
 <!-- BAŞLANGIÇ -->
-<div class="screen active" id="start-screen">
+<div class="screen" id="start-screen">
   <div class="start-emoji">🐇🐰</div>
   <div class="start-title">Bir Sürprizin Var!</div>
   <div class="start-sub">Hazır mısın? 🌸</div>
@@ -268,17 +322,45 @@
   <div class="mektup" id="mektup">
     🌸 🌼 🌸<br><br>
     Bu siteyi sana yapmak için<br>
-    çok düşündüm... 🙃<br><br>
+    çok düşündüm... 🥹<br><br>
     Her animasyon, her tavşan<br>
     senin için yapıldı 🐇<br><br>
     Doğum günün kutlu olsun,<br>
-    <strong>iyiki varsınnn❤️</strong><br><br>
+    <strong>prensesim 💛</strong><br><br>
     Seni çok seviyorum ❤️<br><br>
-    🌼 ❤️ 🌼
+    🌼 💛 🌼
   </div>
 </div>
 
 <script>
+
+  /* GİRİŞ EKRANI */
+  var introPos = 3, introReached = false;
+
+  function introStep() {
+    if (introReached) return;
+    introPos += 14;
+    var rab = document.getElementById('ir-left');
+    rab.style.left = introPos + '%';
+    if (introPos >= 62) {
+      introReached = true;
+      rab.classList.remove('intro-walking');
+      var btn = document.getElementById('intro-btn');
+      btn.textContent = 'Konuş 💬';
+      btn.onclick = introKonus;
+    }
+  }
+
+  function introKonus() {
+    document.getElementById('intro-btn').style.display = 'none';
+    document.getElementById('bubble-left').style.display = 'block';
+    setTimeout(function() {
+      document.getElementById('bubble-right').style.display = 'block';
+      setTimeout(function() {
+        showScreen('start-screen');
+      }, 1600);
+    }, 1300);
+  }
 
   /* YILDIZLAR */
   var starsEl = document.getElementById('stars');
@@ -413,7 +495,7 @@
       bEl.appendChild(evet); bEl.appendChild(hayir);
 
     } else if (phase === 2) {
-      qEl.textContent = 'Peki beni özlermisinnnn? 🥺';
+      qEl.textContent = 'Beni özlüyor musun? 🥺';
 
       var evet2  = document.createElement('button');
       evet2.className = 'btn-yes'; evet2.textContent = 'Evet';
@@ -451,103 +533,130 @@
       bEl.appendChild(heart);
 
     } else if (phase === 4) {
-      qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil miiii? ❤️';
-      var smile = document.createElement('button');
-      smile.className = 'btn-emoji'; smile.textContent = '🙃';
-      smile.onclick = function() { showScreen('cake-screen'); confetti(); };
-      bEl.appendChild(smile);
-    }
-  }
+      qEl.textContent = 'Seni çok seviyorum, bunu biliyorsun değil mi? ❤️';
+      var smile = document.createElement("button");
+          smile.className = "btn-emoji";
+          smile.textContent = "🙃";
+          smile.onclick = function () {
+            showScreen("cake-screen");
+            confetti();
+          };
+          bEl.appendChild(smile);
+        }
+      }
 
-  function randomPos(btn) {
-    btn.style.left = (8  + Math.random() * 65) + 'vw';
-    btn.style.top  = (10 + Math.random() * 65) + 'vh';
-  }
+      function randomPos(btn) {
+        btn.style.left = 8 + Math.random() * 65 + "vw";
+        btn.style.top = 10 + Math.random() * 65 + "vh";
+      }
 
-  function forcedYes() {
-    var ov = document.createElement('div');
-    ov.className = 'forced-yes'; ov.textContent = 'EVET ❤️';
-    ov.onclick = function() {
-      document.body.removeChild(ov);
-      phase = 2; evetCount = 0; renderQuiz();
-    };
-    document.body.appendChild(ov);
-  }
+      function forcedYes() {
+        var ov = document.createElement("div");
+        ov.className = "forced-yes";
+        ov.textContent = "EVET ❤️";
+        ov.onclick = function () {
+          document.body.removeChild(ov);
+          phase = 2;
+          evetCount = 0;
+          renderQuiz();
+        };
+        document.body.appendChild(ov);
+      }
 
-  /* PASTA YEME */
-  var pastaBoyutlar = ['6em', '5em', '4em', '3em', '2em'];
-  var nomSozler     = ['nam 😋', 'nam nam 😋', 'hap! 😋', 'yum! 😋', 'hap hap 😋'];
-  var pastaTik      = 0;
+      /* PASTA YEME */
+      var pastaBoyutlar = ["6em", "5em", "4em", "3em", "2em"];
+      var nomSozler = [
+        "nom 😋",
+        "nom nom 😋",
+        "hap! 😋",
+        "yum! 😋",
+        "hap hap 😋",
+      ];
+      var pastaTik = 0;
 
-  function pastaTikla() {
-    if (pastaTik >= pastaBoyutlar.length) return;
+      function pastaTikla() {
+        if (pastaTik >= pastaBoyutlar.length) return;
 
-    var emoji = document.getElementById('cake-emoji');
-    var hint  = document.getElementById('cake-hint');
+        var emoji = document.getElementById("cake-emoji");
+        var hint = document.getElementById("cake-hint");
 
-    var nom = document.createElement('div');
-    nom.className   = 'nom-text';
-    nom.textContent = nomSozler[pastaTik % nomSozler.length];
-    nom.style.left  = (20 + Math.random() * 50) + 'vw';
-    nom.style.top   = '50vh';
-    document.body.appendChild(nom);
-    setTimeout(function() { nom.remove(); }, 1100);
+        var nom = document.createElement("div");
+        nom.className = "nom-text";
+        nom.textContent = nomSozler[pastaTik % nomSozler.length];
+        nom.style.left = 20 + Math.random() * 50 + "vw";
+        nom.style.top = "50vh";
+        document.body.appendChild(nom);
+        setTimeout(function () {
+          nom.remove();
+        }, 1100);
 
-    pastaTik++;
+        pastaTik++;
 
-    if (pastaTik < pastaBoyutlar.length) {
-      emoji.style.fontSize = pastaBoyutlar[pastaTik];
-    } else {
-      /* Pasta bitti → zarfı göster */
-      var wrap = document.getElementById('cake-wrap');
-      wrap.style.pointerEvents = 'none';
-      emoji.style.display = 'none';
-      hint.style.display  = 'none';
+        if (pastaTik < pastaBoyutlar.length) {
+          emoji.style.fontSize = pastaBoyutlar[pastaTik];
+        } else {
+          var wrap = document.getElementById("cake-wrap");
+          wrap.style.pointerEvents = "none";
+          emoji.style.display = "none";
+          hint.style.display = "none";
+          setTimeout(function () {
+            var zarfWrap = document.getElementById("zarf-wrap");
+            zarfWrap.style.display = "flex";
+          }, 600);
+        }
+      }
 
-      setTimeout(function() {
-        var zarfWrap = document.getElementById('zarf-wrap');
-        zarfWrap.style.display = 'flex';
-      }, 600);
-    }
-  }
-  /* ZARF */
-  var zarfAcildi = false;
-  function zarfAc() {
-    if (zarfAcildi) return;
-    zarfAcildi = true;
-    var zarf = document.getElementById('zarf');
-    zarf.classList.add('acik');
-    setTimeout(function() {
-      zarf.style.display    = 'none';
-      var zarfHint = document.querySelector('.zarf-hint');
-      if (zarfHint) zarfHint.style.display = 'none';
-      var mektup = document.getElementById('mektup');
-      mektup.style.display = 'block';
-    }, 700);
-  }
-  /* KONFETİ */
-  function confetti() {
-    var renkler = ['#FF69B4','#FFD700','#FF6347','#98FB98','#87CEEB','#DDA0DD','#FFA500'];
-    for (var k = 0; k < 120; k++) {
-      (function(idx) {
-        setTimeout(function() {
-          var c = document.createElement('div');
-          c.className = 'confetti';
-          var size = 6 + Math.random() * 10;
-          c.style.left              = (Math.random() * 100) + 'vw';
-          c.style.top               = '-20px';
-          c.style.width             = size + 'px';
-          c.style.height            = size + 'px';
-          c.style.background        = renkler[Math.floor(Math.random() * renkler.length)];
-          c.style.borderRadius      = Math.random() > 0.5 ? '50%' : '3px';
-          c.style.animationDuration = (2.5 + Math.random() * 3) + 's';
-          c.style.animationDelay    = (Math.random() * 1.5) + 's';
-          document.body.appendChild(c);
-          setTimeout(function() { c.remove(); }, 6000);
-        }, idx * 25);
-      })(k);
-    }
-  }
-</script>
-</body>
+      /* ZARF */
+      var zarfAcildi = false;
+
+      function zarfAc() {
+        if (zarfAcildi) return;
+        zarfAcildi = true;
+        var zarf = document.getElementById("zarf");
+        zarf.classList.add("acik");
+        setTimeout(function () {
+          zarf.style.display = "none";
+          var zarfHint = document.querySelector(".zarf-hint");
+          if (zarfHint) zarfHint.style.display = "none";
+          var mektup = document.getElementById("mektup");
+          mektup.style.display = "block";
+        }, 700);
+      }
+
+      /* KONFETİ */
+      function confetti() {
+        var renkler = [
+          "#FF69B4",
+          "#FFD700",
+          "#FF6347",
+          "#98FB98",
+          "#87CEEB",
+          "#DDA0DD",
+          "#FFA500",
+        ];
+        for (var k = 0; k < 120; k++) {
+          (function (idx) {
+            setTimeout(function () {
+              var c = document.createElement("div");
+              c.className = "confetti";
+              var size = 6 + Math.random() * 10;
+              c.style.left = Math.random() * 100 + "vw";
+              c.style.top = "-20px";
+              c.style.width = size + "px";
+              c.style.height = size + "px";
+              c.style.background =
+                renkler[Math.floor(Math.random() * renkler.length)];
+              c.style.borderRadius = Math.random() > 0.5 ? "50%" : "3px";
+              c.style.animationDuration = 2.5 + Math.random() * 3 + "s";
+              c.style.animationDelay = Math.random() * 1.5 + "s";
+              document.body.appendChild(c);
+              setTimeout(function () {
+                c.remove();
+              }, 6000);
+            }, idx * 25);
+          })(k);
+        }
+      }
+    </script>
+  </body>
 </html>
