@@ -596,8 +596,152 @@
         transform: scale(0.95);
       }
     </style>
+    #game-hud {
+  display: none;
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  text-align: center;
+  pointer-events: none;
+  width: 90vw;
+}
+#game-score-display {
+  color: #ffd700;
+  font-size: 2.2em;
+  font-weight: bold;
+  text-shadow: 0 0 18px #ffd700;
+}
+#game-encourage {
+  color: #ff69b4;
+  font-size: 0.95em;
+  opacity: 0;
+  transition: opacity 0.4s;
+  margin-top: 6px;
+  text-shadow: 0 0 8px rgba(255,105,180,0.5);
+}
+
+.game-emoji {
+  position: fixed;
+  font-size: 2.8em;
+  cursor: pointer;
+  z-index: 150;
+  transform-origin: center;
+  animation: g-appear 0.25s ease-out;
+}
+@keyframes g-appear {
+  from { transform: scale(0) rotate(-15deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg);  opacity: 1; }
+}
+.game-emoji-pop {
+  animation: g-pop 0.3s ease-out forwards !important;
+  pointer-events: none;
+}
+@keyframes g-pop {
+  0%   { transform: scale(1);   opacity: 1; }
+  45%  { transform: scale(1.7); opacity: 0.9; }
+  100% { transform: scale(0);   opacity: 0; }
+}
+.game-emoji-fade {
+  animation: g-fade 0.4s ease-out forwards !important;
+  pointer-events: none;
+}
+@keyframes g-fade {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.5) translateY(-18px); }
+}
+
+.score-pop {
+  position: fixed;
+  font-size: 1.9em;
+  font-weight: bold;
+  pointer-events: none;
+  z-index: 400;
+  transform: translate(-50%, -50%);
+  animation: sp-float 0.9s ease-out forwards;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+@keyframes sp-float {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+  100% { transform: translate(-50%, -160%) scale(1.3); opacity: 0; }
+}
+
+#game-countdown {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.2em;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 24px #ffd700;
+  z-index: 250;
+  pointer-events: none;
+}
+.countdown-pop { animation: countdown-pop 0.7s ease-out; }
+@keyframes countdown-pop {
+  0%   { transform: scale(0.4); opacity: 0; }
+  30%  { transform: scale(1.15); opacity: 1; }
+  60%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+.civciv-msg {
+  position: fixed;
+  top: 38%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 222, 100, 0.96);
+  color: #333;
+  padding: 12px 24px;
+  border-radius: 22px;
+  font-size: 1.1em;
+  font-weight: bold;
+  z-index: 400;
+  white-space: nowrap;
+  animation: civciv-show 3.8s ease forwards;
+}
+@keyframes civciv-show {
+  0%   { opacity: 0; transform: translateX(-50%) scale(0.7); }
+  8%   { opacity: 1; transform: translateX(-50%) scale(1.05); }
+  14%  { transform: translateX(-50%) scale(1); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes flower-fall {
+  0% { transform: translateY(-40px) rotate(0deg); opacity: 0.9; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(115vh) rotate(var(--fr, 540deg)); opacity: 0; }
+}
+@keyframes flower-sway {
+  0%,100% { margin-left: 0; }
+  33% { margin-left: var(--sw1, 12px); }
+  66% { margin-left: var(--sw2, -10px); }
+}
   </head>
   <body>
+    <div id="game-hud">
+  <div id="game-score-display">0 puan</div>
+  <div id="game-encourage"></div>
+</div>
+
+<div class="screen active" id="game-screen">
+  <div id="game-intro-content">
+    <div class="start-title" style="font-size:1.7em">Bir meydan okuma var... 🌸</div>
+    <div class="start-sub" style="margin-top:10px; line-height:2">
+      Emojilere bas, 4 puan topla!<br>
+      🌼 +1 &nbsp;&nbsp; 🥺 -1 &nbsp;&nbsp; 🐣 +5
+    </div>
+    <button class="btn-start" id="game-start-btn" style="margin-top:24px">
+      Başla! 🎮
+    </button>
+  </div>
+  <div id="game-countdown"></div>
+</div>
     <div class="stars" id="stars"></div>
 
     <!-- GİRİŞ -->
@@ -1101,7 +1245,185 @@
             }, idx * 25);
           })(k);
         }
+      }let gameScore = 0;
+let gameActive = false;
+let activeEmojis = [];
+let spawnTimer = null;
+let daisyCount = 0;
+let nextIsChick = false;
+
+function getRandomEmoji() {
+  if (nextIsChick) {
+    nextIsChick = false;
+    daisyCount = 0;
+    return "🐣";
+  }
+  return Math.random() < 0.25 ? "🌼" : "🥺";
+}
+
+function updateScore() {
+  document.getElementById("game-score-display").textContent = `${gameScore} puan`;
+}
+
+function spawnEmoji(forceEmoji) {
+  if (!gameActive) return;
+  if (!forceEmoji && activeEmojis.length >= 4) return;
+  const emojiChar = forceEmoji ?? getRandomEmoji();
+
+  const el = document.createElement("div");
+  el.className = "game-emoji";
+  el.textContent = emojiChar;
+
+  el.style.left = (12 + Math.random() * 68) + "vw";
+  el.style.top  = (18 + Math.random() * 60) + "vh";
+
+  let removed = false;
+
+  const autoRemove = setTimeout(() => {
+    if (!removed && el.parentNode) {
+      removed = true;
+      el.classList.add("game-emoji-fade");
+      activeEmojis = activeEmojis.filter(a => a !== el);
+      setTimeout(() => el.remove(), 180);
+    }
+  }, 850);
+
+  el.onclick = (e) => {
+    if (removed) return;
+    removed = true;
+    clearTimeout(autoRemove);
+    el.onclick = null;
+    activeEmojis = activeEmojis.filter(a => a !== el);
+
+    el.classList.add("game-emoji-pop");
+    setTimeout(() => el.remove(), 300);
+
+    let pts = 0;
+    let txt = "";
+    if (emojiChar === "🌼")      { pts = 1;  txt = "+1"; daisyCount++; }
+    else if (emojiChar === "🥺") { pts = -1; txt = "-1"; }
+    else if (emojiChar === "🐣") { pts = 5;  txt = "+5"; }
+
+    const pop = document.createElement("div");
+    pop.className = "score-pop";
+    pop.textContent = txt;
+    pop.style.left  = e.clientX + "px";
+    pop.style.top   = e.clientY + "px";
+    pop.style.color = pts > 0 ? "#ffd700" : "#ff6b6b";
+    document.body.appendChild(pop);
+    setTimeout(() => pop.remove(), 900);
+
+    if (emojiChar === "🐣") {
+      const msg = document.createElement("div");
+      msg.className = "civciv-msg";
+      msg.textContent = "minik tontiş civciv yakalandı! 🐣";
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 3800);
+      setTimeout(() => spawnEmoji("🌼"), 120);
+    }
+
+    if (emojiChar === "🌼") {
+      activeEmojis.forEach(a => { a.onclick = null; a.classList.add("game-emoji-fade"); });
+      const toClear = activeEmojis;
+      activeEmojis = [];
+      setTimeout(() => toClear.forEach(a => a.remove()), 180);
+      const refillCount = 3 + Math.floor(Math.random() * 2);
+      for (let i = 0; i < refillCount; i++) {
+        setTimeout(() => spawnEmoji(), 150 + i * 120);
       }
+    }
+
+    gameScore = Math.max(0, gameScore + pts);
+    updateScore();
+
+    if (daisyCount >= 2 && !nextIsChick) nextIsChick = true;
+
+    if (gameScore === 0 && pts < 0) {
+      const enc = document.getElementById("game-encourage");
+      enc.textContent = "Hadi ama başarabilirsin ben sana güveniyorummm 🌹";
+      enc.style.opacity = "1";
+      setTimeout(() => { enc.style.opacity = "0"; }, 2500);
+    }
+
+    if (gameScore >= 4) endGame();
+  };
+
+  document.body.appendChild(el);
+  activeEmojis.push(el);
+}
+
+function burstFlowers() {
+  const FLOWERS = ["🌼","🌸","🌹","🪻","💐","🌸","🌼","🌹","🌸","🌼","🪻","🌼"];
+  for (let i = 0; i < 18; i++) {
+    setTimeout(() => {
+      const f = document.createElement("div");
+      f.textContent = FLOWERS[Math.floor(Math.random() * FLOWERS.length)];
+      const size   = (0.9 + Math.random() * 0.9).toFixed(2);
+      const dur    = (10 + Math.random() * 6).toFixed(2);
+      const rotDeg = (Math.random() > 0.5 ? 1 : -1) * (180 + Math.floor(Math.random() * 540));
+      const sw1    = (Math.random() * 28 - 14).toFixed(1);
+      const sw2    = (Math.random() * 28 - 14).toFixed(1);
+      f.style.cssText = [
+        "position:fixed","pointer-events:none","z-index:50","top:-36px",
+        `font-size:${size}em`,`left:${Math.random() * 100}vw`,`opacity:0.9`,
+        `--fr:${rotDeg}deg`,`--sw1:${sw1}px`,`--sw2:${sw2}px`,
+        `animation:flower-fall ${dur}s ease-in-out forwards,flower-sway ${dur}s ease-in-out forwards`
+      ].join(";");
+      document.body.appendChild(f);
+      setTimeout(() => f.remove(), Number(dur) * 1000 + 200);
+    }, i * 80);
+  }
+}
+
+function endGame() {
+  gameActive = false;
+  if (spawnTimer) { clearInterval(spawnTimer); spawnTimer = null; }
+  activeEmojis.forEach(e => { e.onclick = null; e.remove(); });
+  activeEmojis = [];
+  document.getElementById("game-hud").style.display = "none";
+  burstFlowers();
+  setTimeout(() => showScreen("intro-screen"), 500);
+}
+
+function runCountdown(onDone) {
+  document.getElementById("game-intro-content").style.display = "none";
+  const cd = document.getElementById("game-countdown");
+  cd.style.display = "flex";
+  const steps = ["3", "2", "1", "Başla! 🎮"];
+  let i = 0;
+  function tick() {
+    cd.textContent = steps[i];
+    cd.classList.remove("countdown-pop");
+    void cd.offsetWidth;
+    cd.classList.add("countdown-pop");
+    i++;
+    if (i < steps.length) {
+      setTimeout(tick, 700);
+    } else {
+      setTimeout(() => {
+        cd.style.display = "none";
+        onDone();
+      }, 600);
+    }
+  }
+  tick();
+}
+
+function startGame() {
+  gameActive = true;
+  gameScore = 0;
+  daisyCount = 0;
+  nextIsChick = false;
+  updateScore();
+  runCountdown(() => {
+    document.getElementById("game-hud").style.display = "block";
+    const initial = ["🥺","🥺","🥺","🌼"].sort(() => Math.random() - 0.5);
+    initial.forEach((emoji, i) => setTimeout(() => spawnEmoji(emoji), i * 300));
+    spawnTimer = setInterval(() => { if (activeEmojis.length < 4) spawnEmoji(); }, 500);
+  });
+}
+
+document.getElementById("game-start-btn").onclick = startGame;
     </script>
   </body>
 </html>
