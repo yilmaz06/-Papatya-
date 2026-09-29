@@ -41,7 +41,7 @@ body {
   overflow: hidden;
 }
 body {
-  background: #0a0a1a url("bg.png") center/cover fixed;
+  background: #0a0a1a url("Resim arka plan.png") center/cover fixed;
   display: flex;
   justify-content: center;
   color: #fff;
@@ -75,14 +75,14 @@ button {
 .game-bg,
 .quiz-bg,
 .cake-bg {
-  background: url("game-bg.png") center/cover no-repeat;
+  background: url("Resim yaris.png") center/cover no-repeat;
 }
 .game-bg {
   justify-content: flex-start;
   padding-top: 60px;
 }
 .start-bg {
-  background: url("start-bg.png") center/cover no-repeat;
+  background: url("start-Resim arka plan.png") center/cover no-repeat;
   justify-content: flex-start;
   padding-top: 32px;
 }
@@ -332,6 +332,40 @@ button {
     transform: translate(-50%, -48px) scale(1.15);
   }
 }
+/* Mini oyun bittikten sonra ekranın üstünden aşağıya düşen papatyalar. */
+.falling-daisy {
+  position: fixed;
+  top: -70px;
+  z-index: 10;
+  pointer-events: none;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  animation:
+    daisy-fall linear forwards,
+    daisy-sway ease-in-out forwards;
+}
+@keyframes daisy-fall {
+  from {
+    transform: translateY(-60px) rotate(0deg);
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(115vh) rotate(var(--daisy-rotation, 540deg));
+    opacity: 0;
+  }
+}
+@keyframes daisy-sway {
+  0%,
+  100% {
+    margin-left: 0;
+  }
+  33% {
+    margin-left: var(--daisy-sway-one, 12px);
+  }
+  66% {
+    margin-left: var(--daisy-sway-two, -10px);
+  }
+}
 @keyframes appear {
   from {
     scale: 0;
@@ -577,6 +611,55 @@ const A = (name) => `${name}`;
 const app = document.getElementById("app");
 let timers = [],
   cleanups = [];
+let flowerRainInterval = null;
+
+// Mini oyun ekranında kullanılan emojilere dokunmaz.
+// Bu ayrı yağmur, sonraki ekranlarda Papatya1.png ve Papatya2.png kullanır.
+function startFlowerRain() {
+  if (flowerRainInterval) return;
+
+  function dropDaisy() {
+    const daisy = document.createElement("img");
+    daisy.className = "falling-daisy";
+    daisy.src = Math.random() < 0.5 ? "Papatya1.png" : "Papatya2.png";
+    daisy.style.left = Math.random() * 100 + "vw";
+    daisy.style.width = 32 + Math.random() * 38 + "px";
+    daisy.style.opacity = 0.7 + Math.random() * 0.28;
+    daisy.style.setProperty(
+      "--daisy-rotation",
+      (Math.random() > 0.5 ? 1 : -1) *
+        (180 + Math.floor(Math.random() * 540)) +
+        "deg",
+    );
+    daisy.style.setProperty(
+      "--daisy-sway-one",
+      Math.random() * 28 - 14 + "px",
+    );
+    daisy.style.setProperty(
+      "--daisy-sway-two",
+      Math.random() * 28 - 14 + "px",
+    );
+
+    const duration = 12 + Math.random() * 8;
+    daisy.style.animationDuration = `${duration}s, ${duration}s`;
+    document.body.appendChild(daisy);
+    setTimeout(() => daisy.remove(), duration * 1000 + 300);
+  }
+
+  // İlk ekranda bir anda birkaç papatya görünsün.
+  for (let i = 0; i < 8; i++) {
+    setTimeout(dropDaisy, i * 120);
+  }
+  flowerRainInterval = setInterval(dropDaisy, 320);
+}
+
+function stopFlowerRain() {
+  if (flowerRainInterval) {
+    clearInterval(flowerRainInterval);
+    flowerRainInterval = null;
+  }
+  document.querySelectorAll(".falling-daisy").forEach((daisy) => daisy.remove());
+}
 
 // Ekran geçişlerinde çalışan zamanlayıcıları saklar.
 const later = (fn, ms) => {
@@ -600,6 +683,7 @@ function setPage(html, cls = "screen") {
 // Buradaki başlık, açıklama ve buton yazılarını değiştirebilirsin.
 // =========================================================
 function game() {
+  stopFlowerRain();
   setPage(
     `<div class="game-bg screen" style="position:absolute;inset:0">
         <div class="title">Bir meydan okuma var... 🌸</div>
@@ -677,13 +761,14 @@ function intro() {
     stage = "walk";
   setPage(
     `<div class="intro-stage">
-        <img id="intro-left" class="intro-rabbit pink walk" src="${A("rabbit-pink.png")}" style="left:${left}%">
-        <img id="intro-right" class="intro-rabbit green walk" src="${A("rabbit-green.png")}" style="left:${right}%">
+        <img id="intro-left" class="intro-rabbit pink walk" src="${A("Pembe Tavşan.png")}" style="left:${left}%">
+        <img id="intro-right" class="intro-rabbit green walk" src="${A("Yeşil tavşan.png")}" style="left:${right}%">
         <div id="speech-left" class="speech left" style="display:none">Yarışalım mı? 🏁</div>
         <div id="speech-right" class="speech right" style="display:none">Olurrrrr! 🎉</div>
       </div><div class="bottom-button"><button class="pink-button" id="walk">Yürü 🐇</button></div>`,
     "screen",
   );
+  startFlowerRain();
   document.getElementById("walk").onclick = () => {
     if (stage !== "walk") return;
     left = Math.min(left + 14, 46);
@@ -709,7 +794,7 @@ function intro() {
 function start() {
   setPage(
     `<div class="title" style="z-index:3">Bir Sürprizin Var! 🎁</div><div class="sub" style="z-index:3">Hazır mısın? 🌸</div>
-        <div class="rabbits-start"><img class="start-rabbit" src="${A("rabbit-pink.png")}"><img class="start-rabbit" src="${A("rabbit-green.png")}"></div>
+        <div class="rabbits-start"><img class="start-rabbit" src="${A("Pembe Tavşan.png")}"><img class="start-rabbit" src="${A("Yeşil tavşan.png")}"></div>
         <div class="bottom-button"><button class="pink-button" id="race-start">Yarışı Başlat 🏁</button></div>`,
     "screen start-bg",
   );
@@ -717,7 +802,7 @@ function start() {
 }
 function race() {
   setPage(
-    `<div class="race-area"><div class="lane"><div class="finish"></div><img id="r1" class="race-rabbit green" src="${A("rabbit-green.png")}"></div><div class="lane"><div class="finish"></div><img id="r2" class="race-rabbit" src="${A("rabbit-pink.png")}"></div></div><div id="race-message" class="race-message"></div>`,
+    `<div class="race-area"><div class="lane"><div class="finish"></div><img id="r1" class="race-rabbit green" src="${A("Yeşil tavşan.png")}"></div><div class="lane"><div class="finish"></div><img id="r2" class="race-rabbit" src="${A("Pembe Tavşan.png")}"></div></div><div id="race-message" class="race-message"></div>`,
     "screen",
   );
   const r1 = document.getElementById("r1"),
@@ -856,7 +941,7 @@ function cake() {
 // =========================================================
 function envelope() {
   const box = document.getElementById("cake-action");
-  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("envelope-closed.png")}"><img class="envelope-open" src="${A("envelope-open.png")}"></div></div>`;
+  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("kapalı zarf.png")}"><img class="envelope-open" src="${A("Acikzarf.png")}"></div></div>`;
   document.getElementById("envelope").onclick = () => {
     const e = document.getElementById("envelope");
     e.classList.add("open");
@@ -873,3 +958,4 @@ game();
     </script>
   </body>
 </html>
+ 
