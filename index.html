@@ -484,8 +484,8 @@ button {
 }
 .envelope {
   position: relative;
-  width: min(84vw, 310px);
-  height: min(64vw, 240px);
+  width: min(88vw, 330px);
+  height: min(68vw, 255px);
   perspective: 900px;
   cursor: pointer;
 }
@@ -520,8 +520,8 @@ button {
 }
 .letter {
   position: relative;
-  width: min(92vw, 390px);
-  height: min(62vh, 600px);
+  width: min(96vw, 430px);
+  height: min(70vh, 650px);
   overflow: hidden;
   background: transparent;
   animation: letter-in 0.7s ease-out;
@@ -548,12 +548,13 @@ button {
 .letter-scroll {
   position: absolute;
   z-index: 2;
-  top: 14%;
-  right: 20%;
-  bottom: 10%;
-  left: 20%;
+  top: 15%;
+  right: 17%;
+  bottom: 12%;
+  left: 17%;
   overflow-y: auto;
-  padding: 18px 12px 28px;
+  overflow-x: hidden;
+  padding: 18px 12px 24px;
   touch-action: pan-y;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -561,14 +562,16 @@ button {
 }
 .letter-text {
   color: #111;
-  font-size: clamp(0.8rem, 3.5vw, 0.98rem);
-  line-height: 1.4;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  font-size: clamp(0.76rem, 3.2vw, 0.96rem);
+  line-height: 1.35;
   text-shadow:
     0 1px 2px #fff,
     0 0 4px #ffffffbf;
 }
 .letter-text p {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
 }
 .letter-ornament {
   margin: 0 0 12px;
@@ -839,7 +842,7 @@ function race() {
     const t = Math.min((now - started) / duration, 1),
       max = area.offsetWidth - 78;
     const p1 = Math.min(
-          t < 0.6 ? t * 1.4 * 100 : 84 + (t - 0.6) * 0.4 * 100,
+        t < 0.6 ? t * 1.4 * 100 : 84 + (t - 0.6) * 0.4 * 100,
         100,
       ),
       p2 = t < 0.5 ? t * 1.1 * 100 : t < 0.8 ? 55 + (t - 0.5) * 1.5 * 100 : 100;
@@ -957,7 +960,7 @@ function cake() {
 // =========================================================
 function envelope() {
   const box = document.getElementById("cake-action");
-  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("kapalızarf.png")}"><img class="envelope-open" src="${A("Acikzarf.png")}"></div></div>`;
+  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("kapalızarf.png")}" onerror="this.onerror=null;this.src='kapalı zarf.png'"><img class="envelope-open" src="${A("Acikzarf.png")}"></div></div>`;
   document.getElementById("envelope").onclick = () => {
     const e = document.getElementById("envelope");
     e.classList.add("open");
