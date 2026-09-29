@@ -520,8 +520,8 @@ button {
 }
 .letter {
   position: relative;
-  width: min(96vw, 430px);
-  height: min(70vh, 650px);
+  width: min(98vw, 450px);
+  height: min(74vh, 680px);
   overflow: hidden;
   background: transparent;
   animation: letter-in 0.7s ease-out;
@@ -840,7 +840,7 @@ function race() {
   ];
   function frame(now) {
     const t = Math.min((now - started) / duration, 1),
-      max = area.offsetWidth - 78;
+  max = area.offsetWidth - 78;
     const p1 = Math.min(
         t < 0.6 ? t * 1.4 * 100 : 84 + (t - 0.6) * 0.4 * 100,
         100,
@@ -960,7 +960,7 @@ function cake() {
 // =========================================================
 function envelope() {
   const box = document.getElementById("cake-action");
-  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("kapalızarf.png")}" onerror="this.onerror=null;this.src='kapalı zarf.png'"><img class="envelope-open" src="${A("Acikzarf.png")}"></div></div>`;
+  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("kapalı zarf.png")}"><img class="envelope-open" src="${A("Acikzarf.png")}"></div></div>`;
   document.getElementById("envelope").onclick = () => {
     const e = document.getElementById("envelope");
     e.classList.add("open");
