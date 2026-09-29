@@ -75,14 +75,14 @@ button {
 .game-bg,
 .quiz-bg,
 .cake-bg {
-  background: url("Resim yaris.png") center/cover no-repeat;
+  background: url("Resim arka plan.png") center/cover no-repeat;
 }
 .game-bg {
   justify-content: flex-start;
   padding-top: 60px;
 }
 .start-bg {
-  background: url("start-Resim arka plan.png") center/cover no-repeat;
+  background: url("Resim yaris.png") center/cover no-repeat;
   justify-content: flex-start;
   padding-top: 32px;
 }
@@ -941,7 +941,7 @@ function cake() {
 // =========================================================
 function envelope() {
   const box = document.getElementById("cake-action");
-  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("kapalı zarf.png")}"><img class="envelope-open" src="${A("Acikzarf.png")}"></div></div>`;
+  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("kapalızarf.png")}"><img class="envelope-open" src="${A("Acikzarf.png")}"></div></div>`;
   document.getElementById("envelope").onclick = () => {
     const e = document.getElementById("envelope");
     e.classList.add("open");
