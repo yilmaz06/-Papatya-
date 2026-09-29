@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <!-- Tarayıcı sekmesinde görünen adı burada değiştirebilirsin. -->
+    <title>Sürpriz Doğum Günü</title>
+    <!-- Bütün HTML, CSS ve JavaScript bu dosyanın içinde. Sadece görseller ayrı dosyalardır. -->
+    <link rel="icon" href="favicon.svg" />
+    <style>
+/*
+  =========================================================
+  SÜRPRİZ SİTESİ - GÖRÜNÜM DOSYASI
+  =========================================================
+
+  Renk, yazı boyutu ve konum değiştirmek için bu dosyayı kullan.
+
+  Örnek:
+  - Pembe butonun rengini değiştirmek için .pink-button bölümüne bak.
+  - Başlık boyutunu değiştirmek için .title bölümüne bak.
+  - Arka plan görsellerinin yolları aşağıdaki url(...) satırlarında.
+*/
+
+/* Her elementin ölçüsünü daha kolay kontrol etmek için temel ayarlar. */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+/* Sayfanın genel yazı tipi ve taşma davranışı. */
+html,
+/* Ana arka plan görseli ve genel yazı rengi. */
+body {
+  min-height: 100%;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+body {
+  background: #0a0a1a url("bg.png") center/cover fixed;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+}
+/* Tüm butonların temel ayarı. */
+button {
+  font: inherit;
+  border: 0;
+  cursor: pointer;
+}
+/* JavaScript'in bütün ekranları yerleştirdiği ana alan. */
+#app {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+/* Her oyun aşamasını tam ekran yapan ortak sınıf. */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  z-index: 1;
+}
+/* Oyun, soru ve pasta ekranlarının arka planı. */
+.game-bg,
+.quiz-bg,
+.cake-bg {
+  background: url("game-bg.png") center/cover no-repeat;
+}
+.game-bg {
+  justify-content: flex-start;
+  padding-top: 60px;
+}
+.start-bg {
+  background: url("start-bg.png") center/cover no-repeat;
+  justify-content: flex-start;
+  padding-top: 32px;
+}
+.title {
+  color: #ffe066;
+  font-size: clamp(1.5rem, 7vw, 2rem);
+  font-weight: bold;
+  text-shadow: 0 2px 8px #000;
+}
+.sub {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  text-shadow: 0 1px 6px #000;
+}
+/* Pembe butonun rengi, büyüklüğü ve gölgesi. */
+.pink-button {
+  background: linear-gradient(135deg, #ff69b4, #ff3d9a);
+  color: #fff;
+  padding: 16px 42px;
+  border-radius: 32px;
+  font-size: 1.35rem;
+  box-shadow: 0 6px 20px #ff69b480;
+}
+.pink-button:active {
+  transform: scale(0.95);
+}
+/* Alt taraftaki butonların konumu. */
+.bottom-button {
+  position: fixed;
+  bottom: 12%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+}
+/* Başlangıç ekranındaki iki tavşanın konumu. */
+.rabbits-start {
+  position: fixed;
+  top: 47%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 18%;
+  z-index: 2;
+}
+.start-rabbit {
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+  mix-blend-mode: screen;
+}
+/* Tavşanların birbirine doğru yürüdüğü bölüm. */
+.intro-stage {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 100px;
+  transform: translateY(-50%);
+  z-index: 4;
+}
+.intro-rabbit {
+  position: absolute;
+  bottom: 0;
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  transition: left 0.45s ease;
+  mix-blend-mode: screen;
+}
+.intro-rabbit.walk {
+  animation: hop 0.3s infinite ease-in-out;
+}
+.intro-rabbit.green {
+  transform: translateX(-50%) scaleX(-1);
+}
+.intro-rabbit.pink {
+  transform: translateX(-50%);
+}
+.intro-rabbit.green.walk {
+  animation: green-hop 0.3s infinite ease-in-out;
+}
+@keyframes hop {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+@keyframes green-hop {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) scaleX(-1);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px) scaleX(-1);
+  }
+}
+.speech {
+  position: absolute;
+  bottom: 88px;
+  background: #fff;
+  color: #c36;
+  padding: 7px 12px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+.speech.left {
+  right: 7%;
+}
+.speech.right {
+  right: 5%;
+}
+/* Tavşan yarışının bulunduğu bölüm. */
+.race-area {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 48%;
+}
+.lane {
+  height: 58px;
+  position: relative;
+  margin-bottom: 52px;
+}
+.finish {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: repeating-linear-gradient(#fff 0 6px, #333 6px 12px);
+}
+.race-rabbit {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  transform: translateY(-50%);
+  mix-blend-mode: screen;
+}
+.race-rabbit.green {
+  transform: translateY(-50%) scaleX(-1);
+}
+.race-rabbit.hop {
+  animation: race-hop 0.35s infinite ease-in-out;
+}
+.race-rabbit.run {
+  animation: race-run 0.18s infinite ease-in-out;
+}
+.race-rabbit.tired {
+  animation: tired 0.55s infinite ease-in-out;
+}
+@keyframes race-hop {
+  0%,
+  100% {
+    translate: 0 -50%;
+  }
+  50% {
+    translate: 0 -75%;
+  }
+}
+@keyframes race-run {
+  0%,
+  100% {
+    translate: 0 -50%;
+  }
+  25% {
+    translate: 0 -62%;
+  }
+  75% {
+    translate: 0 -38%;
+  }
+}
+@keyframes tired {
+  0%,
+  100% {
+    translate: 0 -50%;
+    rotate: -5deg;
+  }
+  50% {
+    translate: 0 -44%;
+    rotate: 5deg;
+  }
+}
+.race-message {
+  position: fixed;
+  top: 25%;
+  color: #ffb6c1;
+  font-size: 1.1rem;
+  z-index: 5;
+}
+/* Oyun puanının görünümü. */
+.game-hud {
+  position: fixed;
+  top: 18px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #ffd700;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 0 0 16px #ffd700;
+  z-index: 30;
+}
+.game-emoji {
+  position: fixed;
+  font-size: 2.8rem;
+  z-index: 25;
+  cursor: pointer;
+  animation: appear 0.25s ease-out;
+}
+/* Mini oyunda kazanılan veya kaybedilen puanın kısa süreli yazısı. */
+.score-pop {
+  position: fixed;
+  z-index: 40;
+  pointer-events: none;
+  transform: translate(-50%, 0);
+  font-size: 1.45rem;
+  font-weight: bold;
+  text-shadow: 0 2px 5px #000;
+  animation: score-pop-up 0.8s ease-out forwards;
+}
+.score-pop.good {
+  color: #ffe066;
+}
+.score-pop.bad {
+  color: #ff8a8a;
+}
+.score-pop.bonus {
+  color: #ff69b4;
+  font-size: 1.7rem;
+}
+@keyframes score-pop-up {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -48px) scale(1.15);
+  }
+}
+@keyframes appear {
+  from {
+    scale: 0;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+/* Soru ekranındaki kart. */
+.quiz-card {
+  background: #0003;
+  border-radius: 22px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  max-width: 380px;
+}
+.quiz-question {
+  font-size: clamp(1.15rem, 5vw, 1.45rem);
+  line-height: 1.5;
+  text-shadow: 0 1px 5px #000;
+}
+.quiz-buttons {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.yes,
+.no {
+  color: #fff;
+  padding: 14px 30px;
+  border-radius: 25px;
+  font-size: 1.15rem;
+}
+.yes {
+  background: #ff50a088;
+  border: 2px solid #ff78b4;
+}
+.no {
+  background: #3c3c3c99;
+  border: 2px solid #aaa5;
+}
+.heart-button {
+  background: none;
+  color: #fff;
+  font-size: 4rem;
+  animation: pulse 1.4s infinite;
+}
+@keyframes pulse {
+  50% {
+    scale: 1.2;
+  }
+}
+.forced {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #ff69b4, #ff4da6);
+  display: grid;
+  place-items: center;
+  font-size: 5rem;
+  font-weight: bold;
+  z-index: 80;
+}
+/* Pasta ekranındaki kart. */
+.cake-card {
+  background: #0003;
+  border-radius: 24px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 370px;
+  width: 100%;
+}
+.cake-message {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  text-shadow: 0 1px 5px #000;
+}
+.cake {
+  font-size: 6rem;
+  animation: cake-bounce 0.8s infinite alternate;
+}
+@keyframes cake-bounce {
+  to {
+    translate: 0 -14px;
+  }
+}
+.hint {
+  animation: blink 1.2s infinite alternate;
+}
+@keyframes blink {
+  to {
+    opacity: 0.3;
+  }
+}
+/* Zarf ve son mektup görünümü. */
+.envelope-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.envelope {
+  position: relative;
+  width: min(84vw, 310px);
+  height: min(64vw, 240px);
+  perspective: 900px;
+  cursor: pointer;
+}
+.envelope img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  backface-visibility: hidden;
+}
+.envelope-closed {
+  transition:
+    opacity 0.18s ease 0.34s,
+    transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center bottom;
+}
+.envelope-open {
+  opacity: 0;
+  transform: scale(0.82) translateY(16px);
+  transition:
+    opacity 0.32s ease 0.28s,
+    transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) 0.28s;
+}
+.envelope.open .envelope-closed {
+  opacity: 0;
+  transform: rotateX(88deg) scale(0.88);
+}
+.envelope.open .envelope-open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+.letter {
+  position: relative;
+  width: min(92vw, 390px);
+  height: min(62vh, 600px);
+  overflow: hidden;
+  background: transparent;
+  animation: letter-in 0.7s ease-out;
+  flex: none;
+}
+@keyframes letter-in {
+  from {
+    translate: 0 20px;
+    opacity: 0;
+  }
+  to {
+    translate: 0;
+    opacity: 1;
+  }
+}
+.letter-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+.letter-scroll {
+  position: absolute;
+  z-index: 2;
+  top: 14%;
+  right: 20%;
+  bottom: 10%;
+  left: 20%;
+  overflow-y: auto;
+  padding: 18px 12px 28px;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+.letter-text {
+  color: #111;
+  font-size: clamp(0.8rem, 3.5vw, 0.98rem);
+  line-height: 1.4;
+  text-shadow:
+    0 1px 2px #fff,
+    0 0 4px #ffffffbf;
+}
+.letter-text p {
+  margin: 0 0 12px;
+}
+.letter-ornament {
+  margin: 0 0 12px;
+}
+.letter-text strong {
+  color: #111;
+}
+.confetti {
+  position: fixed;
+  top: -20px;
+  width: 8px;
+  height: 12px;
+  z-index: 90;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  to {
+    translate: 0 110vh;
+    rotate: 720deg;
+    opacity: 0;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <!-- JavaScript bütün ekranları bu alanın içine yerleştirir. -->
+    <main id="app"></main>
+    <script>
+/*
+  =========================================================
+  SÜRPRİZ SİTESİ - JAVASCRIPT DOSYASI
+  =========================================================
+
+  Bu dosya sitenin hareketlerini ve ekranlarını yönetir.
+
+  EN KOLAY DEĞİŞTİRİLECEK YERLER:
+  1. Ekranlardaki yazıları değiştirmek için tırnak içindeki metinleri değiştir.
+  2. Görsel değiştirmek için index.html ile aynı klasöre yeni görsel koyup dosya adını değiştir.
+  3. Renk ve boyut değiştirmek için HTML içindeki style bölümünü kullan.
+
+  Not: Bu dil Java değil, JavaScript'tir. Tarayıcıda doğrudan çalışır.
+*/
+
+// Görsellerin bulunduğu klasör. Görsel adlarını aşağıdaki A("...") bölümlerinde değiştir.
+const A = (name) => `${name}`;
+const app = document.getElementById("app");
+let timers = [],
+  cleanups = [];
+
+// Ekran geçişlerinde çalışan zamanlayıcıları saklar.
+const later = (fn, ms) => {
+  const id = setTimeout(fn, ms);
+  timers.push(id);
+  return id;
+};
+function cleanup() {
+  timers.forEach(clearTimeout);
+  timers = [];
+  cleanups.forEach((fn) => fn());
+  cleanups = [];
+}
+function setPage(html, cls = "screen") {
+  cleanup();
+  app.innerHTML = `<section class="${cls}">${html}</section>`;
+}
+
+// =========================================================
+// 1. EMOJİ OYUNU
+// Buradaki başlık, açıklama ve buton yazılarını değiştirebilirsin.
+// =========================================================
+function game() {
+  setPage(
+    `<div class="game-bg screen" style="position:absolute;inset:0">
+        <div class="title">Bir meydan okuma var... 🌸</div>
+        <div class="sub">Emojilere bas, 5 puan topla!<br>🌼 +1 &nbsp;&nbsp; 🥺 -1 &nbsp;&nbsp; 🐣 +5</div>
+        <button class="pink-button" id="start-game">Başla! 🎮</button>
+      </div>`,
+    "screen",
+  );
+  document.getElementById("start-game").onclick = startGame;
+}
+function startGame() {
+  app.innerHTML = `<div class="game-bg screen" style="position:absolute;inset:0"></div><div class="game-hud"><span id="score">0</span> puan</div>`;
+  let score = 0,
+    daisies = 0,
+    nextChick = false,
+    active = [];
+  const remove = (e) => {
+    active = active.filter((x) => x !== e);
+    e.remove();
+  };
+  function spawn(force) {
+    if (active.length >= 4 && !force) return;
+    let char =
+      force ||
+      (nextChick
+        ? ((nextChick = false), (daisies = 0), "🐣")
+        : Math.random() < 0.25
+          ? "🌼"
+          : "🥺");
+    const e = document.createElement("div");
+    e.className = "game-emoji";
+    e.textContent = char;
+    e.style.left = 12 + Math.random() * 68 + "vw";
+    e.style.top = 18 + Math.random() * 60 + "vh";
+    document.body.appendChild(e);
+    active.push(e);
+    later(() => {
+      if (e.isConnected) remove(e);
+    }, 1500);
+    e.onclick = () => {
+      const pts = char === "🌼" ? 1 : char === "🥺" ? -1 : 5;
+
+      // Puanı emojinin üzerinde kısa süreli olarak göster.
+      const scorePop = document.createElement("div");
+      scorePop.className =
+        "score-pop " + (pts === -1 ? "bad" : pts === 5 ? "bonus" : "good");
+      scorePop.textContent = pts > 0 ? `+${pts}` : `${pts}`;
+      scorePop.style.left = e.style.left;
+      scorePop.style.top = e.style.top;
+      document.body.appendChild(scorePop);
+      later(() => scorePop.remove(), 800);
+
+      score = Math.max(0, score + pts);
+      document.getElementById("score").textContent = score;
+      remove(e);
+      if (char === "🌼") daisies++;
+      if (daisies >= 3) nextChick = true;
+      if (score >= 5) {
+        active.forEach(remove);
+        later(intro, 500);
+      }
+    };
+  }
+  ["🥺", "🥺", "🥺", "🌼"].forEach((x, i) => later(() => spawn(x), i * 300));
+  const loop = setInterval(() => spawn(), 500);
+  cleanups.push(() => clearInterval(loop));
+}
+
+// =========================================================
+// 2. TAVŞANLARIN YÜRÜDÜĞÜ EKRAN
+// =========================================================
+function intro() {
+  let left = 3,
+    right = 97,
+    stage = "walk";
+  setPage(
+    `<div class="intro-stage">
+        <img id="intro-left" class="intro-rabbit pink walk" src="${A("rabbit-pink.png")}" style="left:${left}%">
+        <img id="intro-right" class="intro-rabbit green walk" src="${A("rabbit-green.png")}" style="left:${right}%">
+        <div id="speech-left" class="speech left" style="display:none">Yarışalım mı? 🏁</div>
+        <div id="speech-right" class="speech right" style="display:none">Olurrrrr! 🎉</div>
+      </div><div class="bottom-button"><button class="pink-button" id="walk">Yürü 🐇</button></div>`,
+    "screen",
+  );
+  document.getElementById("walk").onclick = () => {
+    if (stage !== "walk") return;
+    left = Math.min(left + 14, 46);
+    right = Math.max(right - 14, 54);
+    document.getElementById("intro-left").style.left = left + "%";
+    document.getElementById("intro-right").style.left = right + "%";
+    if (left >= 46 && right <= 54) {
+      stage = "done";
+      document.getElementById("walk").remove();
+      document.getElementById("speech-left").style.display = "block";
+      later(() => {
+        document.getElementById("speech-left").style.display = "none";
+        document.getElementById("speech-right").style.display = "block";
+        later(start, 1600);
+      }, 1500);
+    }
+  };
+}
+
+// =========================================================
+// 3. BAŞLANGIÇ VE YARIŞ EKRANI
+// =========================================================
+function start() {
+  setPage(
+    `<div class="title" style="z-index:3">Bir Sürprizin Var! 🎁</div><div class="sub" style="z-index:3">Hazır mısın? 🌸</div>
+        <div class="rabbits-start"><img class="start-rabbit" src="${A("rabbit-pink.png")}"><img class="start-rabbit" src="${A("rabbit-green.png")}"></div>
+        <div class="bottom-button"><button class="pink-button" id="race-start">Yarışı Başlat 🏁</button></div>`,
+    "screen start-bg",
+  );
+  document.getElementById("race-start").onclick = race;
+}
+function race() {
+  setPage(
+    `<div class="race-area"><div class="lane"><div class="finish"></div><img id="r1" class="race-rabbit green" src="${A("rabbit-green.png")}"></div><div class="lane"><div class="finish"></div><img id="r2" class="race-rabbit" src="${A("rabbit-pink.png")}"></div></div><div id="race-message" class="race-message"></div>`,
+    "screen",
+  );
+  const r1 = document.getElementById("r1"),
+    r2 = document.getElementById("r2"),
+    msg = document.getElementById("race-message"),
+    area = document.querySelector(".lane");
+  const started = performance.now(),
+    duration = 10000;
+  let lastMessage = -1;
+  const messages = [
+    "🏁 Yarış başladı!",
+    "🐰 Tavşan 1 önde gidiyor!",
+    "😤 Tavşan 2 yaklaşıyor...",
+    "😱 Tavşan 2 geçiyor!!!",
+    "🎉 Tavşan 2 kazandı!!!",
+  ];
+  function frame(now) {
+    const t = Math.min((now - started) / duration, 1),
+      max = area.offsetWidth - 78;
+    const p1 = Math.min(
+        t < 0.6 ? t * 1.4 * 100 : 84 + (t - 0.6) * 0.4 * 100,
+        100,
+      ),
+      p2 = t < 0.5 ? t * 1.1 * 100 : t < 0.8 ? 55 + (t - 0.5) * 1.5 * 100 : 100;
+    r1.style.left = (p1 * max) / 100 + "px";
+    r2.style.left = (p2 * max) / 100 + "px";
+    const index = t < 0.18 ? 0 : t < 0.4 ? 1 : t < 0.6 ? 2 : t < 0.82 ? 3 : 4;
+    if (index !== lastMessage) {
+      msg.textContent = messages[index];
+      lastMessage = index;
+    }
+    r1.className =
+      "race-rabbit green " + (t < 0.3 ? "run" : t < 0.6 ? "hop" : "tired");
+    r2.className = "race-rabbit " + (t < 0.5 ? "hop" : t < 0.8 ? "run" : "");
+    if (t < 1) requestAnimationFrame(frame);
+    else later(quiz, 2500);
+  }
+  requestAnimationFrame(frame);
+}
+
+// =========================================================
+// 4. SORU EKRANLARI
+// Soruların yazılarını phase === 1, 2, 3 ve 4 bölümlerinde değiştir.
+// =========================================================
+function quiz() {
+  let phase = 1,
+    noCount = 0,
+    yesCount = 0;
+  function draw() {
+    let body = "";
+    if (phase === 1)
+      body = `<div class="quiz-question">Beni seviyormusunnnnn ❤️</div><div class="quiz-buttons"><button class="yes" id="yes">Evet</button>${noCount < 5 ? '<button class="no" id="no">Hayır</button>' : ""}</div>`;
+    if (phase === 2)
+      body = `<div class="quiz-question">Beni özlüyor musun? 🥺</div><div class="quiz-buttons"><button class="yes" id="yes">Evet</button><button class="no" id="no">Hayır</button></div>`;
+    if (phase === 3)
+      body = `<div class="quiz-question">Ben herzaman yanındayım, sen de aklımdasın hıh 🌸</div><button class="heart-button" id="heart">❤️</button>`;
+    if (phase === 4)
+      body = `<div class="quiz-question">Seni çok seviyorum, bunu biliyorsun değil mi? ❤️</div><button class="heart-button" id="heart">🙃</button>`;
+    setPage(`<div class="quiz-card">${body}</div>`, "screen quiz-bg");
+    const yes = document.getElementById("yes"),
+      no = document.getElementById("no"),
+      heart = document.getElementById("heart");
+    if (yes)
+      yes.onclick = () => {
+        if (phase === 1) phase = 2;
+        else if (phase === 2) {
+          yesCount++;
+          if (yesCount >= 3) phase = 3;
+        }
+        draw();
+      };
+    if (no)
+      no.onclick = () => {
+        if (phase === 1) {
+          noCount++;
+          if (noCount >= 5) {
+            app.innerHTML += '<div class="forced" id="forced">EVET ❤️</div>';
+            document.getElementById("forced").onclick = () => {
+              phase = 2;
+              noCount = 0;
+              draw();
+            };
+          } else {
+            no.style.position = "fixed";
+            no.style.left = 8 + Math.random() * 65 + "vw";
+            no.style.top = 10 + Math.random() * 65 + "vh";
+            yes.style.fontSize = 1.2 + noCount * 0.3 + "em";
+          }
+        } else {
+          no.style.fontSize = 1.2 + yesCount * 0.5 + "em";
+        }
+      };
+    if (heart)
+      heart.onclick = () => {
+        if (phase === 3) phase = 4;
+        else cake();
+      };
+  }
+  draw();
+}
+
+// =========================================================
+// 5. KONFETİ VE PASTA EKRANI
+// Pasta ekranındaki mesajı cake() fonksiyonunda değiştirebilirsin.
+// =========================================================
+function confetti() {
+  for (let i = 0; i < 80; i++)
+    later(() => {
+      const c = document.createElement("i");
+      c.className = "confetti";
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.background = ["#ff69b4", "#ffd700", "#98fb98", "#87ceeb"][i % 4];
+      c.style.animationDuration = 2.5 + Math.random() * 3 + "s";
+      document.body.appendChild(c);
+      later(() => c.remove(), 6000);
+    }, i * 20);
+}
+function cake() {
+  let clicks = 0;
+  setPage(
+    `<div class="cake-card"><div class="cake-message">🎉 İyiki doğdun prenses! 🎉<br><br>Sen olmasan eksik olurdu...<br>Her şey senin için ❤️</div><div id="cake-action" class="cake-action"><div class="cake" id="cake">🎂</div><div class="hint">Yemek için tıkla 🎂</div></div></div>`,
+    "screen cake-bg",
+  );
+  confetti();
+  document.getElementById("cake").onclick = () => {
+    clicks++;
+    document.getElementById("cake").style.fontSize =
+      Math.max(2, 6 - clicks) + "em";
+    if (clicks >= 5) envelope();
+  };
+}
+
+// =========================================================
+// 6. ZARF VE SON MEKTUP
+// Son mektubun yazılarını note() fonksiyonunun en altındaki bölümde değiştir.
+// =========================================================
+function envelope() {
+  const box = document.getElementById("cake-action");
+  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("envelope-closed.png")}"><img class="envelope-open" src="${A("envelope-open.png")}"></div></div>`;
+  document.getElementById("envelope").onclick = () => {
+    const e = document.getElementById("envelope");
+    e.classList.add("open");
+    later(note, 1000);
+  };
+}
+function note() {
+  const card = document.querySelector(".cake-card");
+  if (card) card.remove();
+  app.innerHTML = `<section class="screen cake-bg"><div class="letter"><img class="letter-frame" src="${A("note-frame.png")}"><div class="letter-scroll"><div class="letter-text"><div class="letter-ornament">🌸 🌼 🌸</div><p>Bu siteyi sana yapmak için<br>çok düşündüm... 🥹</p><p>Her animasyon, her tavşan<br>senin için yapıldı 🐇</p><p>Doğum günün kutlu olsun,<br><strong>prensesim 💛</strong></p><p>Seni çok seviyorum ❤️</p><div class="letter-ornament">🌼 💛 🌼</div></div></div></div></section>`;
+}
+game();
+
+    </script>
+  </body>
+</html>
