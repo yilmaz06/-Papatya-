@@ -86,6 +86,13 @@ button {
   justify-content: flex-start;
   padding-top: 32px;
 }
+.intro-bg,
+.race-bg {
+  background: url("Resim yaris.png") center/cover no-repeat;
+}
+.note-bg {
+  background: url("Resim arka plan.png") center/cover no-repeat;
+}
 .title {
   color: #ffe066;
   font-size: clamp(1.5rem, 7vw, 2rem);
@@ -704,6 +711,12 @@ function startGame() {
     active = active.filter((x) => x !== e);
     e.remove();
   };
+  const clearGameObjects = () => {
+    active.splice(0).forEach((e) => e.remove());
+    document
+      .querySelectorAll(".game-emoji, .score-pop")
+      .forEach((element) => element.remove());
+  };
   function spawn(force) {
     if (active.length >= 4 && !force) return;
     let char =
@@ -742,14 +755,17 @@ function startGame() {
       if (char === "🌼") daisies++;
       if (daisies >= 3) nextChick = true;
       if (score >= 5) {
-        active.forEach(remove);
+        clearGameObjects();
         later(intro, 500);
       }
     };
   }
   ["🥺", "🥺", "🥺", "🌼"].forEach((x, i) => later(() => spawn(x), i * 300));
   const loop = setInterval(() => spawn(), 500);
-  cleanups.push(() => clearInterval(loop));
+  cleanups.push(() => {
+    clearInterval(loop);
+    clearGameObjects();
+  });
 }
 
 // =========================================================
@@ -766,7 +782,7 @@ function intro() {
         <div id="speech-left" class="speech left" style="display:none">Yarışalım mı? 🏁</div>
         <div id="speech-right" class="speech right" style="display:none">Olurrrrr! 🎉</div>
       </div><div class="bottom-button"><button class="pink-button" id="walk">Yürü 🐇</button></div>`,
-    "screen",
+    "screen intro-bg",
   );
   startFlowerRain();
   document.getElementById("walk").onclick = () => {
@@ -803,7 +819,7 @@ function start() {
 function race() {
   setPage(
     `<div class="race-area"><div class="lane"><div class="finish"></div><img id="r1" class="race-rabbit green" src="${A("Yeşil tavşan.png")}"></div><div class="lane"><div class="finish"></div><img id="r2" class="race-rabbit" src="${A("Pembe Tavşan.png")}"></div></div><div id="race-message" class="race-message"></div>`,
-    "screen",
+    "screen race-bg",
   );
   const r1 = document.getElementById("r1"),
     r2 = document.getElementById("r2"),
@@ -823,7 +839,7 @@ function race() {
     const t = Math.min((now - started) / duration, 1),
       max = area.offsetWidth - 78;
     const p1 = Math.min(
-        t < 0.6 ? t * 1.4 * 100 : 84 + (t - 0.6) * 0.4 * 100,
+          t < 0.6 ? t * 1.4 * 100 : 84 + (t - 0.6) * 0.4 * 100,
         100,
       ),
       p2 = t < 0.5 ? t * 1.1 * 100 : t < 0.8 ? 55 + (t - 0.5) * 1.5 * 100 : 100;
@@ -951,11 +967,10 @@ function envelope() {
 function note() {
   const card = document.querySelector(".cake-card");
   if (card) card.remove();
-  app.innerHTML = `<section class="screen cake-bg"><div class="letter"><img class="letter-frame" src="${A("note-frame.png")}"><div class="letter-scroll"><div class="letter-text"><div class="letter-ornament">🌸 🌼 🌸</div><p>Bu siteyi sana yapmak için<br>çok düşündüm... 🥹</p><p>Her animasyon, her tavşan<br>senin için yapıldı 🐇</p><p>Doğum günün kutlu olsun,<br><strong>prensesim 💛</strong></p><p>Seni çok seviyorum ❤️</p><div class="letter-ornament">🌼 💛 🌼</div></div></div></div></section>`;
+   app.innerHTML = `<section class="screen note-bg"><div class="letter"><img class="letter-frame" src="${A("Sonnotarkaplan.png")}"><div class="letter-scroll"><div class="letter-text"><div class="letter-ornament">🌸 🌼 🌸</div><p>Bu siteyi sana yapmak için<br>çok düşündüm... 🥹</p><p>Her animasyon, her tavşan<br>senin için yapıldı 🐇</p><p>Doğum günün kutlu olsun,<br><strong>prensesim 💛</strong></p><p>Seni çok seviyorum ❤️</p><div class="letter-ornament">🌼 💛 🌼</div></div></div></div></section>`;
 }
 game();
 
     </script>
   </body>
 </html>
- 
