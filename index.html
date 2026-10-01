@@ -520,8 +520,8 @@ button {
 }
 .letter {
   position: relative;
-  width: min(94vw, 450px);
-  height: min(74vh, 680px);
+  width: min(96vw, 460px);
+  height: min(76vh, 700px);
   max-width: 100%;
   max-height: calc(100vh - 32px);
   overflow: hidden;
@@ -830,18 +830,19 @@ function race() {
     r2 = document.getElementById("r2"),
     msg = document.getElementById("race-message"),
     area = document.querySelector(".lane");
-  const started = performance.now(),
-    duration = 10000;
+  let started = 0;
+  const duration = 15000;
   let lastMessage = -1;
   const messages = [
     "🏁 Yarış başladı!",
     "🐰 Tavşan 1 önde gidiyor!",
-    "😍 Tavşan 2 yaklaşıyor...",
-    "🙃 Tavşan 2 geçiyor!!!",
+    "🙃 Tavşan 2 yaklaşıyor...",
+    "❤️ Tavşan 2 geçiyor!!!",
     "🎉 Tavşan 2 kazandı!!!",
   ];
   function frame(now) {
-    const t = Math.min((now - started) / duration, 1),
+    if (!started) return;
+      const t = Math.min((now - started) / duration, 1),
       max = area.offsetWidth - 78;
     const p1 = Math.min(
         t < 0.6 ? t * 1.4 * 100 : 84 + (t - 0.6) * 0.4 * 100,
@@ -859,9 +860,17 @@ function race() {
       "race-rabbit green " + (t < 0.3 ? "run" : t < 0.6 ? "hop" : "tired");
     r2.className = "race-rabbit " + (t < 0.5 ? "hop" : t < 0.8 ? "run" : "");
     if (t < 1) requestAnimationFrame(frame);
-    else later(quiz, 2500);
+    else later(quiz, 5000);
   }
-  requestAnimationFrame(frame);
+  msg.textContent = "Hazır mısın? 🏁";
+  later(() => (msg.textContent = "3"), 900);
+  later(() => (msg.textContent = "2"), 1900);
+  later(() => (msg.textContent = "1"), 2900);
+  later(() => {
+    msg.textContent = "🏁 Yarış başladı!";
+    started = performance.now();
+    requestAnimationFrame(frame);
+  }, 3900);
 }
 
 // =========================================================
@@ -979,3 +988,4 @@ game();
     </script>
   </body>
 </html>
+    
