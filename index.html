@@ -9,7 +9,6 @@
     <!-- Tarayıcı sekmesinde görünen adı burada değiştirebilirsin. -->
     <title>Sürpriz Doğum Günü</title>
     <!-- Bütün HTML, CSS ve JavaScript bu dosyanın içinde. Sadece görseller ayrı dosyalardır. -->
-    <link rel="icon" href="favicon.svg" />
     <style>
 /*
   =========================================================
@@ -41,7 +40,7 @@ body {
   overflow: hidden;
 }
 body {
-  background: #0a0a1a url("Resim arka plan.png") center/cover fixed;
+  background: #0a0a1a url("start-bg.png") center/cover fixed;
   display: flex;
   justify-content: center;
   color: #fff;
@@ -71,27 +70,89 @@ button {
   padding: 20px;
   z-index: 1;
 }
+.screen > *:not(.chase-layer) {
+  z-index: 1;
+}
 /* Oyun, soru ve pasta ekranlarının arka planı. */
 .game-bg,
 .quiz-bg,
 .cake-bg {
-  background: url("Resim arka plan.png") center/cover no-repeat;
+  background: url("start-bg.png") center/cover no-repeat;
 }
 .game-bg {
   justify-content: flex-start;
   padding-top: 60px;
 }
 .start-bg {
-  background: url("Resim yaris.png") center/cover no-repeat;
+  background: url("start-bg.png") center/cover no-repeat;
   justify-content: flex-start;
   padding-top: 32px;
 }
 .intro-bg,
 .race-bg {
-  background: url("Resim yaris.png") center/cover no-repeat;
+  background: url("bg.png") center/cover no-repeat;
 }
 .note-bg {
-  background: url("Resim arka plan.png") center/cover no-repeat;
+  background: url("start-bg.png") center/cover no-repeat;
+  padding: 4px;
+}
+.chase-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.chase-pass {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(6px, 2vw, 16px);
+  width: max-content;
+  animation-duration: var(--chase-duration, 26s);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+.chase-pass.forward {
+  animation-name: chase-forward;
+}
+.chase-pass.return {
+  animation-name: chase-return;
+}
+.road-chase .chase-pass.forward {
+  top: var(--road-lower-y, 76%);
+}
+.road-chase .chase-pass.return {
+  top: var(--road-upper-y, 27%);
+}
+.garden-chase .chase-pass.forward {
+  top: var(--garden-lower-y, 74%);
+}
+.garden-chase .chase-pass.return {
+  top: var(--garden-upper-y, 43%);
+}
+.chase-sprite {
+  display: block;
+  width: clamp(42px, 10vw, 74px);
+  height: clamp(42px, 10vw, 74px);
+  object-fit: contain;
+  filter: drop-shadow(0 3px 3px #233a4238);
+  animation: chase-hop 0.52s ease-in-out infinite;
+}
+.chase-sprite.faces-right,
+.chase-sprite.faces-left {
+  transform: scaleX(-1);
+}
+.road-chase .chase-sprite {
+  width: clamp(48px, 12vw, 88px);
+  height: clamp(48px, 12vw, 88px);
+}
+.garden-chase .chase-sprite.rabbit {
+  width: clamp(40px, 10vw, 70px);
+  height: clamp(40px, 10vw, 70px);
 }
 .title {
   color: #ffe066;
@@ -166,13 +227,13 @@ button {
   animation: hop 0.3s infinite ease-in-out;
 }
 .intro-rabbit.green {
-  transform: translateX(-50%) scaleX(-1);
+  transform: translateX(-50%);
 }
 .intro-rabbit.pink {
   transform: translateX(-50%);
 }
 .intro-rabbit.green.walk {
-  animation: green-hop 0.3s infinite ease-in-out;
+  animation: hop 0.3s infinite ease-in-out;
 }
 @keyframes hop {
   0%,
@@ -415,10 +476,14 @@ button {
 .yes {
   background: #ff50a088;
   border: 2px solid #ff78b4;
+  position: relative;
+  z-index: 2;
 }
 .no {
   background: #3c3c3c99;
   border: 2px solid #aaa5;
+  position: relative;
+  z-index: 1;
 }
 .heart-button {
   background: none;
@@ -520,10 +585,10 @@ button {
 }
 .letter {
   position: relative;
-  width: min(96vw, 460px);
-  height: min(76vh, 700px);
+  width: min(100vw, 540px);
+  height: min(86vh, 800px);
   max-width: 100%;
-  max-height: calc(100vh - 32px);
+  max-height: calc(100vh - 16px);
   overflow: hidden;
   background: transparent;
   animation: letter-in 0.7s ease-out;
@@ -551,9 +616,9 @@ button {
   position: absolute;
   z-index: 2;
   top: 15%;
-  right: 17%;
-  bottom: 12%;
-  left: 17%;
+  right: 20%;
+  bottom: 10%;
+  left: 20%;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 18px 12px 24px;
@@ -593,6 +658,51 @@ button {
   to {
     translate: 0 110vh;
     rotate: 720deg;
+    opacity: 0;
+  }
+}
+@keyframes chase-hop {
+  50% {
+    translate: 0 -8px;
+  }
+}
+@keyframes chase-forward {
+  0%,
+  1% {
+    transform: translateX(-160%);
+    opacity: 0;
+  }
+  2% {
+    transform: translateX(-35%);
+    opacity: 1;
+  }
+  43% {
+    transform: translateX(105vw);
+    opacity: 1;
+  }
+  47%,
+  100% {
+    transform: translateX(125vw);
+    opacity: 0;
+  }
+}
+@keyframes chase-return {
+  0%,
+  49% {
+    transform: translateX(125vw);
+    opacity: 0;
+  }
+  53% {
+    transform: translateX(90vw);
+    opacity: 1;
+  }
+  91% {
+    transform: translateX(-35%);
+    opacity: 1;
+  }
+  95%,
+  100% {
+    transform: translateX(-160%);
     opacity: 0;
   }
 }
@@ -685,9 +795,70 @@ function cleanup() {
   cleanups.forEach((fn) => fn());
   cleanups = [];
 }
+function mountChase(mode) {
+  const host =
+    app.querySelector(".game-bg.screen") ||
+    app.querySelector(".screen") ||
+    app;
+  const packs =
+    mode === "road"
+      ? {
+          forward: [
+            { file: "hayalet.png", classes: "ghost" },
+            { file: "ahtapot-kedi.png", classes: "octopus-cat" },
+          ],
+          returning: [
+            { file: "ahtapot-kedi.png", classes: "octopus-cat" },
+            { file: "hayalet.png", classes: "ghost" },
+          ],
+        }
+      : {
+          forward: [
+            {
+              file: "Yeşil tavşan.png",
+              classes: "rabbit faces-right",
+            },
+            { file: "Pembe Tavşan.png", classes: "rabbit" },
+          ],
+          returning: [
+            {
+              file: "Pembe Tavşan.png",
+              classes: "rabbit faces-left",
+            },
+            { file: "Yeşil tavşan.png", classes: "rabbit" },
+          ],
+        };
+  const renderPass = (actors, direction) =>
+    `<div class="chase-pass ${direction}">${actors
+      .map(
+        (actor, index) =>
+          `<img class="chase-sprite ${actor.classes}" src="${A(
+            actor.file,
+          )}" alt="" draggable="false" style="animation-delay:${
+            index * 0.16
+          }s">`,
+      )
+      .join("")}</div>`;
+  const style = [
+    `--chase-duration:${24 + Math.random() * 4}s`,
+    `--road-lower-y:${73 + Math.random() * 4}%`,
+    `--road-upper-y:${24 + Math.random() * 4}%`,
+    `--garden-lower-y:${72 + Math.random() * 5}%`,
+    `--garden-upper-y:${41 + Math.random() * 4}%`,
+  ].join(";");
+  host.insertAdjacentHTML(
+    "afterbegin",
+    `<div class="chase-layer ${mode}-chase" aria-hidden="true" style="${style}">${renderPass(
+      packs.forward,
+      "forward",
+    )}${renderPass(packs.returning, "return")}</div>`,
+  );
+}
 function setPage(html, cls = "screen") {
   cleanup();
   app.innerHTML = `<section class="${cls}">${html}</section>`;
+  const mode = /\b(intro-bg|race-bg)\b/.test(cls) ? "road" : "garden";
+  mountChase(mode);
 }
 
 // =========================================================
@@ -708,6 +879,7 @@ function game() {
 }
 function startGame() {
   app.innerHTML = `<div class="game-bg screen" style="position:absolute;inset:0"></div><div class="game-hud"><span id="score">0</span> puan</div>`;
+  mountChase("garden");
   let score = 0,
     daisies = 0,
     nextChick = false,
@@ -777,8 +949,8 @@ function startGame() {
 // 2. TAVŞANLARIN YÜRÜDÜĞÜ EKRAN
 // =========================================================
 function intro() {
-  let left = 3,
-    right = 97,
+  let left = 15,
+    right = 85,
     stage = "walk";
   setPage(
     `<div class="intro-stage">
@@ -792,11 +964,11 @@ function intro() {
   startFlowerRain();
   document.getElementById("walk").onclick = () => {
     if (stage !== "walk") return;
-    left = Math.min(left + 14, 46);
-    right = Math.max(right - 14, 54);
+    left = Math.min(left + 7.5, 45);
+    right = Math.max(right - 7.5, 55);
     document.getElementById("intro-left").style.left = left + "%";
     document.getElementById("intro-right").style.left = right + "%";
-    if (left >= 46 && right <= 54) {
+    if (left >= 45 && right <= 55) {
       stage = "done";
       document.getElementById("walk").remove();
       document.getElementById("speech-left").style.display = "block";
@@ -836,13 +1008,13 @@ function race() {
   const messages = [
     "🏁 Yarış başladı!",
     "🐰 Tavşan 1 önde gidiyor!",
-    "🙃 Tavşan 2 yaklaşıyor...",
-    "❤️ Tavşan 2 geçiyor!!!",
+    "😤 Tavşan 2 yaklaşıyor...",
+    "😱 Tavşan 2 geçiyor!!!",
     "🎉 Tavşan 2 kazandı!!!",
   ];
   function frame(now) {
     if (!started) return;
-      const t = Math.min((now - started) / duration, 1),
+    const t = Math.min((now - started) / duration, 1),
       max = area.offsetWidth - 78;
     const p1 = Math.min(
         t < 0.6 ? t * 1.4 * 100 : 84 + (t - 0.6) * 0.4 * 100,
@@ -971,7 +1143,7 @@ function cake() {
 // =========================================================
 function envelope() {
   const box = document.getElementById("cake-action");
-  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("kapalızarf.png")}"><img class="envelope-open" src="${A("Acikzarf.png")}"></div></div>`;
+  box.innerHTML = `<div class="envelope-wrap"><div class="hint">Zarfa dokunsan iyi olur 💌</div><div class="envelope" id="envelope"><img class="envelope-closed" src="${A("kapalizarf.png")}"><img class="envelope-open" src="${A("Acikzarf.png")}"></div></div>`;
   document.getElementById("envelope").onclick = () => {
     const e = document.getElementById("envelope");
     e.classList.add("open");
@@ -979,13 +1151,14 @@ function envelope() {
   };
 }
 function note() {
+  cleanup();
   const card = document.querySelector(".cake-card");
   if (card) card.remove();
    app.innerHTML = `<section class="screen note-bg"><div class="letter"><img class="letter-frame" src="${A("Sonnotarkaplan.png")}"><div class="letter-scroll"><div class="letter-text"><div class="letter-ornament">🌸 🌼 🌸</div><p>Bu siteyi sana yapmak için<br>çok düşündüm... 🥹</p><p>Her animasyon, her tavşan<br>senin için yapıldı 🐇</p><p>Doğum günün kutlu olsun,<br><strong>prensesim 💛</strong></p><p>Seni çok seviyorum ❤️</p><div class="letter-ornament">🌼 💛 🌼</div></div></div></div></section>`;
+  mountChase("garden");
 }
 game();
 
     </script>
   </body>
-</html>
-    
+</html>la
