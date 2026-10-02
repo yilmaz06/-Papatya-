@@ -866,8 +866,8 @@ function game() {
   stopFlowerRain();
   setPage(
     `<div class="game-bg screen" style="position:absolute;inset:0">
-        <div class="title">Bir meydan okuma var... 🌷</div>
-        <div class="sub">Emojilere bas, 5 puan topla!<br>🌸 +1 &nbsp;&nbsp; 🥺 -1 &nbsp;&nbsp; 🐣 +5</div>
+        <div class="title">Bir meydan okuma var... 🌸</div>
+        <div class="sub">Emojilere bas, 5 puan topla!<br>🌼 +1 &nbsp;&nbsp; 🥺 -1 &nbsp;&nbsp; 🐣 +5</div>
         <button class="pink-button" id="start-game">Başla! 🎮</button>
       </div>`,
     "screen",
@@ -911,7 +911,7 @@ function startGame() {
       if (e.isConnected) remove(e);
     }, 1500);
     e.onclick = () => {
-      const pts = char === "🌸" ? 1 : char === "🥺" ? -1 : 5;
+      const pts = char === "🌼" ? 1 : char === "🥺" ? -1 : 5;
 
       // Puanı emojinin üzerinde kısa süreli olarak göster.
       const scorePop = document.createElement("div");
