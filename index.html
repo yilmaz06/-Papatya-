@@ -90,11 +90,11 @@ button {
 }
 .intro-bg,
 .race-bg {
-  background: url("Resim yarıs.png") center/cover no-repeat;
+  background: url("Resim yarış.png") center/cover no-repeat;
 }
 .note-bg {
   background: url("Resim arka plan.png") center/cover no-repeat;
-  padding: 4px;
+  padding: 0;
 }
 .chase-layer {
   position: absolute;
@@ -107,7 +107,8 @@ button {
   position: absolute;
   left: 0;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  margin-top: -12px;
   gap: clamp(6px, 2vw, 16px);
   width: max-content;
   animation-duration: var(--chase-duration, 26s);
@@ -136,8 +137,8 @@ button {
 }
 .chase-sprite {
   display: block;
-  width: clamp(42px, 10vw, 74px);
-  height: clamp(42px, 10vw, 74px);
+  width: clamp(58px, 14vw, 96px);
+  height: clamp(58px, 14vw, 96px);
   object-fit: contain;
   filter: drop-shadow(0 3px 3px #233a4238);
   animation: chase-hop 0.52s ease-in-out infinite;
@@ -147,12 +148,12 @@ button {
   transform: scaleX(-1);
 }
 .road-chase .chase-sprite {
-  width: clamp(48px, 12vw, 88px);
-  height: clamp(48px, 12vw, 88px);
+  width: clamp(68px, 17vw, 112px);
+  height: clamp(68px, 17vw, 112px);
 }
 .garden-chase .chase-sprite.rabbit {
-  width: clamp(40px, 10vw, 70px);
-  height: clamp(40px, 10vw, 70px);
+  width: clamp(58px, 14vw, 96px);
+  height: clamp(58px, 14vw, 96px);
 }
 .title {
   color: #ffe066;
@@ -585,7 +586,7 @@ button {
 }
 .letter {
   position: relative;
-  width: min(100vw, 540px);
+  width: min(100vw, 680px);
   height: min(86vh, 800px);
   max-width: 100%;
   max-height: calc(100vh - 16px);
@@ -616,9 +617,9 @@ button {
   position: absolute;
   z-index: 2;
   top: 15%;
-  right: 20%;
+  right: 17%;
   bottom: 10%;
-  left: 20%;
+  left: 17%;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 18px 12px 24px;
@@ -804,12 +805,12 @@ function mountChase(mode) {
     mode === "road"
       ? {
           forward: [
-            { file: "hayalet.png", classes: "ghost" },
-            { file: "ahtapot-kedi.png", classes: "octopus-cat" },
+            { file: "Hayalet.png", classes: "ghost" },
+            { file: "Ahtapot kedi.png", classes: "octopus-cat" },
           ],
           returning: [
-            { file: "ahtapot-kedi.png", classes: "octopus-cat" },
-            { file: "hayalet.png", classes: "ghost" },
+            { file: "Ahtapot kedi.png", classes: "octopus-cat" },
+            { file: "Hayalet.png", classes: "ghost" },
           ],
         }
       : {
@@ -822,10 +823,10 @@ function mountChase(mode) {
           ],
           returning: [
             {
-              file: "Pembe Tavşan.png",
-              classes: "rabbit faces-left",
+              file: "Yeşil tavşan.png",
+              classes: "rabbit",
             },
-            { file: "Yeşil tavşan.png", classes: "rabbit" },
+            { file: "Pembe Tavşan.png", classes: "rabbit faces-left" },
           ],
         };
   const renderPass = (actors, direction) =>
@@ -1161,4 +1162,4 @@ game();
 
     </script>
   </body>
-</html>la
+</html>
