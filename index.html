@@ -866,8 +866,8 @@ function game() {
   stopFlowerRain();
   setPage(
     `<div class="game-bg screen" style="position:absolute;inset:0">
-        <div class="title">Bir meydan okuma var... 🌸</div>
-        <div class="sub">Emojilere bas, 5 puan topla!<br>🌼 +1 &nbsp;&nbsp; 🥺 -1 &nbsp;&nbsp; 🐣 +5</div>
+        <div class="title">Bir meydan okuma var... 🌷</div>
+        <div class="sub">Emojilere bas, 5 puan topla!<br>🌸 +1 &nbsp;&nbsp; 🥺 -1 &nbsp;&nbsp; 🐣 +5</div>
         <button class="pink-button" id="start-game">Başla! 🎮</button>
       </div>`,
     "screen",
@@ -911,7 +911,7 @@ function startGame() {
       if (e.isConnected) remove(e);
     }, 1500);
     e.onclick = () => {
-      const pts = char === "🌼" ? 1 : char === "🥺" ? -1 : 5;
+      const pts = char === "🌸" ? 1 : char === "🥺" ? -1 : 5;
 
       // Puanı emojinin üzerinde kısa süreli olarak göster.
       const scorePop = document.createElement("div");
@@ -1122,7 +1122,7 @@ function confetti() {
 function cake() {
   let clicks = 0;
   setPage(
-    `<div class="cake-card"><div class="cake-message">🎉 İyiki doğdun prenses! 🎉<br><br>Sen olmasan eksik olurdu...<br>Her şey senin için ❤️</div><div id="cake-action" class="cake-action"><div class="cake" id="cake">🎂</div><div class="hint">Yemek için tıkla 🎂</div></div></div>`,
+    `<div class="cake-card"><div class="cake-message">🎉 İyiki doğdun prensesimmm❤️ <br><br>Sen olmasan herşeyim eksik olurdu...<br>Her şey senin için ve sana değer😘</div><div id="cake-action" class="cake-action"><div class="cake" id="cake">🎂</div><div class="hint">Yemek için tıkla 🎂</div></div></div>`,
     "screen cake-bg",
   );
   confetti();
@@ -1151,7 +1151,7 @@ function note() {
   cleanup();
   const card = document.querySelector(".cake-card");
   if (card) card.remove();
-   app.innerHTML = `<section class="screen note-bg"><div class="letter"><div class="letter-scroll"><div class="letter-text"><div class="letter-ornament">🌸 🌼 🌸</div><p>Bu siteyi sana yapmak için<br>çok düşündüm... 🥹</p><p>Her animasyon, her tavşan<br>senin için yapıldı 🐇</p><p>Doğum günün kutlu olsun,<br><strong>prensesim 💛</strong></p><p>Seni çok seviyorum ❤️</p><div class="letter-ornament">🌼 💛 🌼</div></div></div></div></section>`;
+   app.innerHTML = `<section class="screen note-bg"><div class="letter"><div class="letter-scroll"><div class="letter-text"><div class="letter-ornament">🌸 🌼 🌸</div><p>Bu siteyi sana yapmak için<br>çok düşündüm🙃 </p><p>Herşey senin içindi hepde senin için olucak❤️🌹<br>seni çooook seviyorum bitanemm🌹</p><p>Doğum günün kutlu olsunnn❤️<br><strong>nice mutlu nice benli senelere❤️🙃</strong></p><p>iyiki varsın iyiki hayatımdasınn❤️</p> <p>Kendine hep cok dikkat et Allaha emanet ol ben herzaman yanındayım hayatımmmm❤️😘</p><Biraz aceleye geldi yolda yaptım ben bunları beni sev diye değil mutlu olmanı istediğim için yapıyorum ve seni coook seviyorum Öpüyorum seni😘❤️<div class="letter-ornament">🌼 💛 🌼</div></div></div></div></section>`;
   mountChase("garden");
 }
 game();
