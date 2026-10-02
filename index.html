@@ -586,12 +586,17 @@ button {
 }
 .letter {
   position: relative;
-  width: min(100vw, 760px);
-  height: min(86vh, 800px);
-  max-width: 100%;
+  width: min(92vw, 680px);
+  height: min(78vh, 680px);
+  max-width: calc(100vw - 24px);
   max-height: calc(100vh - 16px);
   overflow: hidden;
-  background: transparent;
+  border: 1px solid #ffffffb8;
+  border-radius: 24px;
+  background: #fffffff0;
+  box-shadow: 0 18px 50px #0003;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   animation: letter-in 0.7s ease-out;
   flex: none;
 }
@@ -605,47 +610,34 @@ button {
     opacity: 1;
   }
 }
-.letter-frame {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  pointer-events: none;
-}
 .letter-scroll {
   position: absolute;
   z-index: 2;
-  top: 15%;
-  right: 14%;
-  bottom: 10%;
-  left: 14%;
+  inset: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 18px 12px 24px;
+  padding: clamp(24px, 5vw, 42px);
   touch-action: pan-y;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: #555 transparent;
+  scrollbar-color: #c58da2 transparent;
+  border-radius: inherit;
 }
 .letter-text {
   color: #111;
   max-width: 100%;
   overflow-wrap: break-word;
-  font-size: clamp(0.76rem, 3.2vw, 0.96rem);
-  line-height: 1.35;
-  text-shadow:
-    0 1px 2px #fff,
-    0 0 4px #ffffffbf;
+  font-size: clamp(1rem, 3.8vw, 1.18rem);
+  line-height: 1.6;
 }
 .letter-text p {
-  margin: 0 0 10px;
+  margin: 0 0 16px;
 }
 .letter-ornament {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
 }
 .letter-text strong {
-  color: #111;
+  color: #b54771;
 }
 .confetti {
   position: fixed;
@@ -1155,7 +1147,7 @@ function note() {
   cleanup();
   const card = document.querySelector(".cake-card");
   if (card) card.remove();
-   app.innerHTML = `<section class="screen note-bg"><div class="letter"><img class="letter-frame" src="${A("Sonnotarkaplan.png")}"><div class="letter-scroll"><div class="letter-text"><div class="letter-ornament">🌸 🌼 🌸</div><p>Bu siteyi sana yapmak için<br>çok düşündüm... 🥹</p><p>Her animasyon, her tavşan<br>senin için yapıldı 🐇</p><p>Doğum günün kutlu olsun,<br><strong>prensesim 💛</strong></p><p>Seni çok seviyorum ❤️</p><div class="letter-ornament">🌼 💛 🌼</div></div></div></div></section>`;
+   app.innerHTML = `<section class="screen note-bg"><div class="letter"><div class="letter-scroll"><div class="letter-text"><div class="letter-ornament">🌸 🌼 🌸</div><p>Bu siteyi sana yapmak için<br>çok düşündüm... 🥹</p><p>Her animasyon, her tavşan<br>senin için yapıldı 🐇</p><p>Doğum günün kutlu olsun,<br><strong>prensesim 💛</strong></p><p>Seni çok seviyorum ❤️</p><div class="letter-ornament">🌼 💛 🌼</div></div></div></div></section>`;
   mountChase("garden");
 }
 game();
